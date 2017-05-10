@@ -1,0 +1,68 @@
+----------------------
+| Populationsmodelle |
+----------------------
+
+z.B.
+  - "Wie wirken sich Jahreszeiten auf ein Jäger-Beute System aus?"
+  - Epidemien
+
+Anderer Bearbeiter: Nagorski
+
+1. Pitch: 5-10mins vortragen was man vor hat (bald) - 31.05.2017
+2. Vortrag: 30mins (mit Simulation, letzter Praktikumstermin)
+3. Hausarbeit: 15 Seiten (Deadline: )
+
+Bewertung Vortrag:
+------------------
+  Recherche (Literaturscan)
+    - Peer-reviewed articles
+    - Conferences
+    - Books
+    - Wikipedia (typische Weisheiten / Common knowledge)
+  Bibliografie
+  Komplexität / Schwierigkeit
+  Aufbau / Struktur
+  Umsetzung / Quellcode
+  Darstellung
+  Sprache / Orthographie (Form / Sprache..)
+  Bibtex
+
+Hausarbeit:
+-----------
+- Abgabe = 11.09.2017
+- Per Mail "MDP - Ausarbeitung - Populationsmodell - Nitsche"
+- Zip:
+    Ausarbeitung.pdf
+    Code
+- Korrektur wenns nicht so funktioniert im Vortrag (Korrekturhinweis)
+
+
+Folgende Vorgaben:
+------------------
+
+1. Geeigneter Titel, der die bearbeitete Fragestellung wiedergibt.
+2. Beschreibung der Problemstellung mit Literatur.
+3. Modellierung und damit verbundener Herleitung der mathematischen Formulierung.
+Gehen Sie auf Vereinfachungen bei der Modellierung ein sowie
+auf Auswirkungen auf das Ergebnis der Simulation.
+4. Einheitenfreie Formulierung der Beziehungen und Interpretation der Art
+der Gleichungen (z.B. ODE so und so vielter Ordnung).
+5. Beschreibung der rechnergestützten Bearbeitung der Gleichungen, Verwendung
+von Tools, Art der numerischen Behandlung.
+6. Beschreibung der Simulation, Tool-Verwendung, Visualisierung.
+7. Erkenntnisse aus der Simulation, Anwendung auf die Wirklichkeit. Einschränkung
+durch die Art der Modellierung. Interpretation der Ergebnisse.
+8. Literatur
+
+Jede Arbeit soll einen bestimmten Aspekt oder eine bestimmte Fragestellung
+behandeln. Die Punkte 1, 2 und 6 (Modellierung und Erkenntnisse
+aus der Simulation) sind auf diese Fragestellung auszurichten.
+
+Beispiele:
+  Wie wirkt sich eine Veränderung der Knautschzone auf den frontalen Zusammenprall zweier Fahrzeuge aus?
+  Wie wirkt sich die Isolierung eines Hauses auf die Regelung der Heizung aus?
+
+
+
+
+
