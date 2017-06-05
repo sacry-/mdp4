@@ -1,7 +1,6 @@
 clear;
 
 % Population
-
 % Susceptibles
 SA0 = 10000000;
 SB0 = SA0 * 0.2;
