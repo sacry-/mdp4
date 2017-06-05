@@ -27,7 +27,7 @@ steps = 0:0.01:years;
 [t, y] = ode45(@(t,y) tuberculosisModel(t, y), steps,y0,options); 
 
 
-labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM' 'N'};
+labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM'};
 fprintf('%s = N0\n', strjoin(labels, ' + '));
 fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
 
@@ -39,8 +39,6 @@ for i = 1:length(y0)
     y_dim = y(:, i);
     as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
 end
-% Plot N as well
-as(end) = plot(t, sum(y, 2), 'color', colors(end, :), 'LineWidth', 2);
 legend(as, labels);
 ylabel('Populations')
 xlabel('Time')

@@ -117,12 +117,7 @@ function colors = random_colors(n_colors,bg,func)
     lastlab = lab(index,:);  % prepare for next iteration
   end
   
-  rand_colors = zeros(size(colors));
-  js = randperm(length(colors));
-  for i = 1:length(colors)
-    rand_colors(i, :) = colors(js(i), :);
-  end
-  colors = rand_colors;
+  colors = colors(randperm(length(colors)), :);
 end
 
 function c = parsecolor(s)

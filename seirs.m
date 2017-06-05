@@ -6,25 +6,29 @@ E0 = 20;
 I0 = 5;
 R0 =  5;
 
+days = 25;
+
 y0 = [S0 E0 I0 R0];
 options = odeset('RelTol', 1e-5);
-steps = 0:0.01:100;
+steps = 0:0.01:days;
 [t, y] = ode45(@(t,y) seirsModel(t, y), steps,y0,options); 
 
-S = y(:,1);
-E = y(:,2);
-I = y(:,3);
-R = y(:,4);
+labels = {'S' 'E' 'I' 'R'};
+fprintf('%s = N0\n', strjoin(labels, ' + '));
+fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
 
 figure; hold on
-linewidth = 2;
-a1 = plot(t,S, 'color', [1 .7 0], 'LineWidth', linewidth); M1 = "S";
-a2 = plot(t,E, 'color', [0 .5 .9], 'LineWidth', linewidth); M2 = "E";
-a3 = plot(t,I, 'color', [.8 0 0], 'LineWidth', linewidth); M3 = "I";
-a4 = plot(t,R, 'color', [0 .5 0], 'LineWidth', linewidth); M4 = "R";
-legend([a1, a2, a3, a4], [M1, M2, M3, M4]);
+as = zeros(length(labels), 1);
+colors = random_colors(length(labels), [0 0 0]) * 0.8;
+for i = 1:length(y0)
+    label = labels(i);
+    y_dim = y(:, i);
+    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
+end
+legend(as, labels);
 ylabel('Populations')
-xlabel('Time')
+xlabel('Days')
+
 
 function [ ret ] = seirsModel(t, y)
     S = y(1); 

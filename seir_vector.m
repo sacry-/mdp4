@@ -1,80 +1,77 @@
 clear;
 
-% Population y0
-S0 = 100;
-E0 = 20;
-I0 = 5;
-R0 =  5;
+% Population
+Sh0 = 1000;
+Ih0 = 1;
+Rh0 =  0;
 
-% The parameter controlling how often a susceptible-infected 
-% contact results in a new exposure.
-beta = 0.9;
-% The rate an infected recovers and moves into 
-% the resistant phase.
-gamma = 0.2;
-% The rate at which an exposed person becomes infective.
-sigma = 0.5;
-% The natural mortality rate (this is unrelated to disease). 
-% This models a population of a constant size.
-mu = 0;
-% The rate at which susceptible become vaccinated.
-nu = 0;
-% The rate at which resistant people lose their 
-% resistance and become susceptible again.
-rho = 0.05;
+% Vector (of attack)
+Sv0 = 1000;
+Iv0 = 0;
 
-paramKeys = {'beta' 'gamma' 'sigma' 'mu' 'nu' 'rho'};
-paramValues = {beta gamma sigma mu nu rho};
-init = containers.Map(paramKeys, paramValues);
+days = 40;
 
-y0 = [S0 E0 I0 R0];
+y0 = [Sh0 Ih0 Rh0 Sv0 Iv0];
 options = odeset('RelTol', 1e-5);
-steps = 0:0.01:100;
-[t, y] = ode45(@(t,y) seirVectorModel(t, y, init), steps,y0,options); 
+steps = 0:0.01:days;
+[t, y] = ode45(@(t,y) seirsVectorModel(t, y), steps,y0,options); 
 
-S = y(:,1);
-E = y(:,2);
-I = y(:,3);
-R = y(:,4);
+labels = {'Sh' 'Ih' 'Rh' 'Sv' 'Iv'};
+fprintf('%s = N0\n', strjoin(labels, ' + '));
+fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
 
 figure; hold on
-linewidth = 2;
-a1 = plot(t,S, 'color', [1 .7 0], 'LineWidth', linewidth); M1 = "S";
-a2 = plot(t,E, 'color', [0 .5 .9], 'LineWidth', linewidth); M2 = "E";
-a3 = plot(t,I, 'color', [.8 0 0], 'LineWidth', linewidth); M3 = "I";
-a4 = plot(t,R, 'color', [0 .5 0], 'LineWidth', linewidth); M4 = "R";
-legend([a1, a2, a3, a4], [M1, M2, M3, M4]);
+as = zeros(length(labels), 1);
+colors = random_colors(length(labels), [.25 .25 .25]) * 0.8;
+for i = 1:length(y0)
+    label = labels(i);
+    y_dim = y(:, i);
+    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
+end
+legend(as, labels);
 ylabel('Populations')
-xlabel('Time')
+xlabel('Days')
 
-function [ ret ] = seirVectorModel(t, y, params)
-    S = y(1); 
-    E = y(2); 
-    I = y(3); 
-    R = y(4);
-    N = S + E + I + R;
+function [ ret ] = seirsVectorModel(t, y)
+    Sh = y(1);
+    Ih = y(2);
+    Rh = y(3);
+    Sv = y(4);
+    Iv = y(5);
     
-    beta = params('beta');
-    gamma = params('gamma');
-    sigma = params('sigma');
-    mu = params('mu');
-    nu = params('nu');
-    rho = params('rho');
+    Nh = Sh + Ih + Rh;
     
-    exposure = beta * (S * I / N);
-    vaccinate = nu * S;
-    infect = sigma * E;
-    recovery = gamma * I;
-    acquiescence = rho * R;
+    [betaH, muH, gamma, M, betaV, muV, A, B] = modelParams();
     
-    mortS = mu * (N - S);
-    dSdt =  acquiescence + mortS - exposure - vaccinate;
-    mortE = mu * E;
-    dEdt = exposure - infect - mortE;
-    mortI = mu * I;
-    dIdt = infect - recovery - mortI;
-    mortR = mu * R;
-    dRdt = recovery + vaccinate - acquiescence - mortR;
+    % Humans
+    dShdt = muH * (Nh - Sh) - ((betaH * B) / (Nh + M)) * Sh * Iv;
+    dIhdt = ((betaH * B) / (Nh + M)) * Sh * Iv - (muH + gamma) * Ih;
+    dRhdt = gamma * Ih - muH * Rh;
     
-    ret = [dSdt dEdt dIdt dRdt]';
+    % Vectors (e.g. mosquitos)
+    dSvdt = A - ((betaV * B) / (Nh + M)) * Sv * Ih - muV * Sv;
+    dIvdt = ((betaV * B) / (Nh + M)) * Sv * Ih - muV * Iv;
+    
+    ret = [dShdt dIhdt dRhdt dSvdt dIvdt]';
+end
+
+% Nishiura (2006)
+function [betaH, muH, gamma, M, betaV, muV, A, B] = modelParams()
+    % How often does an infected mosquito meets a subsceptible human?
+    betaH = 0.9;
+    % The natural mortality rate of humans (this is unrelated to disease). 
+    muH = 0.1;
+    % The rate an infected recovers and moves into the resistant phase.
+    gamma = 0.1;
+    % Half saturation constant. Number of infections change with 
+    % gaining more infections
+    M = 3;
+    % Rate of infection per mosquito per bite
+    betaV = 1;
+    % The natural mortality rate of the vector (this is unrelated to disease). 
+    muV = 0.1;
+    % How often does a mosquito bite a person?
+    B = 1;
+    % growth/recruitment of Sv to Iv
+    A = 1;
 end
