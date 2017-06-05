@@ -1,9 +1,9 @@
 clear;
 
 % Population
-labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM'};
+
 % Susceptibles
-SA0 = 100000;
+SA0 = 10000000;
 SB0 = SA0 * 0.2;
 % Latent early
 LA0 = SA0 * 0.1;
@@ -20,20 +20,28 @@ TM0 = IM0 * 0.1;
 
 y0 = [SA0 SB0 LA0 LB0 LAm0 LBm0 I0 IM0 T0 TM0];
 
+% Time
+years = 50;
+
+options = odeset('RelTol', 1e-5);
+steps = 0:0.01:years;
+[t, y] = ode45(@(t,y) tuberculosisModel(t, y), steps,y0,options); 
+
+
+labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM' 'N'};
 fprintf('%s = N0\n', strjoin(labels, ' + '));
 fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
 
-options = odeset('RelTol', 1e-5);
-steps = 0:0.01:100;
-[t, y] = ode45(@(t,y) tuberculosisModel(t, y), steps,y0,options); 
-
 figure; hold on
 as = zeros(length(labels), 1);
-for i = 1:length(labels)
+colors = random_colors(length(labels)) * 0.9;
+for i = 1:length(y0)
     label = labels(i);
     y_dim = y(:, i);
-    as(i) = plot(t, y_dim, 'LineWidth', 2); 
+    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
 end
+% Plot N as well
+as(end) = plot(t, sum(y, 2), 'color', colors(end, :), 'LineWidth', 2);
 legend(as, labels);
 ylabel('Populations')
 xlabel('Time')
@@ -49,6 +57,7 @@ function [ ret ] = tuberculosisModel(t, y)
     IM = y(8);
     T = y(9);
     TM = y(10);
+    % Whole Population
     N = SA + SB + LA + LB + LAm + LBm + I + IM + T + TM;
     
     [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParameters();
