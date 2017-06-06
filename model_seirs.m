@@ -11,26 +11,13 @@ days = 25;
 y0 = [S0 E0 I0 R0];
 options = odeset('RelTol', 1e-5);
 steps = 0:0.01:days;
-[t, y] = ode45(@(t,y) seirsModel(t, y), steps,y0,options); 
+[t, y] = ode45(@(t,y) seirs_model(t, y), steps,y0,options); 
 
 labels = {'S' 'E' 'I' 'R'};
-fprintf('%s = N0\n', strjoin(labels, ' + '));
-fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
-
-figure; hold on
-as = zeros(length(labels), 1);
-colors = random_colors(length(labels), [0 0 0]) * 0.8;
-for i = 1:length(y0)
-    label = labels(i);
-    y_dim = y(:, i);
-    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
-end
-legend(as, labels);
-ylabel('Populations')
-xlabel('Days')
+plot_disease(t, y0, y, labels, 'Days');
 
 
-function [ ret ] = seirsModel(t, y)
+function [ ret ] = seirs_model(t, y)
     S = y(1); 
     E = y(2); 
     I = y(3); 

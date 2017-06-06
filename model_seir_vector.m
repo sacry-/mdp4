@@ -14,25 +14,12 @@ days = 40;
 y0 = [Sh0 Ih0 Rh0 Sv0 Iv0];
 options = odeset('RelTol', 1e-5);
 steps = 0:0.01:days;
-[t, y] = ode45(@(t,y) seirsVectorModel(t, y), steps,y0,options); 
+[t, y] = ode45(@(t,y) seirs_vector_model(t, y), steps,y0,options); 
 
 labels = {'Sh' 'Ih' 'Rh' 'Sv' 'Iv'};
-fprintf('%s = N0\n', strjoin(labels, ' + '));
-fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
+plot_disease(t, y0, y, labels, 'Days');
 
-figure; hold on
-as = zeros(length(labels), 1);
-colors = random_colors(length(labels), [.25 .25 .25]) * 0.8;
-for i = 1:length(y0)
-    label = labels(i);
-    y_dim = y(:, i);
-    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
-end
-legend(as, labels);
-ylabel('Populations')
-xlabel('Days')
-
-function [ ret ] = seirsVectorModel(t, y)
+function [ ret ] = seirs_vector_model(t, y)
     Sh = y(1);
     Ih = y(2);
     Rh = y(3);

@@ -24,26 +24,13 @@ years = 50;
 
 options = odeset('RelTol', 1e-5);
 steps = 0:0.01:years;
-[t, y] = ode45(@(t,y) tuberculosisModel(t, y), steps,y0,options); 
-
+[t, y] = ode45(@(t,y) seeir_mdr_tb_model(t, y), steps,y0,options); 
 
 labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM'};
-fprintf('%s = N0\n', strjoin(labels, ' + '));
-fprintf('%s = N0 = %s\n', strjoin(string(y0)', ' + '), sum(y0));
+plot_disease(t, y0, y, labels, 'Years');
 
-figure; hold on
-as = zeros(length(labels), 1);
-colors = random_colors(length(labels)) * 0.9;
-for i = 1:length(y0)
-    label = labels(i);
-    y_dim = y(:, i);
-    as(i) = plot(t, y_dim, 'color', colors(i, :), 'LineWidth', 2); 
-end
-legend(as, labels);
-ylabel('Populations')
-xlabel('Time')
 
-function [ ret ] = tuberculosisModel(t, y)
+function [ ret ] = seeir_mdr_tb_model(t, y)
     SA = y(1);
     SB = y(2);
     LA = y(3);
@@ -57,9 +44,9 @@ function [ ret ] = tuberculosisModel(t, y)
     % Whole Population
     N = SA + SB + LA + LB + LAm + LBm + I + IM + T + TM;
     
-    [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParameters();
-    [pi, mu, rho] = epidemiologicalParameters();
-    [iota, delta, deltam, omega, beta, mdr] = modifiableParameters();
+    [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams();
+    [pi, mu, rho] = epidemicParams();
+    [iota, delta, deltam, omega, beta, mdr] = controlParams();
     
     lambda = beta * rho * (I + o * T) / N;
     lambdaD = chi * lambda;
@@ -80,7 +67,7 @@ function [ ret ] = tuberculosisModel(t, y)
     ret = [dSAdt dSBdt dLAdt dLBdt dLAmdt dLBmdt dIdt dIMdt dTdt dTMdt]';
 end
 
-function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParameters()
+function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams()
     epsilon = 0.129; % Early progression - Diel et al. (2011) ~ e
     kappa = 0.821; % Transition to late latency ~ k
     nu = 0.075; % Reactivation - Blower et al. (1995) ~ v
@@ -94,14 +81,13 @@ function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = disease
     phim = 0.5; % 0.5 per year, MDR-TB treatment rate ~ ?
 end
 
-function [pi, mu, rho] = epidemiologicalParameters()
-    % pi = 0; % Birth rate during run-is
+function [pi, mu, rho] = epidemicParams()
     pi = 0.025; % Birth rate during sensivity Analysis - United Nations Department of Economic and Social Affairs
     mu = 0.016; % TB-free mortality - WHO (2013b) ~ u
     rho = 0.35; % Infectious propertion - WHO (2013c) ~ p
 end
 
-function [iota, delta, deltam, omega, beta, mdr] = modifiableParameters()
+function [iota, delta, deltam, omega, beta, mdr] = controlParams()
     iota = 0.65; % BCG vaccination rate - World Bank (2013) ~ t
     delta = 0.72; % Detection rate - WHO (2013c) ~ d
     deltam = 0; % MDR-TB detection
