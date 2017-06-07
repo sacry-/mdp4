@@ -3,7 +3,7 @@ clear;
 leg = {};
 % year,week,state,state_name,disease,cases,incidence_per_capita
 for elem = {'hepatitis', 'measles', 'rubella', 'smallpox', 'pertussis', 'mumps'}
-    path = sprintf('./diseases-data/%s.csv', elem{1});
+    path = sprintf('./data/%s.csv', elem{1});
     hepa = readtable(path);
     hyears = table2array(hepa(:, 1));
     hcases = table2array(hepa(:, 6));

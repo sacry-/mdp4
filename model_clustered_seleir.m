@@ -26,18 +26,17 @@ R20 = 0;
 y0 = [S10 E10 L10 Es10 I10 R10 S20 E20 L20 Es20 I20 R20];
 
 % Time
-years = 100;
+years = 10;
 
 options = odeset('RelTol', 1e-5);
 steps = 0:0.01:years;
 [t, y] = ode45(@(t,y) clustered_seleir_model(t, y), steps,y0,options); 
 
-labels = {'U1' 'E1' 'L1' 'Es1' 'R1' 'Ap' 'U2' 'E2' 'L2' 'Es2' 'R2' 'Ae'};
-% plot_disease(t, y0, y, labels, 'Years');
+c1 = {'U1' 'E1' 'L1' 'Es1' 'R1' 'Ap'};
+c2 = {'U2' 'E2' 'L2' 'Es2' 'R2' 'Ae'};
 
-labels = {'E1' 'L1' 'Es1' 'R1' 'Ap' 'E2' 'L2' 'Es2' 'R2' 'Ae'};
-y_hat = y(:, [2 3 4 5 6 8:end]);
-plot_disease(t, y0, y_hat, labels, 'Years');
+plot_disease(t, y0(:, 1:6), y(:, 1:6), c1, 'Years');
+plot_disease(t, y0(:, 7:12), y(:, 7:12), c2, 'Years');
 
 function [ret] = clustered_seleir_model(t, y)
     % Cluster one

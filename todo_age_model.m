@@ -10,8 +10,8 @@ L = 0;
 % Exposed late
 Es = 0;
 % Infected
-Ap = 100;
-Ae = 100;
+Ap = 1;
+Ae = 0;
 % Recovered
 R = 0;
 
