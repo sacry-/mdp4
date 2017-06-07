@@ -20,7 +20,7 @@ TM0 = IM0 * 0.1;
 y0 = [SA0 SB0 LA0 LB0 LAm0 LBm0 I0 IM0 T0 TM0];
 
 % Time
-years = 50;
+years = 100;
 
 options = odeset('RelTol', 1e-5);
 steps = 0:0.01:years;
