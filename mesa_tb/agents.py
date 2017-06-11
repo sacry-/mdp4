@@ -1,6 +1,13 @@
 import random
 
+from logger import Logger
 from aagent import AAgent
+
+import tuberculosis as tb
+
+
+logger = Logger(__name__).getLogger()
+
 
 
 class Human(AAgent):
@@ -9,7 +16,6 @@ class Human(AAgent):
   def __init__(self, unique_id, model, attrs):
     AAgent.__init__(self, unique_id, model)
 
-    self.tb = self.model.tb
     self.age = attrs['age']
     self.vaccinated = attrs['vaccinated']
     self.state = attrs['state']
@@ -17,11 +23,12 @@ class Human(AAgent):
     self.hiv = attrs['hiv']
 
   def step(self):
-    current_state = self.tb.get_state(self.state)
+    current_state = tb.current_state(self.state)
 
     # Do stuff before movement
 
-    print(self)
+    logger.info(self)
+
     self.move()
 
     # Do stuff after movement
@@ -35,7 +42,7 @@ class Human(AAgent):
     self.move_self(new_position)
 
   def infected(self):
-    return self.tb.infected(self.state)
+    return tb.infected(self.state)
 
   def __repr__(self):
     return "{} (s: {}, age: {}, vac: {}, hiv: {}, treat: {})".format(self.unique_id, self.state, self.age, self.vaccinated, self.hiv, self.treatment)

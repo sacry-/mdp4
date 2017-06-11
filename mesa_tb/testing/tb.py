@@ -1,9 +1,3 @@
-from logger import Logger
-
-
-logger = Logger(__name__).getLogger()
-
-
 # S - Subsceptible to TB
 S = "S"
 # L - Latently exposed (not infectious)
@@ -16,7 +10,14 @@ R = "R"
 STATES = [ S, L, I, R ]
 INFECTED = [L, I]
 
-def current_state(state, vaccinated=False, treatment=True, hiv=False, immune_diseases=False, age=30):
+TREATMENT_PROB = 0
+HIV_PROB = 0
+ID_PROB = 0
+
+MAX_AGE = 100
+AGE_PROP = 0.1
+
+def get_state(state, vaccinated=False, treatment=True, hiv=False, immune_diseases=False, age=30):
   if state == S:
     SState(vaccinated, hiv, immune_diseases, age)
 
@@ -32,19 +33,23 @@ def current_state(state, vaccinated=False, treatment=True, hiv=False, immune_dis
   else:
     raise "'state={}' must be in {}!".format(state, ", ".join(STATES))
 
+def SState(vaccinated, hiv, immune_diseases, age):
+  print("S")
+
+def LState(treatment, hiv, immune_diseases, age):
+  print("S")
+
+def IState(treatment, hiv, immune_diseases, age):
+  print("S")
+
+def RState(treatment, age):
+  print("S")
+
 def infected(state):
   return state in [L, I]
 
-# Private somehow...
-def SState(vaccinated, hiv, immune_diseases, age):
-  pass
 
-def LState(treatment, hiv, immune_diseases, age):
-  pass
 
-def IState(treatment, hiv, immune_diseases, age):
-  pass
-
-def RState(treatment, age):
-  pass
-
+state = get_state("S")
+print(state)
+print(age_chance(1000, 30))

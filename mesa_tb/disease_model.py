@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 
+from logger import Logger
 from mesa import Model
 from mesa.time import RandomActivation
 from mesa.datacollection import DataCollector
 
+
 from agents import Human
 from models import GridModel
-from tuberculosis import Tuberculosis, STATES
+from data_collection import count_infections
+from data_collection import avg_age, list_age
+
+import tuberculosis as tb
+
+
+logger = Logger(__name__, True).getLogger()
 
 
 class AgentDistribution():
@@ -53,7 +61,7 @@ class AgentDistribution():
     returns:
       initial state the sample is in
     """
-    return np.random.choice(STATES, p=self.pop_density)
+    return np.random.choice(tb.STATES, p=self.pop_density)
 
   def sample_hiv(self):
     """ One sample from a binominal distribution
@@ -98,7 +106,6 @@ class DiseaseModel(Model, GridModel):
 
     self.number_of_agents = agent_dist.N
     self.agent_dist = agent_dist
-    self.tb = Tuberculosis()
 
     self.schedule = RandomActivation(self)
     self.dc = DataCollector(model_reporters={
@@ -118,25 +125,7 @@ class DiseaseModel(Model, GridModel):
     # Collect data each step
     self.dc.collect(self)
 
+    logger.info("avg_age: {}, infections: {}".format(avg_age(self), count_infections(self)))
+
     # Do the actual step
     self.schedule.step()
-
-
-def count_infections(model):
-  return count_agents(model, lambda a: a)
-
-def count_agents(model, f, accu=0):
-  """Generic reduce filter counter
-  args:
-    model (DiseaseModel) - with interface .grid.coord_iter()
-    f - function with (any -> bool)
-    accu - counter variable
-  """
-  for cell in model.grid.coord_iter():
-    agents, x, y = cell
-    for agent in agents:
-      if f(agent):
-        accu += 1
-  return accu
-
-
