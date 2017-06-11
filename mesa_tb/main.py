@@ -15,7 +15,7 @@ def agent_portrayal(agent):
   }
 
 if __name__ == "__main__":
-  agentDist = AgentDistribution(N=25)
+  agentDist = AgentDistribution(S=100., L=10., I=1., R=0.)
   width = 7
   height = 5
   grid = CanvasGrid(agent_portrayal, width, height, 500, 500)

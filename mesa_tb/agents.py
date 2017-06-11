@@ -5,6 +5,7 @@ from aagent import AAgent
 
 class Human(AAgent):
   """ Human agent that is the basic part of the simulation."""
+
   def __init__(self, unique_id, model, attrs):
     AAgent.__init__(self, unique_id, model)
 
@@ -16,12 +17,17 @@ class Human(AAgent):
     self.hiv = attrs['hiv']
 
   def step(self):
+    current_state = self.tb.get_state(self.state)
+
+    # Do stuff before movement
+
+    print(self)
     self.move()
 
-    self.tb.get_state(self.state)
+    # Do stuff after movement
 
     self.age += 1 # years
-    if age > 100:
+    if self.age > 100:
       self.die()
 
   def move(self):
@@ -32,6 +38,6 @@ class Human(AAgent):
     return self.tb.infected(self.state)
 
   def __repr__(self):
-    return "{} ({})".format(self.unique_id, self.age)
+    return "{} (s: {}, age: {}, vac: {}, hiv: {}, treat: {})".format(self.unique_id, self.state, self.age, self.vaccinated, self.hiv, self.treatment)
 
 

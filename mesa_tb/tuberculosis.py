@@ -33,7 +33,7 @@ class Tuberculosis():
     elif state == I:
       self.IState(treatment, hiv, immune_diseases, age)
 
-    elif: # Recovered
+    elif state == R:
       self.RState(treatment, age)
 
     else:
@@ -54,7 +54,7 @@ class Tuberculosis():
   def infected(self, state):
     return state in [L, I]
 
-  def age_chance(self, age)
+  def age_chance(self, age):
     age_prob = ( (age if age > 10 else 0) / self.max_age ) * self.age_prob
     prob = prob * (1 + age_prob)
     return prob
