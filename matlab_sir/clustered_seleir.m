@@ -1,44 +1,4 @@
-clear;
-
-% Clusterd model
-% Two clusters, one for general population, second for highly endemic
-
-% Population
-% Susceptibles
-S10 = 1000000;
-S20 = 1000000;
-% Exposed early
-E10 = 0;
-E20 = 0;
-% Latent early
-L10 = 0;
-L20 = 0;
-% Exposed late
-Es10 = 0;
-Es20 = 0;
-% Infected
-I10 = 1;
-I20 = 0;
-% Recovered
-R10 = 0;
-R20 = 0;
-
-y0 = [S10 E10 L10 Es10 I10 R10 S20 E20 L20 Es20 I20 R20];
-
-% Time
-years = 10;
-
-options = odeset('RelTol', 1e-5);
-steps = 0:0.01:years;
-[t, y] = ode45(@(t,y) clustered_seleir_model(t, y), steps,y0,options); 
-
-c1 = {'U1' 'E1' 'L1' 'Es1' 'R1' 'Ap'};
-c2 = {'U2' 'E2' 'L2' 'Es2' 'R2' 'Ae'};
-
-plot_disease(t, y0(:, 1:6), y(:, 1:6), c1, 'Years');
-plot_disease(t, y0(:, 7:12), y(:, 7:12), c2, 'Years');
-
-function [ret] = clustered_seleir_model(t, y)
+function [ret] = clustered_seleir(t, y)
     % Cluster one
     U1 = y(1);
     E1 = y(2); 
@@ -58,7 +18,6 @@ function [ret] = clustered_seleir_model(t, y)
     N2 = sum(y(7:end));
     
     [k, alpha, q, kL, kRp, ks, mu, beta, r, rE, gamma, gammaE, ~, ~, sigma] = modelParameters();
-    B = 0.012;
     
     SF = F(U1, U2, N1, N2, E2, Es2, L2, R2);
     dS1dt = -(beta + gamma) * U1 + SF;
@@ -74,7 +33,7 @@ function [ret] = clustered_seleir_model(t, y)
 
     c1 = [dS1dt dE1dt dL1dt dEs1dt dApdt dR1dt];
     
-    dS2dt = B - mu * U2 + gamma * U1 - SF;
+    dS2dt = - mu * U2 + gamma * U1 - SF;
     dE2dt = -(mu + alpha + k) * E2 + gamma * E1 - EF;
     dL2dt = alpha * (E2 + Es2) + gamma * L1 - (mu + kL) * L2 - LF;
     dEs2dt = gamma * Es1 - (ks + mu + alpha) * Es2 - EsF;
@@ -98,13 +57,13 @@ function [k, alpha, q, kL, kRp, ks, mu, beta, r, rE, gamma, gammaE, n, p, sigma]
     ks = 0.0001; % Es to Active TB (ks < k)
     kRp = 0.00008; % TB relapse
     
-    q = 0.7; % Probability to be added to Ap
+    q = 0.01; % Probability to be added to Ap
     mu = 0.00806; % mortality
-    d = 0.05; % mortality TB Ap
-    dE = 0.1; % mortality TB Ae
+    d = 0.001; % mortality TB Ap
+    dE = 0.005; % mortality TB Ae
     
-    r = 0.5; % recovery rate I1
-    rE = 0.5; % recovery rate I2
+    r = 0.25; % recovery rate I1
+    rE = 0.4; % recovery rate I2
     
     gamma = (mu + d + r); % per captia removal rate
     gammaE = (mu + dE + rE); % per captia removal rate of E

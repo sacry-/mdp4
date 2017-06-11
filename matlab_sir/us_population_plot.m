@@ -10,7 +10,7 @@ incidence = fliplr(us_tub(:, 2));
 inc_rate = fliplr(us_tub(:, 3));
 smooth_inc = smooth(incidence);
 
-plotNo = 1;
+plotNo = 3;
 figure; hold on
 
 if plotNo == 1

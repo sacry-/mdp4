@@ -1,26 +1,4 @@
-clear;
-
-% Population y0
-S = 200000;
-E1 = 0;
-E2 = 0;
-I = 1;
-R =  0;
-
-years = 100;
-
-y0 = [S E1 E2 I R];
-options = odeset('RelTol', 1e-5);
-steps = 0:0.01:years;
-
-[t, y] = ode45(@(t,y) seeir_model(t, y), steps, y0, options); 
-% y = y(:, 2:3); labels = {'E1' 'E2'};
-% y = y(:, 3:5); labels = {'E2' 'I' 'R'};
-y = y(:, 2:5); labels = {'E1' 'E2' 'I' 'R'};
-
-plot_disease(t, y0, y, labels, 'Years');
-
-function [ ret ] = seeir_model(t, y)
+function [ ret ] = seeir(t, y)
     S = y(1); 
     E1 = y(2); 
     E2 = y(3); 

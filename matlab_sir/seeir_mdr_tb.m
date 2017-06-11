@@ -1,36 +1,4 @@
-clear;
-
-% Population
-% Susceptibles
-SA0 = 10000000;
-SB0 = SA0 * 0.2;
-% Latent early
-LA0 = SA0 * 0.1;
-LB0 = SB0 * 0.2;
-% Latent late
-LAm0 = LA0 * 0.2;
-LBm0 = LB0 * 0.2;
-% Infected
-I0 = LA0 * 0.1 + LB0 * 0.1;
-IM0 = LAm0 * 0.1 + LBm0 * 0.1;
-% Recovered
-T0 = I0 * 0.1;
-TM0 = IM0 * 0.1;
-
-y0 = [SA0 SB0 LA0 LB0 LAm0 LBm0 I0 IM0 T0 TM0];
-
-% Time
-years = 100;
-
-options = odeset('RelTol', 1e-5);
-steps = 0:0.01:years;
-[t, y] = ode45(@(t,y) seeir_mdr_tb_model(t, y), steps,y0,options); 
-
-labels = {'SA' 'SB' 'LA' 'LB' 'LAm' 'LBm' 'I' 'IM' 'T' 'TM'};
-plot_disease(t, y0, y, labels, 'Years');
-
-
-function [ ret ] = seeir_mdr_tb_model(t, y)
+function [ ret ] = seeir_mdr_tb(t, y)
     SA = y(1);
     SB = y(2);
     LA = y(3);
@@ -82,7 +50,7 @@ function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = disease
 end
 
 function [pi, mu, rho] = epidemicParams()
-    pi = 0.025; % Birth rate during sensivity Analysis - United Nations Department of Economic and Social Affairs
+    pi = 3.6; % Birth rate during sensivity Analysis - United Nations Department of Economic and Social Affairs
     mu = 0.016; % TB-free mortality - WHO (2013b) ~ u
     rho = 0.35; % Infectious propertion - WHO (2013c) ~ p
 end

@@ -9,7 +9,7 @@ function [] = plot_disease(t, y0, y, labels, xLabel)
     for i = 1:length(labels)
         line = lineStyles{mod(i, length(lineStyles)) + 1};
         y_dim = y(:, i);
-        as(i) = plot(t, y_dim, line, 'color', colors(i, :), 'LineWidth', 2); 
+        as(i) = plot(t, smooth(y_dim), line, 'color', colors(i, :), 'LineWidth', 2); 
     end
     legend(as, labels);
     ylabel('Populations')
