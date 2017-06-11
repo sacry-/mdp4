@@ -7,87 +7,15 @@ from mesa.time import RandomActivation
 from mesa.datacollection import DataCollector
 
 
-from agents import Human
-from models import GridModel
-from data_collection import count_infections
-from data_collection import avg_age, list_age
-
-import tuberculosis as tb
+from human import Human
+from grid import Grid
+from data_collection import count_subsceptibles, count_exposed, count_infectious, count_recovered, count_all
 
 
 logger = Logger(__name__, True).getLogger()
 
 
-class AgentDistribution():
-  """Agent creation statistics.
-
-  Agent Distribution refers to the overall statistics of how
-  all agents are distributed in the model at the start.
-  """
-
-  def __init__(self, S=100., L=10., I=1., R=0.):
-    """
-    Args:
-      N (int): Numbers of agents.
-    """
-    N = S + L + I + R
-    self.S = S
-    self.L = L
-    self.I = I
-    self.R = R
-    self.N = int(N)
-    self.pop_density = [S/N, L/N, I/N, R/N]
-
-    # mean, std, samples
-    self.age = np.random.gamma(2., 9.5, self.N)
-    # trials, chance, repeats
-    self.vaccinated = np.random.binomial(1, 0.7, self.N)
-
-  def sample_age(self):
-    """
-      returns a sample age (int)
-    """
-    return np.random.choice(self.age)
-
-  def sample_vaccinated(self):
-    """ One sample from a binominal distribution
-    returns:
-      if sample is vaccinated (bool)
-    """
-    return np.random.choice(self.vaccinated) ==  1
-
-  def sample_state(self):
-    """ Sample over a distribution skewed on susceptibles
-    returns:
-      initial state the sample is in
-    """
-    return np.random.choice(tb.STATES, p=self.pop_density)
-
-  def sample_hiv(self):
-    """ One sample from a binominal distribution
-    returns:
-      if sample has hiv (bool)
-    """
-    return np.random.choice([0, 1], p=[0.99, 0.01]) == 1
-
-  def sample_treatment(self):
-    """ One sample from a binominal distribution
-    returns:
-      if sample receives treatment (bool)
-    """
-    return np.random.choice([0, 1], p=[0.4, 0.6]) == 1
-
-  def generate_sample(self):
-    return {
-      'state' : self.sample_state(),
-      'age' : self.sample_age(),
-      'vaccinated' : self.sample_vaccinated(),
-      'treatment' : self.sample_treatment(),
-      'hiv' : self.sample_hiv()
-    }
-
-
-class DiseaseModel(Model, GridModel):
+class DiseaseModel(Model, Grid):
   """The basic disease model for Tuberculosis.
 
   Longer description here.
@@ -102,30 +30,50 @@ class DiseaseModel(Model, GridModel):
       width (int): Grid width.
       height (int): Grid height.
     """
-    GridModel.__init__(self, width, height)
+    Grid.__init__(self, width, height)
 
     self.number_of_agents = agent_dist.N
     self.agent_dist = agent_dist
 
     self.schedule = RandomActivation(self)
     self.dc = DataCollector(model_reporters={
-      "infected" : count_infections
+      "subsceptibles" : count_subsceptibles,
+      "exposed" : count_exposed,
+      "infectious" : count_infectious,
+      "recovered" : count_recovered,
+      "n" : count_all,
     })
 
-    self._create_agents()
+    self.age_mortality = 0
+    self.tb_mortality = 0
+    self.reproduction = 0
 
-  def _create_agents(self):
+    self.create_agents()
+
+  def create_agents(self):
     for i in range(self.number_of_agents):
-      attributes = self.agent_dist.generate_sample()
-      agent = Human(i, self, attributes)
-      self.schedule.add(agent)
-      self.place_agent(agent)
+      self.create_agent(unique_id=i)
+
+  def create_agent(self, unique_id=None):
+    if unique_id == None:
+      unique_id = max([a.unique_id for a in self.schedule.agents]) + 1
+    attributes = self.agent_dist.generate_sample()
+    agent = Human(unique_id, self, attributes)
+    self.schedule.add(agent)
+    self.place_agent(agent)
 
   def step(self):
     # Collect data each step
     self.dc.collect(self)
 
-    logger.info("avg_age: {}, infections: {}".format(avg_age(self), count_infections(self)))
+    n = len(self.schedule.agents)
+    scount = count_subsceptibles(self)
+    ecount = count_exposed(self)
+    icount = count_infectious(self)
+    rcount = count_recovered(self)
+
+    logger.info("N: {}, S: {}, L: {}, I: {}, R: {}".format(n, scount, ecount, icount, rcount))
+    logger.info("age-m: {}, tb-m: {}, rep: {}".format(self.age_mortality, self.tb_mortality, self.reproduction))
 
     # Do the actual step
     self.schedule.step()

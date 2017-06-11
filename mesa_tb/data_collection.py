@@ -1,8 +1,21 @@
 import numpy as np
 
 
-def count_infections(model):
-  return count_agents(model, lambda a: a.infected())
+def count_all(model):
+  return len(model.schedule.agents)
+
+def count_subsceptibles(model):
+  return len([a for a in model.schedule.agents if a.subsceptible()])
+
+def count_exposed(model):
+  return len([a for a in model.schedule.agents if a.exposed()])
+
+def count_infectious(model):
+  return len([a for a in model.schedule.agents if a.infectious()])
+
+def count_recovered(model):
+  return len([a for a in model.schedule.agents if a.recovered()])
+
 
 def avg_age(model):
   return avg_agents(model, lambda a: a.age)

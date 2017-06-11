@@ -3,7 +3,7 @@ import random
 from mesa.space import MultiGrid
 
 
-class GridModel(object):
+class Grid(object):
 
   def __init__(self, width, height, running=True):
     self.width = width
