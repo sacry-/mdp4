@@ -31,10 +31,10 @@ columns ~ States
   etc.
 """
 PROBS = np.array([
-  [.95, .05, .0, .0],
-  [.0, .9, .1, .0],
-  [.0, .1, .7, .2],
-  [.0, .45, .05, .5]
+  [.95, .05, .0, .0], # S
+  [.0, .9, .1, .0], # L
+  [.0, .1, .7, .2], # I
+  [.0, .45, .05, .5] # R
 ])
 TRANS = { state: PROBS[i] for i, state in enumerate(STATES) }
 INDICES = {state: i for i, state in enumerate(STATES)}
