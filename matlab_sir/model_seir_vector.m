@@ -18,6 +18,7 @@ steps = 0:0.01:days;
 
 labels = {'Sh' 'Ih' 'Rh' 'Sv' 'Iv'};
 plot_disease(t, y0, y, labels, 'Days');
+title("SEIR Vector");
 
 function [ ret ] = seirs_vector_model(t, y)
     Sh = y(1);

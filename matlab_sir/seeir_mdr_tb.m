@@ -1,13 +1,13 @@
 function [ ret ] = seeir_mdr_tb(t, y)
     SA = y(1);
-    SB = y(2);
-    LA = y(3);
-    LB = y(4);
-    LAm = y(5);
-    LBm = y(6);
-    I = y(7);
-    IM = y(8);
-    T = y(9);
+    LA = y(2);
+    LAm = y(3);
+    I = y(4);
+    T = y(5);
+    SB = y(6);
+    LB = y(7);
+    LBm = y(8);
+    IM = y(9);
     TM = y(10);
     % Whole Population
     N = SA + SB + LA + LB + LAm + LBm + I + IM + T + TM;
@@ -32,7 +32,7 @@ function [ ret ] = seeir_mdr_tb(t, y)
     dTdt = delta * I - (phi + omega + mut) * T;
     dTMdt = deltam * IM - (phim + omega + mut) * TM;
     
-    ret = [dSAdt dSBdt dLAdt dLBdt dLAmdt dLBmdt dIdt dIMdt dTdt dTMdt]';
+    ret = [dSAdt dLAdt dLAmdt dIdt dTdt dSBdt dLBdt dLBmdt dIMdt dTMdt]';
 end
 
 function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams()

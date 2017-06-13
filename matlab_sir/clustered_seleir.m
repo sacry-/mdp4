@@ -71,5 +71,5 @@ function [k, alpha, q, kL, kRp, ks, mu, beta, r, rE, gamma, gammaE, n, p, sigma]
     beta = gamma; % infection when in an active cluster
     n = 20; % group of individuals that are highly subsceptible
     p = 0.125; % clustering coefficient
-    sigma = 1; % ?
+    sigma = 0.5; % ?
 end

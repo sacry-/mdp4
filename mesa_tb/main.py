@@ -46,7 +46,7 @@ def agent_portrayal(agent):
     b.update({
       "Shape": "circle",
       "r": 0.5,
-      "Layer": 0,
+      "Layer": 3,
       "Color": color("blue"),
     })
 
@@ -54,7 +54,7 @@ def agent_portrayal(agent):
     b.update({
       "Shape": "circle",
       "r": 0.4,
-      "Layer": 1,
+      "Layer": 2,
       "Color": color("green"),
     })
 
@@ -63,7 +63,7 @@ def agent_portrayal(agent):
       "Shape": "rect",
       "w" : .5,
       "h" : .5,
-      "Layer": 2,
+      "Layer": 1,
       "Color": color("yellow"),
     })
 
@@ -72,7 +72,7 @@ def agent_portrayal(agent):
       "Shape": "rect",
       "w" : .5,
       "h" : .5,
-      "Layer": 3,
+      "Layer": 0,
       "Color": color("red"),
     })
 

@@ -29,10 +29,10 @@ function [beta, gamma, sigma, mu, nu, rho] = modelParams()
     % the resistant phase.
     gamma = 0.2;
     % The rate at which an exposed person becomes infective.
-    sigma = 0.5;
+    sigma = 0.1;
     % The natural mortality rate (this is unrelated to disease). 
     % This models a population of a constant size.
-    mu = 0;
+    mu = 0.008;
     % The rate at which susceptible become vaccinated.
     nu = 0;
     % The rate at which resistant people lose their 
