@@ -14,25 +14,25 @@ function [ ret ] = seeir_mdr_tb(t, y)
     
     [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams();
     [pi, mu, rho] = epidemicParams();
-    [iota, delta, deltam, omega, beta, mdr] = controlParams();
+    [iota, delta, deltam, omega, beta, ~] = controlParams();
     
     lambda = beta * rho * (I + o * T) / N;
     lambdaD = chi * lambda;
-    lambdaM = (beta * mdr) * rho * (IM + o * TM) / N;
+    lambdaM = (beta * 0.7) * rho * (IM + o * TM) / N;
     lambdaDM = chi * lambdaM;
     
     dSAdt = (1 - iota) * pi * N - (lambda + lambdaM + mu) * SA;
-    dSBdt = iota * pi * N + phi * T + phim * TM - (lambda + lambdaM + mu) * SB;
+    dSBdt = iota * pi * N + phi * T + phim * TM - (lambda + lambdaDM + mu) * SB;
     dLAdt = lambda * SA + lambdaD * (SB + LB + LBm) - (epsilon + kappa + mu) * LA;
     dLAmdt = lambdaM * SA + lambdaDM * (SB + LB + LBm) - (epsilon + kappa + mu) * LAm;
     dLBdt = kappa * LA + gamma * I - (lambdaD + lambdaDM + nu + mu) * LB;
     dLBmdt = kappa * LAm + gamma * IM - (lambdaD + lambdaDM + nu + mu) * LBm;
     dIdt = epsilon * LA + nu * LB + (1 - eta) * omega * T - (gamma + delta + mui) * I;
-    dIMdt = epsilon * LAm + nu * LBm + eta * omega * T - (gamma + deltam + mui) * IM;
+    dIMdt = epsilon * LAm + nu * LBm + eta * omega * T + omega *  TM - (gamma + deltam + mui) * IM;
     dTdt = delta * I - (phi + omega + mut) * T;
     dTMdt = deltam * IM - (phim + omega + mut) * TM;
     
-    ret = [dSAdt dLAdt dLAmdt dIdt dTdt dSBdt dLBdt dLBmdt dIMdt dTMdt]';
+    ret = [dSAdt dLAdt dLAmdt dIdt dTdt dSBdt dLBdt dLBmdt dIMdt dTMdt probabilities(t)]';
 end
 
 function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams()
@@ -50,7 +50,7 @@ function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = disease
 end
 
 function [pi, mu, rho] = epidemicParams()
-    pi = 3.6; % Birth rate during sensivity Analysis - United Nations Department of Economic and Social Affairs
+    pi = 0.025; % Birth rate during sensivity Analysis - United Nations Department of Economic and Social Affairs
     mu = 0.016; % TB-free mortality - WHO (2013b) ~ u
     rho = 0.35; % Infectious propertion - WHO (2013c) ~ p
 end
@@ -62,4 +62,22 @@ function [iota, delta, deltam, omega, beta, mdr] = controlParams()
     omega = 0.25; % Default rate - WHO (2013c) ~ w
     beta = 24; % Effective contact rate
     mdr = 0.06; % proportion of cases MDR-TB 4-6%
+end
+
+function [Ti] = probabilities(t)
+    Vn = [1 0 0 0];
+    In = [0 0 1 0]';
+    [epsilon, kappa, nu, gamma, mui, ~, ~, ~, ~, ~, ~] = diseaseParams();
+    [~, mu, ~] = epidemicParams();
+    A = [
+        1 - (epsilon + kappa + mu) * t, kappa * t, epsilon * t, mu * t;
+        0, 1 - (nu + mu) * t, nu * t, mu * t;
+        0, gamma * t , 1 - (gamma + mui) * t, mui * t;
+        0, 0, 0, 1;
+    ];
+    accu = 0;
+    for n = 1:t
+        accu = accu + (Vn * A.^n * In);
+    end
+    Ti = t * accu;
 end

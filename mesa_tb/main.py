@@ -11,15 +11,18 @@ from agent_dist import AgentDistribution
 
 
 def get_dimensions(n):
-  tempSqrt = sqrt(n)
   divisors = []
-  currentDiv = 1
-  for currentDiv in range(n):
-    if n % float(currentDiv + 1) == 0:
-      divisors.append(currentDiv+1)
-  hIndex = min(range(len(divisors)), key=lambda i: abs(divisors[i]-sqrt(n)))
-  wIndex = hIndex + 1
-  return divisors[hIndex], divisors[wIndex]
+
+  for current_div in range(n):
+    if n % float(current_div + 1) == 0:
+      divisors.append(current_div + 1)
+  w_index = min(range(len(divisors)), key=lambda i: abs(divisors[i]-sqrt(n)))
+  h_index = w_index + 1
+
+  width = divisors[w_index]
+  height = divisors[h_index]
+
+  return width, height
 
 def color(name):
   if name == "blue":
@@ -39,7 +42,7 @@ def color(name):
 
 def agent_portrayal(agent):
   b = {
-    "Filled": "true",
+    "Filled": "true"
   }
 
   if agent.subsceptible():
@@ -76,19 +79,24 @@ def agent_portrayal(agent):
       "Color": color("red"),
     })
 
+  if not "Layer" in b:
+    print("{} - Layer not found!".format(agent))
+
   return b
 
+
 if __name__ == "__main__":
-  agent_dist = AgentDistribution(S=100., L=10., I=2., R=0.)
+  config = dict(S=2000., L=0., I=6., R=0.)
+  agent_dist = AgentDistribution(**config)
   width, height = get_dimensions(agent_dist.N)
-  pixel = max(500, width * height)
+  pixel = 750
   grid = CanvasGrid(agent_portrayal, width, height, pixel, pixel)
 
+  li = ChartModule([{"Label": "exposed", "Color": color("yellow")}, {"Label": "infectious", "Color": color("red")}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
   n = ChartModule([{"Label": "n", "Color": "Black"}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
   sr = ChartModule([{"Label": "subsceptibles", "Color": color("blue")}, {"Label": "recovered", "Color": color("green")}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
-  li = ChartModule([{"Label": "exposed", "Color": color("yellow")}, {"Label": "infectious", "Color": color("red")}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
 
-  server = ModularServer(DiseaseModel, [li, grid, sr, n], "Disease Model", agent_dist, width, height)
+  server = ModularServer(DiseaseModel, [li, sr, n, grid], "Disease Model", agent_dist, width, height)
   server.port = 9000
   server.launch()
 

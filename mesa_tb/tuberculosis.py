@@ -34,34 +34,38 @@ PROBS = np.array([
   [.95, .05, .0, .0],
   [.0, .9, .1, .0],
   [.0, .1, .7, .2],
-  [.35, .2, .05, .4]
+  [.0, .45, .05, .5]
 ])
 TRANS = { state: PROBS[i] for i, state in enumerate(STATES) }
+INDICES = {state: i for i, state in enumerate(STATES)}
 
 
-def next_state(state, vaccinated=False, treatment=True, hiv=False, immune_diseases=False, age=30):
-  next_state = state
-  opts = {}
+def next_state(h):
+  state = h.state
 
-  if vaccinated:
-    return RState(treatment, age)
+  if h.vaccinated:
+    return R
+
+  aging_chance = aging(h.age, h.le)
 
   if state == S:
-    next_state, opts = SState(hiv, immune_diseases, age)
+    if infect(h.inf_cm(), h.inf_nb()):
+      state = SState(h.hiv, h.immune_diseases, aging_chance)
 
   elif state == L:
-    next_state, opts = LState(treatment, hiv, immune_diseases, age)
+    state = LState(h.treatment, h.hiv, h.immune_diseases, aging_chance)
 
   elif state == I:
-    next_state, opts = IState(treatment, hiv, immune_diseases, age)
+    state = IState(h.treatment, h.hiv, h.immune_diseases, aging_chance)
 
   elif state == R:
-    next_state, opts = RState(treatment, age)
+    if infect(h.inf_cm(), h.inf_nb()):
+      state = RState(h.treatment, aging_chance)
 
   else:
     raise Exception("'state={}' must be in {}!".format(state, ", ".join(STATES)))
 
-  return (next_state, opts)
+  return state
 
 def subsceptible(state):
   return state == S
@@ -80,7 +84,7 @@ def infected(state):
 
 
 # Private
-def normal_prob(seq):
+def nprob(seq):
   """Normalizes sequence to sum to exactly 1.0
   """
   arr = np.array(seq)
@@ -90,90 +94,95 @@ def normal_prob(seq):
   return arr
 
 def prob(trans_row):
-  p = normal_prob(trans_row)
-  return np.random.choice(STATES, p=p)
+  return np.random.choice(STATES, p=nprob(trans_row))
 
-def SState(hiv, immune_diseases, age):
-  tmp = list(TRANS[S])
-  s_probs = tmp[:]
+def prob_row(state):
+  return np.array(TRANS[S])
 
-  s_state = s_probs[0]
-  l_state = s_probs[1]
+def aging(age, max_age):
+  return (age / max_age) * 0.001
+
+INF_CM_RISK = 0.3
+INF_NB_RISK = 0.1
+
+def infect(inf_cm, inf_nb):
+  # Risk that cellmate infects you
+  cm_risk = len(inf_cm) * INF_CM_RISK
+  # Risk that neighbor infects you
+  nb_risk = len(inf_nb) * INF_NB_RISK
+  # Total chance of infection
+  inf_chance = cm_risk + nb_risk
+  no_inf_chance = max(0, 1.0 - inf_chance)
+  # binominal chance of 0 - not infected and 1 infected
+  p = nprob([no_inf_chance, inf_chance])
+  return np.random.choice([0, 1], p=p) == 1
+
+
+HIV_RISK = 0.4
+IMMUNE_RISK = 0.1
+TREATMENT_CHANCE = 0.4
+
+def estimate_risk(states, ps, ns, risk):
+  pids = [INDICES[s] for s in ps]
+  nids = [INDICES[s] for s in ns]
+  other = np.setdiff1d([i for i in range(4)], pids + nids)
+  states[pids] += risk
+  states[nids] -= risk
+  states[other] = 0
+  return states
+
+def SState(hiv, immune_diseases, aging_chance):
+  s_probs = prob_row(S)
+
   if hiv:
-    s_state -= .4
-    l_state += .4
+    s_probs = estimate_risk(s_probs, [L], [S], HIV_RISK)
 
   if immune_diseases:
-    s_state -= .2
-    l_state += .2
+    s_probs = estimate_risk(s_probs, [L], [S], IMMUNE_RISK)
 
-  aging_rate = (age / 100) * 0.1
-  s_state = s_state - l_state
-  l_state = l_state + l_state
-  s_probs[0] = s_state
-  s_probs[1] = l_state
+  s_probs = estimate_risk(s_probs, [L], [S], aging_chance)
 
-  return (prob(s_probs), {})
+  return prob(s_probs)
 
-def LState(treatment, hiv, immune_diseases, age):
-  tmp = list(TRANS[L])
-  l_probs = tmp[:]
+def LState(treatment, hiv, immune_diseases, aging_chance):
+  l_probs = prob_row(L)
 
-  l_state = l_probs[1]
-  i_state = l_probs[2]
   if hiv:
-    l_state -= .5
-    i_state += .5
+    l_probs = estimate_risk(l_probs, [I], [L], HIV_RISK)
 
   if immune_diseases:
-    l_state -= .1
-    i_state += .1
+    l_probs = estimate_risk(l_probs, [I], [L], IMMUNE_RISK)
 
   if treatment:
-    l_state += .4
-    i_state -= .4
+    l_probs = estimate_risk(l_probs, [L], [I], TREATMENT_CHANCE)
 
-  aging_rate = (age / 100) * 0.1
-  l_state = l_state - i_state
-  i_state = i_state + i_state
-  l_probs[1] = l_state
-  l_probs[2] = i_state
+  l_probs = estimate_risk(l_probs, [I], [L], aging_chance)
 
-  return (prob(l_probs), {})
+  return prob(l_probs)
 
-def IState(treatment, hiv, immune_diseases, age):
-  tmp = list(TRANS[I])
-  i_probs = tmp[:]
-
-  i_state = i_probs[2]
-  r_state = i_probs[3]
-  d_state = .1
+def IState(treatment, hiv, immune_diseases, aging_chance):
+  i_probs = prob_row(I)
 
   if hiv:
-    d_state += .4
-    i_state += .2
-    r_state -= .2
+    i_probs = estimate_risk(i_probs, [I], [R], HIV_RISK)
 
   if immune_diseases:
-    d_state += .1
-    i_state += .1
-    r_state -= .1
+    i_probs = estimate_risk(i_probs, [I], [R], IMMUNE_RISK)
 
   if treatment:
-    d_state -= .5
-    i_state -= .4
-    r_state += .4
+    i_probs = estimate_risk(i_probs, [R], [I], TREATMENT_CHANCE)
 
-  aging_rate = (age / 100) * 0.1
+  i_probs = estimate_risk(i_probs, [I], [R], aging_chance)
 
-  d_state = d_state + aging_rate
-  i_state = i_state - i_state
-  r_state = r_state + i_state
-  i_probs[2] = i_state
-  i_probs[3] = r_state
+  return prob(i_probs)
 
-  return (prob(i_probs), {"death" : max(d_state, 0)})
+def RState(treatment, aging_chance):
+  r_probs = prob_row(R)
 
-def RState(treatment, age):
-  return (prob(TRANS[R]), {})
+  if treatment:
+    r_probs = estimate_risk(r_probs, [R], [L, I], TREATMENT_CHANCE)
+
+  r_probs = estimate_risk(r_probs, [L, I], [R], aging_chance)
+
+  return prob(r_probs)
 

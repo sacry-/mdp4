@@ -22,6 +22,11 @@ class AAgent(Agent):
       pos, moore=True, include_center=True
     )
 
+  def neighbors(self):
+    n = self.model.grid.get_cell_list_contents(self.neighborhood())
+    n.remove(self)
+    return n
+
   def cellmates(self, pos=None):
     if not pos:
       pos = self.pos
@@ -73,7 +78,7 @@ class MoneyModel(Model):
 
   def create_agents(self):
     for i in range(self.num_agents):
-      a = MoneyAgent(1, self)
+      a = MoneyAgent(i, self)
       self.schedule.add(a)
       # Add the agent to a random grid cell
       x = random.randrange(self.grid.width)
@@ -103,7 +108,7 @@ def basic_model():
   iterations = 100
   model = MoneyModel(N=20, width=10, height=10)
   for i in range(0, iterations):
-    step(model)
+    model.step()
 
   print("{} result: {} {}".format("-"*10, iterations, "-"*10))
   for agent in sorted(model.schedule.agents, key=lambda a: -a.wealth):
@@ -130,5 +135,4 @@ def visualSimulation():
   server.port = 9000
   server.launch()
 
-
-visualSimulation()
+basic_model()
