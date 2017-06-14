@@ -10,20 +10,20 @@ r2 = 1 - r1;
 
 % Population
 % Susceptibles
-S10 =  us_pop(1) * r1;
+S10 = us_pop(1) * r1;
 S20 = us_pop(1) * r2;
 % Exposed early
-E10 = 10;
-E20 = 10;
+E10 = 0;
+E20 = 0;
 % Latent early
-L10 = 5000;
-L20 = 5000;
+L10 = 0;
+L20 = 0;
 % Exposed late
-Es10 = 5000;
-Es20 = 5000;
+Es10 = 0;
+Es20 = 0;
 % Infected
-I10 = us_inc(1) * r1;
-I20 = us_inc(1) * r2;
+I10 = us_inc(1) * r2;
+I20 = us_inc(1) * r1;
 % Recovered
 R10 = 0;
 R20 = 0;
@@ -37,7 +37,7 @@ options = odeset('RelTol', 1e-5);
 steps = 0:1:years-1;
 [t, y] = ode45(@(t,y) clustered_seleir(t, y), steps,y0,options); 
 
-plots = 4;
+plots = 5;
 if plots == 1
     c1 = {'E1' 'L1' 'Es1' 'R1' 'Ap'};
     plot_disease(t, y0(:, 2:6), y(:, 2:6), c1, 'Years');
@@ -52,8 +52,13 @@ elseif plots == 3
     SE = { 'S' 'E' 'L' 'Es' 'I' 'R' };
     y1 = y(:,1:6);
     y2 = y(:,7:12);
-    plot_disease(t, y0(:, 2:6), y1 + y2, SE, 'Years');
+    plot_disease(t, y0, y1 + y2, SE, 'Years');
 elseif plots == 4
+    SE = { 'E' 'L' 'Es' 'I' 'R' };
+    y1 = y(:,2:6);
+    y2 = y(:,8:12);
+    plot_disease(t, y0, y1 + y2, SE, 'Years');
+elseif plots == 5
     labels = { 'Infected' 'US 1953 - 2015' };
     plot_disease(t, y0, [sum(y(:, [5 11]), 2) us_inc], labels, 'Years');
     title("Clustered SELEIR");

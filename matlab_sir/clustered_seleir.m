@@ -46,8 +46,8 @@ function [ret] = clustered_seleir(t, y)
 end
 
 function [ret] = F(X1, X2, N1, N2, E2, Es2, L2, R2)
-    [k, ~, q, kL, kRp, ~, ~, ~, ~, ~, ~, ~, n, p, ~] = modelParameters();
-    ret = q * (k * E2 + k * Es2 + kL * L2 + kRp * R2) * n * (p * X1 / N1 + (1 - p) * X2 / N2);
+    [k, ~, q, kL, kRp, ks, ~, ~, ~, ~, ~, ~, n, p, ~] = modelParameters();
+    ret = q * (k * E2 + ks * Es2 + kL * L2 + kRp * R2) * n * (p * X1 / N1 + (1 - p) * X2 / N2);
 end
 
 function [k, alpha, q, kL, kRp, ks, mu, beta, r, rE, gamma, gammaE, n, p, sigma] = modelParameters()
