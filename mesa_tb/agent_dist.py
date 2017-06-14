@@ -39,10 +39,10 @@ class AgentDistribution():
     self.vaccinated = np.random.binomial(1, 0.1, self.N)
 
     # For correct times
-    self.time_unit = lambda t: (t / 12.0)
+    self.time_unit = lambda t: (t / 1.0)
 
     # Birth
-    self.birth = self.time_unit(0.01)
+    self.birth = self.time_unit(0.013)
 
     # Variable densities
     self.hiv_density = [0.9, 0.1]
@@ -115,7 +115,7 @@ class AgentDistribution():
   def generate_newborn_sample(self, parent):
     sample = self.generate_sample()
     sample["age"] = 1
-    sample["vaccinated"] = self.binom_choice()
+    sample["vaccinated"] = self.binom_choice(p=[.1, .9])
     if parent.hiv:
       sample["hiv"] = self.binom_choice()
     sample["immune_diseases"] = self.sample_immune_diseases()

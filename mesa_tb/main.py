@@ -86,7 +86,8 @@ def agent_portrayal(agent):
 
 
 if __name__ == "__main__":
-  config = dict(S=2000., L=0., I=6., R=0.)
+  # config = dict(S=2000., L=0., I=6., R=0.)
+  config = dict(S=100., L=6., I=2., R=0.)
   agent_dist = AgentDistribution(**config)
   width, height = get_dimensions(agent_dist.N)
   pixel = 750

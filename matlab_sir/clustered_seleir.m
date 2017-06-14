@@ -33,7 +33,7 @@ function [ret] = clustered_seleir(t, y)
 
     c1 = [dS1dt dE1dt dL1dt dEs1dt dApdt dR1dt];
     
-    dS2dt = - mu * U2 + gamma * U1 - SF;
+    dS2dt = 24 - mu * U2 + gamma * U1 - SF;
     dE2dt = -(mu + alpha + k) * E2 + gamma * E1 - EF;
     dL2dt = alpha * (E2 + Es2) + gamma * L1 - (mu + kL) * L2 - LF;
     dEs2dt = gamma * Es1 - (ks + mu + alpha) * Es2 - EsF;
@@ -69,7 +69,7 @@ function [k, alpha, q, kL, kRp, ks, mu, beta, r, rE, gamma, gammaE, n, p, sigma]
     gammaE = (mu + dE + rE); % per captia removal rate of E
     
     beta = gamma; % infection when in an active cluster
-    n = 20; % group of individuals that are highly subsceptible
+    n = 24; % group of individuals that are highly subsceptible
     p = 0.125; % clustering coefficient
-    sigma = 0.5; % ?
+    sigma = 1; % ?
 end

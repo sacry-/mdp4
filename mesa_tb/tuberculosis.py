@@ -180,7 +180,7 @@ def RState(treatment, aging_chance):
   r_probs = prob_row(R)
 
   if treatment:
-    r_probs = estimate_risk(r_probs, [R], [L, I], TREATMENT_CHANCE)
+    r_probs = estimate_risk(r_probs, [R], [I], TREATMENT_CHANCE)
 
   r_probs = estimate_risk(r_probs, [L, I], [R], aging_chance)
 

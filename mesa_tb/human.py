@@ -83,7 +83,7 @@ class Human(TBAgent):
       self.die()
 
     elif self.infectious():
-      if self.time_infected > random.uniform(0.5, 1.0):
+      if (self.time_infected * 0.01) > random.uniform(0.1, 1.0):
         self.model.tb_mortality += 1
         self.die()
 
