@@ -23,7 +23,7 @@ IM0 = us_inc(1) * r2;
 T0 = 0;
 TM0 = 0;
 
-y0 = [SA0 LA0 LAm0 I0 T0 SB0 LB0 LBm0 IM0 TM0 0];
+y0 = [SA0 LA0 LAm0 I0 T0 SB0 LB0 LBm0 IM0 TM0];
 
 % Time
 years = 100;
@@ -32,7 +32,7 @@ options = odeset('RelTol', 1e-5);
 steps = 0:0.01:years-1;
 [t, y] = ode45(@(t,y) seeir_mdr_tb(t, y), steps,y0,options); 
 
-plots = 3;
+plots = 10;
 if plots == 1
     labels = {'I'};
     infections = sum(y(:, [4 9]), 2);
@@ -53,3 +53,4 @@ elseif plots == 4
     plot_disease(t, y0, [y(:, 4) us_inc], labels, 'Years');
 end
 title("MDR-TB");
+

@@ -32,7 +32,7 @@ function [ ret ] = seeir_mdr_tb(t, y)
     dTdt = delta * I - (phi + omega + mut) * T;
     dTMdt = deltam * IM - (phim + omega + mut) * TM;
     
-    ret = [dSAdt dLAdt dLAmdt dIdt dTdt dSBdt dLBdt dLBmdt dIMdt dTMdt probabilities(t)]';
+    ret = [dSAdt dLAdt dLAmdt dIdt dTdt dSBdt dLBdt dLBmdt dIMdt dTMdt]';
 end
 
 function [epsilon, kappa, nu, gamma, mui, mut, eta, o, chi, phi, phim] = diseaseParams()
