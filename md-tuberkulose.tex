@@ -58,7 +58,7 @@
 
 \renewcaptionname{ngerman}{\abstractname}{Kurzfassung}
 \begin{abstract}
-\blindtext
+In dieser Arbeit wird eine Übersicht von mathematischen Analyseverfahren zur Übertragung von Tuberkulose präsentiert. Hierzu zählen die Compartment Modelle wie SEIR und agentenbasierte Modelle (ABM). Tuberkulose ist eine komplexe Erkrankung mit unterschiedlichen Krankheitsstadien. Das Ziel von derartigen Modellierungen ist das identifizieren von optimalen Parametern, sodass ein teil der Realität dargestellt werden kann. Dies führt idealerweise zu neuen Erkenntnissen wie z.B. durch Impfung Tuberkulose langfristig verhindert werden kann. Auf dem Weg wird der Einfluss von Impfung, Immunerkrankungen, Alter und Lokalität untersucht. Modelle dieser Arbeit wurden mit hilfe von Matlab und Python Mesa realisiert.
 \end{abstract}
 
 \newpage
@@ -68,22 +68,62 @@
 
 \newpage
 
-\section{Einführung}
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=\linewidth,height=8cm,keepaspectratio]{images/test}
+%   \caption{My caption}
+%   \label{fig:test-label}
+% \end{figure}
 
-\blindtext
+\section{Tuberkulose}
 
-\section{Tuberkulose Modell}
+Tuberkulose ist eine bakterielle Infektionserkrankung die besonders häufig die Lunge befällt. Die WHO schätzt Tuberkulose als eine der top 10 Todesursachen der Welt, mit einer Sterberate von 1.8 Millionen Menschen und 10.4 Millionen Neuinfektionen in 2015. Es ist ein aktives Sustainable Development Goal (SDG) das bis 2030 eingedämpft werden soll. Tuberkulose ist eine Krankheit die in Ländern mit schlechter medizinischer Versorgung und tropischem Klima (Sonne und starker Regen) gesondert auftritt. \cite{WHOTB2016}
 
-\cite{WHOTB2016} \\
-\cite{WHOTBGuidelines2017}
+\subsection{Krankheitsbild}
 
-\blindtext
+Tuberkulose (TB) wird vor allem über die Luft übertragen. Das befallen der Lungen resultiert nicht zwangsweise in einer aktiven Infektion der Krankheit. In Abbildung \ref{fig:tuberculosis-cycle} ist der Kreislauf der Tuberkulose Übertragung.
 
-\subsection{Modell}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth,keepaspectratio]{images/tuberculosis-cycle}
+  \caption{Tuberkulose Kreislauf in \cite{Kumar2011}}
+  \label{fig:tuberculosis-cycle}
+\end{figure}
 
-\blindtext
+In kurz, ein Mensch wird über direkten Kontakt von einem anderen über die Luft mit Tuberkulose latent infiziert, hat wesentlich geringere Chancen infiziert zu werden und eine hohe Chance bei nicht Medikation zu sterben.
 
-\subsection{Parameter}
+\begin{enumerate}
+  \item{Die \textbf{Übertragung} findet über die Luft zwischen zwei Menschen statt. Häufig ist deshalb der Ort der Übertragung in Lebensgemeinschaften auf engem Raum, öffentlichen Verkehrsmitteln oder Arbeitsplätzen. Klimaanlagen beschleunigen die Verbreitung von Bakterien in der Luft. Bei direktem Kontakt ist die Chance auf Ansteckung bei 95\% und es wird eine hauptinfektion ausgelöst.}
+  \item{Die \textbf{Hauptinfektion} ist meist ein befallen der Lunge. Verschiedene Immunfaktoren beeinflussen die Geschwindigkeit des Fortschreitens.}
+  \item{Betroffene sind ab diesem Schritt \textbf{latent infiziert}. Während das Subjekt in der latenten TB Phase ist tauchen nicht zwangsweise Symptome auf. Die meisten latent infizierten Träger von TB haben in ihrem ganzen Leben keinerlei Auswirkungen der Krankheit. In dem latenten Stadium können Subjekte niemanden anstecken. Einige Faktoren beeinflussen jedoch die Wahrscheinlichkeit auf eine aktive Infektion, sogenannte Risikofaktoren. Diese sind vor allem Immunbedingt wie z.B. HIV, Diabetes, genetische Faktoren, Immunsupressiver und viele mehr. Subjekte mit derartigen Ausprägungen haben eine Wahrscheinlichkeit von 5-10\% die Krankheit als aktive Infektion zu tragen. In den Fällen wo eine Präventivtherapie nicht hilft erfolgt meist eine aktive Krankheitsentwicklung.}
+  \item{Die \textbf{aktive Infektion/Reaktivierung} erfolgt irgendwann nachdem ein Subjekt latent infiziert wurde. Ab diesem Punkt gibt es nur zwei Möglichkeiten, Menschen die eine Heilung bekommen werden zu 95\% wieder gesund. 50\% die keine Heilung bekommen sterben und 50\% bessern sich von selbst. Ein Rückfall führt meistens zum Tode. Infizierte sind ab jetzt Überträger der Krankheit. Menschen die von TB geheilt werden gehen zurück ins latente Stadium. Eine vollständige Heilung ist nicht mehr möglich.}
+\end{enumerate}
+
+An diesem Model wird relativ schnell klar warum TB so gefährlich ist. Betroffene können nie wieder von der Krankheit regenerieren und Immunfaktoren, die besonders im Alter schlechter werden begünstigen den Ausbruch der Krankheit. Zudem kommt das TB in zwei Formen auftritt. TB als herkömliche, behandelbare Erkrankung und Multi-Drug-Resistant TB (MDR-TB), bei der TB ressistent gegenüber den derzeitig stärksten Medikationen ist. Tatsächlich ist nach der WHO die MDR-TB Erkrankungen am steigen.
+
+\subsection{Behandlung}
+
+Die Behandlung von TB kann vielschichtig erfolgen. Häufig eignet sich eine Impfung direkt bei der Geburt, aber auch später bei bisheriger nicht Erkrankung. Besondere Maßnahmen müssen bei TB und HIV berücksichtigt werden. Die Inzidenzrate von TB ist fast endemisch bei Trägern von HIV. Da HIV über Blut oder Körpersekrete weitergegeben wird, sind vor allem Länder betroffen wo es einen hohen Teil an HIV infizierten gibt, schlechte Aufklärung und Mittel zur Verhütung. In Regionen wo TB bereits als Epidemie ausgebrochen ist, muss die Bevölkerung aufgeklärt werden, sodass gegenschritte eingeleitet werden können. Zentren für Medikation, Behandlungen von Erkrankten und Isolation von der gesunden Bevölkerung. Isolation ist hier besonders wichtig, sowohl für nicht erkrankte als auch erkrankte. Betroffene Regionen müssen gewarnt werden sodass erkrankte selbstständig Hilfe suchen und nicht Betroffene nur für die wichtigsten Fälle in die Öffentlichkeit gehen. Individuen können des weiteren Alkohol und Zigarettenkonsum einstellen.
+
+\subsection{Faktoren}
+
+Es gibt einige Faktoren die besonders gut die Ausbreitung von Tuberkulose beschreiben können. Dazu gehören
+
+\begin{itemize}
+  \item Die Abdenkung von Impfung in der Bevölkerung
+  \item Immunerkrankungen wie HIV oder Diabetes
+  \item Alter
+  \item Alkohol und Zigarettenkonsum
+  \item Lebensraum in quadratmeter pro Individuum
+  \item Transport (Flugzeug oder Schiff) und Öffentliche Verkehrsmittel (Bus oer Bahn)
+  \item Regen und Hitze (tropisches Klima)
+  \item Gruppierungen von Menschen (z.B. durchschnittliche Größe und Menge an Unternehmen, durchschnittlie Familiengröße, öffentliche Plätze)
+  \item TB resistent gegen Medikation (MDR-TB)
+\end{itemize}
+
+Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prediktoren für TB sind.
+
+\subsection{Tukerkulose in Afrika}
 
 \blindtext
 
@@ -95,7 +135,27 @@
 
 \blindtext
 
+\subsection{Statistische Modelle}
+
+\blindtext
+
 \subsection{Agentenbasierte Modellierung}
+
+\blindtext
+
+\section{Compartment Modelle von Tuberkulose}
+
+\blindtext
+
+\subsection{Modell}
+
+\blindtext
+
+\subsection{Matlab}
+
+\blindtext
+
+\subsection{Resultate}
 
 \blindtext
 
@@ -111,13 +171,29 @@
 
 \blindtext
 
-\section{Resultate und Fazit}
+\subsection{Resultate}
 
 \blindtext
 
+\subsubsection{Einfluss von Impfung}
+
+\blindtext
+
+\subsubsection{Einfluss von Immunerkrankungen}
+
+\blindtext
+
+\subsubsection{Einfluss von Lokalität}
+
+\blindtext
+
+\section{Fazit}
+
+In dieser Arbeit wurde gezeigt wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. Tuberkulose ist eine ernst zu nehmende Erkrankung der heutigen Zeit.
+
 \newpage
 
-\bibliographystyle{alpha}
+\bibliographystyle{apalike}
 \bibliography{md-tuberkulose}
 
 \end{document}
