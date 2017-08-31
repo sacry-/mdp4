@@ -1,5 +1,7 @@
-\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\documentclass[paper=a4, fontsize=11pt, ngerman, abstract=on]{scrartcl}
 
+\usepackage{tocloft}
+\usepackage{titling}
 \usepackage{blindtext}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -54,27 +56,68 @@
 
 \maketitle
 
+\renewcaptionname{ngerman}{\abstractname}{Kurzfassung}
+\begin{abstract}
+\blindtext
+\end{abstract}
+
 \newpage
 
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
 \tableofcontents
 
 \newpage
 
-
-\section{Intro}
-
-\addcontentsline{toc}{section}{Unnumbered Section}
-\section{Lorem ipsum}
+\section{Einführung}
 
 \blindtext
 
-\subsection{Ipsums}
+\section{Tuberkulose Modell}
+
+\cite{WHOTB2016} \\
+\cite{WHOTBGuidelines2017}
+
+\blindtext
+
+\subsection{Modell}
+
+\blindtext
+
+\subsection{Parameter}
+
+\blindtext
+
+\section{Ausbreitung von Infektionskrankheiten}
+
+\blindtext
+
+\subsection{Compartment Modelle}
+
+\blindtext
+
+\subsection{Agentenbasierte Modellierung}
+
+\blindtext
+
+\section{Agentenbasierte Modellierung von Tuberkulose}
+
+\blindtext
+
+\subsection{Modell}
+
+\blindtext
+
+\subsection{Mesa}
+
+\blindtext
+
+\section{Resultate und Fazit}
 
 \blindtext
 
 \newpage
 
-\bibliographystyle{apalike}
+\bibliographystyle{alpha}
 \bibliography{md-tuberkulose}
 
 \end{document}
