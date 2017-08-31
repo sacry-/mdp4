@@ -52,3 +52,4 @@ def count_agents(model, f, accu=0):
       if f(agent):
         accu += 1
   return accu
+
