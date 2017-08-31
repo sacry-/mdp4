@@ -123,17 +123,46 @@ Es gibt einige Faktoren die besonders gut die Ausbreitung von Tuberkulose beschr
 
 Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prediktoren für TB sind.
 
-\subsection{Tukerkulose in Afrika}
-
-\blindtext
-
 \section{Ausbreitung von Infektionskrankheiten}
 
-\blindtext
+Die Modellierung der Ausbreitung von Tuberkulose gehört zu einer höheren Kategorie von Modellen der Ausbreitung von Infektionskrankheiten. Infektionskrankheiten sind nach der Epidemiologie, Erkankungen die durch einen Erreger hervorgerufen werden, die meist parasitär in einem Wirt Leben und transient (kurze Dauer, hohe Infektion) oder persistent (lange Dauer, niedrige Infektion) auftreten. Sie gehen in der Regel mit starken septischen Symptonem einher wenn eine aktive Phase eintritt. \\
+
+Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Modellen unterschieden. Diese Modelle sind nicht zwingend diskret, da es viele Überlappungen geben kann.
+
+\begin{enumerate}
+  \item{\textbf{Compartment Modelle} sind solche in denen Individuen einer Bevölkerung in Klassen eingeordnet werden. Die Standardklassen beinhalten Subsceptibles (Empfänger), Exposed (latent infizierte), Infected (infiziferte) und Recovered (erholte).}
+  \item{\textbf{Statistische Modelle} schauen sich historische Daten von Bevölkerungen an wo TB aufgetreten ist. Mithilfe dieser Daten können z.B. Prädiktionsmodelle gebaut werden die vorhersagen, ob eine Bevölkerung, mit den derzeitigen Daten eine erhöhte Gefahr hat, eine TB Epidemie zu entwickeln.}
+  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpower brauchen.
+\end{enumerate}
+
+Im Folgenden werden diese drei Modelltypen beschrieben und erläutert. Danach werden Compartment Modelle und die agentenbasierte Modellierung im Kontext von Tuberkulose erläutert.
 
 \subsection{Compartment Modelle}
 
-\blindtext
+Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das einfachste dieser Modelle ist das Susceptible-Infected-Recovered (SIR) Modell. Die Bevölkerungspopulation wird durch $N = S + I + R$ zu einem Zeitpunkt $t$ evaluiert. Diese Werte werden durch das DGLS \ref{eq:dgls-sir} zu einem Zeitpunkt $t$ über ein Zeitintervall mit einer fixen Schrittweite approximiert.
+
+\begin{equation}
+\begin{align}
+  \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
+  \frac{dI}{dt} &= \beta \frac{I}{N}S  - (\gamma + \mu)I \\
+  \frac{dR}{dt} &= \gamma I - \mu R
+\end{align}
+\label{eq:dgls-sir}
+\end{equation}
+
+Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsrate und $\gamma$ die Erholungsrate. Die Sterberate ist die generelle Sterberate in der Bevölkerung. Für ein realeres, kontinuierliches Modell mit Zyklen, bräuchte dieses Modell auch einen entsprechenden Geburtenratenparameter. Das vorliegende einfache $SIR$ Modell ist ein nicht-lineares Differentialgleichungssystem erster Ordnung, durch $\frac{I}{N}S$, da $S$ nicht mit einer Konstanten multipliziert wird. Dadurch sind keine analytischen Lösungen möglich. Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das DGLS \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt.
+
+\begin{equation}
+\begin{align}
+  \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
+  \frac{dE}{dt} &= \beta \frac{I}{N}S - (\alpha + \mu)E \\
+  \frac{dI}{dt} &= \alpha E  - (\gamma + \mu)I \\
+  \frac{dR}{dt} &= \gamma I - \mu R
+\end{align}
+\label{eq:dgls-seir}
+\end{equation}
+
+Es fällt auf das diese Differentialgleichssysteme jedes Compartment mit einem korrespondierenden Zunahmeparameter belegt, die Übergangswahrscheinlichkeiten darstellen. Sollte es z.B. möglich sein direkt von $S$ zu $I$ zu laufen, kann man einen entsprechenden Zunahmeparameter einfügen.
 
 \subsection{Statistische Modelle}
 
