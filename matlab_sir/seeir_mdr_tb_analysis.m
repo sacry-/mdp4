@@ -32,7 +32,7 @@ options = odeset('RelTol', 1e-5);
 steps = 0:0.01:years-1;
 [t, y] = ode45(@(t,y) seeir_mdr_tb(t, y), steps,y0,options); 
 
-plots = 10;
+plots = 3;
 if plots == 1
     labels = {'I'};
     infections = sum(y(:, [4 9]), 2);

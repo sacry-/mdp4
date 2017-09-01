@@ -10,12 +10,15 @@ incidence = fliplr(us_tub(:, 2));
 inc_rate = fliplr(us_tub(:, 3));
 smooth_inc = smooth(incidence);
 
-plotNo = 3;
+plotNo = 1;
 figure; hold on
 
 if plotNo == 1
-    bar(pop_years(1:10:length(pop_years)), totals(1:10:length(pop_years)));
+    b = bar(pop_years(1:10:length(pop_years)), totals(1:10:length(pop_years)));
+    b.FaceColor = [0.7734375, 0.8828125, 0.99609375];
     plot(pop_years, smooth(totals), '-', 'color', [1 .4 0], 'LineWidth', 2);
+    ylabel('Total Population');
+    xlabel('Years');
 elseif plotNo == 2
     plot(years, smooth_inc, '-', 'color', [1 .4 0], 'LineWidth', 1);
     plot(years(end), smooth_inc(end), 'x', 'color', [0 0 0], 'LineWidth', 4, 'markers', 10);

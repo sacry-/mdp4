@@ -33,6 +33,33 @@
 
 \newcommand {\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
 
+\usepackage{listings}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\lstdefinestyle{matlab}{language=Matlab,%
+  breaklines=true,%
+  morekeywords={matlab2tikz},
+  keywordstyle=\color{blue},%
+  morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+  identifierstyle=\color{black},%
+  stringstyle=\color{mylilas},
+  commentstyle=\color{mygreen},%
+  showstringspaces=false,%without this there will be a symbol in the places where there is a space
+  basicstyle=\footnotesize,
+  stepnumber=1,
+  emph=[1]{for,end,break},emphstyle=[1]\color{blue},
+  frame=tb,
+  rulesepcolor=\color{gray},
+  rulecolor=\color{gray},
+  framesep=3pt,
+  xleftmargin=3pt,
+  xrightmargin=8pt,
+  tabsize=2,
+}
+
+\begin{document}
+
 \title {
   \normalfont \normalsize
   \textsc{HAW Hamburg} \\ [25pt]
@@ -75,7 +102,7 @@ In dieser Arbeit wird eine Übersicht von mathematischen Analyseverfahren zur Ü
 %   \label{fig:test-label}
 % \end{figure}
 
-\section{Tuberkulose}
+\section{Domäne - Tuberkulose}
 
 Tuberkulose ist eine bakterielle Infektionserkrankung die besonders häufig die Lunge befällt. Die WHO schätzt Tuberkulose als eine der top 10 Todesursachen der Welt, mit einer Sterberate von 1.8 Millionen Menschen und 10.4 Millionen Neuinfektionen in 2015. Es ist ein aktives Sustainable Development Goal (SDG) das bis 2030 eingedämpft werden soll. Tuberkulose ist eine Krankheit die in Ländern mit schlechter medizinischer Versorgung und tropischem Klima (Sonne und starker Regen) gesondert auftritt. \cite{WHOTB2016}
 
@@ -123,7 +150,7 @@ Es gibt einige Faktoren die besonders gut die Ausbreitung von Tuberkulose beschr
 
 Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prediktoren für TB sind.
 
-\section{Ausbreitung von Infektionskrankheiten}
+\subsection{Ausbreitung von Infektionskrankheiten}
 
 Die Modellierung der Ausbreitung von Tuberkulose gehört zu einer höheren Kategorie von Modellen der Ausbreitung von Infektionskrankheiten. Infektionskrankheiten sind nach der Epidemiologie, Erkankungen die durch einen Erreger hervorgerufen werden, die meist parasitär in einem Wirt Leben und transient (kurze Dauer, hohe Infektion) oder persistent (lange Dauer, niedrige Infektion) auftreten. Sie gehen in der Regel mit starken septischen Symptonem einher wenn eine aktive Phase eintritt. \\
 
@@ -135,9 +162,10 @@ Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Mode
   \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpleistung brauchen.
 \end{enumerate}
 
-Im Folgenden werden diese drei Modelltypen beschrieben und erläutert. Danach werden Compartment Modelle und die agentenbasierte Modellierung im Kontext von Tuberkulose erläutert.
+Im Folgenden werden die Compartment Modelle und die agentenbasierte Modellierung am Beispiel von Tuberkulose beschrieben und erläutert.
 
-\subsection{Compartment Modelle}
+
+\section{Compartment Modelle zur Ausbreitung von Tuberkulose}
 
 Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das einfachste dieser Modelle ist das Susceptible-Infected-Recovered (SIR) Modell. Die Bevölkerungspopulation wird durch $N = S + I + R$ zu einem Zeitpunkt $t$ evaluiert. Diese Werte werden durch das DGLS \ref{eq:dgls-sir} zu einem Zeitpunkt $t$ über ein Zeitintervall mit einer fixen Schrittweite approximiert.
 
@@ -193,31 +221,76 @@ In diesem Differentialgleichungssystem wurden drei zusätzliche Modifikationen u
 
 Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Einfluss von Immunerkrankungen, eine Wachstumsrate, der Einfluss von MDR-TB, Lokalität über z.B. Clusterings, der Einfluss von Therapien und einige mehr.
 
-\subsection{Statistische Modelle}
-
-\blindtext
-
-\subsection{Agentenbasierte Modellierung}
-
-\blindtext
-
-\section{Compartment Modelle von Tuberkulose}
-
-\blindtext
-
-\subsection{Modell}
-
-\blindtext
-
 \subsection{Matlab}
 
+Zur Modellierung von allen Compartment Modellen wurde Matlab verwendet. Hierzu wurde der $ode45$ solver von Matlab verwendet. \\
+
+\begin{lstlisting}[style=matlab]
+intervall = 0:1:60;
+y0        = [S E L Es I R];
+opts      = odeset('RelTol', 1e-5);
+[t, y]    = ode45(@(t,y) model(t, y), intervall, y0, opts);
+\end{lstlisting} \\
+
+wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeitpunkt $t = 0$ der Differentialgleichungen sind. Im folgenden wurden Experimente mit Daten über Tuberkulose von dem US Ministerium für Gesundheit entnommen. Zum einen die Population $N$ von 1953-2015 und zum anderen die Inzidenzraten $I$ von 1953-2015. \\
+
+\begin{lstlisting}[style=matlab]
+function [ years, incidence, totals, inc_rate ] = us_data()
+  us_pop    = csvread('./data/us_1953_2015.csv', 1, 0);
+  pop_years = us_pop(:,1);
+  totals    = us_pop(:,2);
+
+  us_tub    = csvread('./data/us_1953_2015_tb_incidence.csv', 1, 0);
+  years     = flipud(us_tub(:, 1));
+  incidence = flipud(us_tub(:, 2));
+  inc_rate  = flipud(us_tub(:, 3));
+
+  totals    = flipud(totals(1:find(pop_years == 1953)));
+end
+\end{lstlisting} \\
+
+Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. \\
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.7\textwidth,keepaspectratio]{images/us-population}
+  \label{fig:us-population}
+\end{figure}
+
+\subsection{Clustered SELEIR Modell}
+
+Das erste Modell ist das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} wie zu sehen in \ref{fig:clustered-seleir}.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_model}
+  \caption{Clustered Tuberkulose in \cite{ModellingTBEpidemics2009}}
+  \label{fig:clustered-seleir}
+\end{figure}
+
+Das Transfer Diagramm zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen nur deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent exposierten Individuen. Wie zuvor gillt der Kreislauf $U -> E -> A -> R$. Zusätzlich kommt hinzu das die latente Phase deutlich fein granularer dargestellt wird. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. \\
+
+Die Cluster Variante des obigen Systems kommt dadurch zustande das zwei Populationen durch zwei Differentialgleichungssysteme modelliert wird. Das obere System wird also dupliziert und eine explizite Abhängigkeit aufgebaut. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen.
+
+\subsubsection{Experiment}
+
+Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mit generellen Populationsparametern für Tuberkulose die Kurve von realen Daten approximieren kann.
+
 \blindtext
 
-\subsection{Resultate}
+\subsection{Modell 2}
 
 \blindtext
 
-\section{Agentenbasierte Modellierung von Tuberkulose}
+\subsubsection{Matlab}
+
+\blindtext
+
+\subsubsection{Resultate}
+
+\blindtext
+
+\section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
 \blindtext
 
@@ -229,19 +302,19 @@ Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Ei
 
 \blindtext
 
-\subsection{Resultate}
+\subsection{Einfluss von Impfung}
 
 \blindtext
 
-\subsubsection{Einfluss von Impfung}
+\subsection{Einfluss von Immunerkrankungen}
 
 \blindtext
 
-\subsubsection{Einfluss von Immunerkrankungen}
+\subsection{Einfluss von Lokalität}
 
 \blindtext
 
-\subsubsection{Einfluss von Lokalität}
+\section{Statistische Modelle}
 
 \blindtext
 
