@@ -132,7 +132,7 @@ Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Mode
 \begin{enumerate}
   \item{\textbf{Compartment Modelle} sind solche in denen Individuen einer Bevölkerung in Klassen eingeordnet werden. Die Standardklassen beinhalten Subsceptibles (Empfänger), Exposed (latent infizierte), Infected (infiziferte) und Recovered (erholte).}
   \item{\textbf{Statistische Modelle} schauen sich historische Daten von Bevölkerungen an wo TB aufgetreten ist. Mithilfe dieser Daten können z.B. Prädiktionsmodelle gebaut werden die vorhersagen, ob eine Bevölkerung, mit den derzeitigen Daten eine erhöhte Gefahr hat, eine TB Epidemie zu entwickeln.}
-  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpower brauchen.
+  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpleistung brauchen.
 \end{enumerate}
 
 Im Folgenden werden diese drei Modelltypen beschrieben und erläutert. Danach werden Compartment Modelle und die agentenbasierte Modellierung im Kontext von Tuberkulose erläutert.
@@ -150,7 +150,15 @@ Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das 
 \label{eq:dgls-sir}
 \end{equation}
 
-Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsrate und $\gamma$ die Erholungsrate. Die Sterberate ist die generelle Sterberate in der Bevölkerung. Für ein realeres, kontinuierliches Modell mit Zyklen, bräuchte dieses Modell auch einen entsprechenden Geburtenratenparameter. Das vorliegende einfache $SIR$ Modell ist ein nicht-lineares Differentialgleichungssystem erster Ordnung, durch $\frac{I}{N}S$, da $S$ nicht mit einer Konstanten multipliziert wird. Dadurch sind keine analytischen Lösungen möglich. Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das DGLS \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt.
+Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsrate und $\gamma$ die Erholungsrate. Die Sterberate ist die generelle Sterberate in der Bevölkerung. Für ein realeres, kontinuierliches Modell mit Zyklen, bräuchte dieses Modell auch einen entsprechenden Geburtenratenparameter. Das vorliegende einfache $SIR$ Modell ist ein
+
+\begin{itemize}
+  \item{gewönhliches Differentialgleichungssystem}
+  \item{erster Ordnung}
+  \item{welches nicht-linear ist, durch $\frac{I}{N}S$, da $S$ nicht mit einer Konstanten multipliziert wird. Dadurch sind keine einfachen analytischen Lösungen möglich. Allerdings konnte \cite{Harko2014}, eine exakte Lösung präsentieren.}
+\end{itemize}
+
+ Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das Differentialgleichungssystem \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt. Auch hier nimmt $E$ um $(\alpha + \mu)$ in $I$ ab und steigt um $\gamma I$, die Abnahme der infizierten, an.
 
 \begin{equation}
 \begin{align}
@@ -162,7 +170,28 @@ Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsr
 \label{eq:dgls-seir}
 \end{equation}
 
-Es fällt auf das diese Differentialgleichssysteme jedes Compartment mit einem korrespondierenden Zunahmeparameter belegt, die Übergangswahrscheinlichkeiten darstellen. Sollte es z.B. möglich sein direkt von $S$ zu $I$ zu laufen, kann man einen entsprechenden Zunahmeparameter einfügen.
+Die Übergangsparameter mit den zugehörigen Compartments stellen Übergangswahrscheinlichkeiten zwischen den Compartments dar. Sollte es z.B. möglich sein direkt von $S$ zu $I$ zu laufen, kann ein entsprechender Zunahmeparameter einfügt werden. Das letzte und vollständigste Differentialgleichungssystem MSEIRS in \ref{eq:dgls-mseirs} stellt eine relativ nahe Modellierung von Tuberkulose dar.
+
+\begin{equation}
+\begin{align}
+  \frac{dM}{dt} &= N - \sigma M - \mu M \\
+  \frac{dS}{dt} &= \sigma M - \mu S - \rho(t)\beta \frac{I}{N}S \\
+  \frac{dE}{dt} &= \beta \frac{I}{N}S - \rho(t)(\alpha + \mu)E + \lambda R \\
+  \frac{dI}{dt} &= \rho(t)\alpha E  - (\gamma + \mu)I \\
+  \frac{dR}{dt} &= \gamma I - (\mu + \lambda) R
+\end{align}
+\label{eq:dgls-mseirs}
+\end{equation}
+
+In diesem Differentialgleichungssystem wurden drei zusätzliche Modifikationen unternommen.
+
+\begin{enumerate}
+  \item{Es wurde eine Klasse von geimpften $M$ bei der Geburt eingefügt die mit einer Wahrscheinlichkeit von $\sigma$ nach $S$ gehen können.}
+  \item{Es gibt einen direkten Weg von $R$ zu $E$ mit einer Wahrscheinlichkeit $\lambda$.}
+  \item{Es wurde ein variierender Zeitparameter $\roh (t)$ eingefügt um saisonale Schwankungen zu berücksichtigen. Dieser könnte z.B. $1/365$ für 1 Tag pro Berechnung darstellen. Dies müsste im Fall der Tuberkulose, deutlich genauer modelliert werden, da diese vor allem in heißen regnerischen Monaten auftritt.}
+\end{enumerate}
+
+Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Einfluss von Immunerkrankungen, eine Wachstumsrate, der Einfluss von MDR-TB, Lokalität über z.B. Clusterings, der Einfluss von Therapien und einige mehr.
 
 \subsection{Statistische Modelle}
 
