@@ -49,16 +49,14 @@
   basicstyle=\footnotesize,
   stepnumber=1,
   emph=[1]{for,end,break},emphstyle=[1]\color{blue},
-  frame=tb,
-  rulesepcolor=\color{gray},
-  rulecolor=\color{gray},
+  % frame=tb,
+  rulesepcolor=\color{black},
+  rulecolor=\color{black},
   framesep=3pt,
   xleftmargin=3pt,
   xrightmargin=8pt,
-  tabsize=2,
+  tabsize=2
 }
-
-\begin{document}
 
 \title {
   \normalfont \normalsize
@@ -159,7 +157,7 @@ Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Mode
 \begin{enumerate}
   \item{\textbf{Compartment Modelle} sind solche in denen Individuen einer Bevölkerung in Klassen eingeordnet werden. Die Standardklassen beinhalten Subsceptibles (Empfänger), Exposed (latent infizierte), Infected (infiziferte) und Recovered (erholte).}
   \item{\textbf{Statistische Modelle} schauen sich historische Daten von Bevölkerungen an wo TB aufgetreten ist. Mithilfe dieser Daten können z.B. Prädiktionsmodelle gebaut werden die vorhersagen, ob eine Bevölkerung, mit den derzeitigen Daten eine erhöhte Gefahr hat, eine TB Epidemie zu entwickeln.}
-  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpleistung brauchen.
+  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil das große Simulation enorme Rechenpleistung brauchen.}
 \end{enumerate}
 
 Im Folgenden werden die Compartment Modelle und die agentenbasierte Modellierung am Beispiel von Tuberkulose beschrieben und erläutert.
@@ -170,11 +168,11 @@ Im Folgenden werden die Compartment Modelle und die agentenbasierte Modellierung
 Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das einfachste dieser Modelle ist das Susceptible-Infected-Recovered (SIR) Modell. Die Bevölkerungspopulation wird durch $N = S + I + R$ zu einem Zeitpunkt $t$ evaluiert. Diese Werte werden durch das DGLS \ref{eq:dgls-sir} zu einem Zeitpunkt $t$ über ein Zeitintervall mit einer fixen Schrittweite approximiert.
 
 \begin{equation}
-\begin{align}
+\begin{split}
   \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
   \frac{dI}{dt} &= \beta \frac{I}{N}S  - (\gamma + \mu)I \\
   \frac{dR}{dt} &= \gamma I - \mu R
-\end{align}
+\end{split}
 \label{eq:dgls-sir}
 \end{equation}
 
@@ -189,25 +187,25 @@ Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsr
  Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das Differentialgleichungssystem \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt. Auch hier nimmt $E$ um $(\alpha + \mu)$ in $I$ ab und steigt um $\gamma I$, die Abnahme der infizierten, an.
 
 \begin{equation}
-\begin{align}
+\begin{split}
   \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
   \frac{dE}{dt} &= \beta \frac{I}{N}S - (\alpha + \mu)E \\
   \frac{dI}{dt} &= \alpha E  - (\gamma + \mu)I \\
   \frac{dR}{dt} &= \gamma I - \mu R
-\end{align}
+\end{split}
 \label{eq:dgls-seir}
 \end{equation}
 
 Die Übergangsparameter mit den zugehörigen Compartments stellen Übergangswahrscheinlichkeiten zwischen den Compartments dar. Sollte es z.B. möglich sein direkt von $S$ zu $I$ zu laufen, kann ein entsprechender Zunahmeparameter einfügt werden. Das letzte und vollständigste Differentialgleichungssystem MSEIRS in \ref{eq:dgls-mseirs} stellt eine relativ nahe Modellierung von Tuberkulose dar.
 
 \begin{equation}
-\begin{align}
+\begin{split}
   \frac{dM}{dt} &= N - \sigma M - \mu M \\
   \frac{dS}{dt} &= \sigma M - \mu S - \rho(t)\beta \frac{I}{N}S \\
   \frac{dE}{dt} &= \beta \frac{I}{N}S - \rho(t)(\alpha + \mu)E + \lambda R \\
   \frac{dI}{dt} &= \rho(t)\alpha E  - (\gamma + \mu)I \\
   \frac{dR}{dt} &= \gamma I - (\mu + \lambda) R
-\end{align}
+\end{split}
 \label{eq:dgls-mseirs}
 \end{equation}
 
@@ -216,40 +214,23 @@ In diesem Differentialgleichungssystem wurden drei zusätzliche Modifikationen u
 \begin{enumerate}
   \item{Es wurde eine Klasse von geimpften $M$ bei der Geburt eingefügt die mit einer Wahrscheinlichkeit von $\sigma$ nach $S$ gehen können.}
   \item{Es gibt einen direkten Weg von $R$ zu $E$ mit einer Wahrscheinlichkeit $\lambda$.}
-  \item{Es wurde ein variierender Zeitparameter $\roh (t)$ eingefügt um saisonale Schwankungen zu berücksichtigen. Dieser könnte z.B. $1/365$ für 1 Tag pro Berechnung darstellen. Dies müsste im Fall der Tuberkulose, deutlich genauer modelliert werden, da diese vor allem in heißen regnerischen Monaten auftritt.}
+  \item{Es wurde ein variierender Zeitparameter $\rho (t)$ eingefügt um saisonale Schwankungen zu berücksichtigen. Dieser könnte z.B. $1/365$ für 1 Tag pro Berechnung darstellen. Dies müsste im Fall der Tuberkulose, deutlich genauer modelliert werden, da diese vor allem in heißen regnerischen Monaten auftritt.}
 \end{enumerate}
 
 Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Einfluss von Immunerkrankungen, eine Wachstumsrate, der Einfluss von MDR-TB, Lokalität über z.B. Clusterings, der Einfluss von Therapien und einige mehr.
 
 \subsection{Matlab}
 
-Zur Modellierung von allen Compartment Modellen wurde Matlab verwendet. Hierzu wurde der $ode45$ solver von Matlab verwendet. \\
+Zur Modellierung von allen Compartment Modellen wurde Matlab verwendet und insbesondere der $ode45$ solver in Kombination mit den Plotting Möglichkeit verwendet.
 
 \begin{lstlisting}[style=matlab]
 intervall = 0:1:60;
 y0        = [S E L Es I R];
 opts      = odeset('RelTol', 1e-5);
 [t, y]    = ode45(@(t,y) model(t, y), intervall, y0, opts);
-\end{lstlisting} \\
+\end{lstlisting}
 
-wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeitpunkt $t = 0$ der Differentialgleichungen sind. Im folgenden wurden Experimente mit Daten über Tuberkulose von dem US Ministerium für Gesundheit entnommen. Zum einen die Population $N$ von 1953-2015 und zum anderen die Inzidenzraten $I$ von 1953-2015. \\
-
-\begin{lstlisting}[style=matlab]
-function [ years, incidence, totals, inc_rate ] = us_data()
-  us_pop    = csvread('./data/us_1953_2015.csv', 1, 0);
-  pop_years = us_pop(:,1);
-  totals    = us_pop(:,2);
-
-  us_tub    = csvread('./data/us_1953_2015_tb_incidence.csv', 1, 0);
-  years     = flipud(us_tub(:, 1));
-  incidence = flipud(us_tub(:, 2));
-  inc_rate  = flipud(us_tub(:, 3));
-
-  totals    = flipud(totals(1:find(pop_years == 1953)));
-end
-\end{lstlisting} \\
-
-Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. \\
+Wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeitpunkt $t = 0$ der Differentialgleichungen sind. Im folgenden wurden Experimente mit Daten über Tuberkulose von dem US Ministerium für Gesundheit entnommen. Zum einen die Population $N$ von 1953-2015 und zum anderen die Inzidenzraten $I$ von 1953-2015.
 
 \begin{figure}[ht]
   \centering
@@ -257,9 +238,11 @@ Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. \\
   \label{fig:us-population}
 \end{figure}
 
+Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. Die durchschnittliche Rate ist der orangenen Linie zu entnehmen. Es ist ein stettiges Wachstum auf ein level zugehend von 320 Millionen im Jahr 2015.
+
 \subsection{Clustered SELEIR Modell}
 
-Das erste Modell ist das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} wie zu sehen in \ref{fig:clustered-seleir}.
+Das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} arbeitet mit zwei Populationen $N_{1}$ und $N_{2}$. Das Transfer Diagramm \ref{fig:clustered-seleir} zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen, allerdings deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent exposierten Individuen. Wie zuvor gillt der Kreislauf $U \rightarrow E \rightarrow A \rightarrow R$.
 
 \begin{figure}[ht]
   \centering
@@ -268,27 +251,62 @@ Das erste Modell ist das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2
   \label{fig:clustered-seleir}
 \end{figure}
 
-Das Transfer Diagramm zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen nur deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent exposierten Individuen. Wie zuvor gillt der Kreislauf $U -> E -> A -> R$. Zusätzlich kommt hinzu das die latente Phase deutlich fein granularer dargestellt wird. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. \\
+Zusätzlich kommt hinzu das die latente Phase deutlich fein granularer dargestellt wird. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. \\
 
-Die Cluster Variante des obigen Systems kommt dadurch zustande das zwei Populationen durch zwei Differentialgleichungssysteme modelliert wird. Das obere System wird also dupliziert und eine explizite Abhängigkeit aufgebaut. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen.
+Die Cluster Variante des obigen Systems kommt dadurch zustande das zwei Populationen durch zwei Differentialgleichungssysteme modelliert werden. Das obere System wird also dupliziert und eine explizite Abhängigkeit aufgebaut. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen.
 
 \subsubsection{Experiment}
 
-Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mit generellen Populationsparametern für Tuberkulose die Kurve von realen Daten approximieren kann.
+Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mit generellen Populationsparametern für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt.
 
-\blindtext
+@TODO - Parameter eingeben. \blindtext
 
-\subsection{Modell 2}
+Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün.
 
-\blindtext
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
+  \label{fig:clustered-seleir-compare}
+\end{figure}
 
-\subsubsection{Matlab}
+Es wird offensichtlich klar das der generelle Trend zwar getroffen wird, die Vorhersage aber überhaupt nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch. Jeder Parameter ist theoretisch im Wandel über Zeit, wofür keine wirkliche Anpassung statt gefunden hat.
 
-\blindtext
+\subsection{SEEIR MDR-TB Modell}
 
-\subsubsection{Resultate}
+Nachdem das erste Modell nur mäßig den Trend gefunden hat, wurde im zweiten Modell versucht das Experiment in Matlab von \cite{Trauer2014} reproduziert um ein System mit MDR-TB zu modellieren und die Übergänge der Compartments zu sehen. Das Modell von \cite{Trauer2014} ist in Abbildung \ref{fig:mdr-tb-model} zu sehen.
 
-\blindtext
+\begin{minipage}{0.4\linewidth}
+  \includegraphics[width=\linewidth]{images/mdr_tb_model}
+  \label{fig:mdr-tb-model}
+\end{minipage}\hfill
+\begin{minipage}{0.55\linewidth}
+  Das Modell ist in zwei Systeme aufgeteilt mit kleinen Übergängen zwischen diesen Systemen. Die Differentialgleichungssysteme beschreiben ein klassischer SEIR Modell mit einer latenten Phase mehr. $L_{A}$ ist die erste latente Phase wo die Wharscheinlichkeit auf Erkrankung gering er ist, wobei $L_{B}$ die aktivere Phase. Die Autoren haben herausgefunden das eine Modellierung so besser abzubilden ist. Das Differentialgleichungssystem was aus $S_{A}$ folgt stellt das Transfer Diagramm der herkömmlichen TB dar. $S_{B}$ hingegen stellt die MDR-TB dar mit höheren Ressistenzen. Es ist fest zu stellen das $\mu$ die Sterberate ist und $\phi$ den Übergang von einer Genesung, egal welcher Art von TB, automatisch eine erhöhte Wahrscheinlichkeit auf MDR-TB besteht. Ferner gibt es einen Rückfallfaktor $\eta \omega$ nach Genesung von $T$ zu $I_{m}$ direkt in die MDR-TB.
+\end{minipage}\\\\
+
+Das Differentialgleichungssystem lautet wie folgt
+
+\begin{equation}
+\begin{split}
+  \frac{dL_{A}}{dt} &= \lambda S_{A} + \lambda_{d}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{A} \\
+  \frac{dL_{Am}}{dt} &= \lambda_{m} S_{A} + \lambda_{dm}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{Am} \\
+  \frac{dL_{B}}{dt} &= \kappa L_{A} + \lambda I - (\lambda_{d} + \lambda_{dm} + \nu + \mu) L_{B} \\
+  \frac{dL_{Bm}}{dt} &= \kappa L_{Am} + \lambda I_{m} - (\lambda_{d} + \lambda _{dm} + \nu + \mu) L_{Bm} \\
+  \frac{dI}{dt} &= \epsilon L_{A} + \nu L_{B} + (1 - \eta)\omega T - (\gamma + \delta + \mu_{i})I \\
+  \frac{dI_{m}}{dt} &= \epsilon L_{Am} + \nu L_{Bm} + \eta \omega T + \omega T_{m} - (\gamma + \delta_{m} + \mu_{i})I_{m} \\
+  \frac{dT}{dt} &= \delta I - (\varphi + \omega + \mu_{t}) T \\
+  \frac{dT_{m}}{dt} &= \delta _{m} I_{m} - (\varphi _{m} + \omega + \mu_{t}) T_{m}
+\end{split}
+\label{eq:dgls-mdr-tb}
+\end{equation}
+
+Mit den spezifischem Parameter $\lambda$ und der Populationszahl $N$.
+
+\begin{gather*}
+  \lambda = \beta \rho (I + oT)) \/ N \\
+  \lambda _{d} = \beta_{m} \rho (I_{m} + oT_{m})) / N \\
+  \lambda _{dm} = \chi\beta_{m} \rho (I_{m} + oT_{m})) / N \\
+  N = S_{A} + S_{B} + L_{A} + L_{B} + L_{Am} + L_{Bm} + I + I_{m} + T + T_{m}
+\end{gather*}
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
