@@ -280,10 +280,10 @@ Nachdem das erste Modell nur mäßig den Trend gefunden hat, wurde im zweiten Mo
   \label{fig:mdr-tb-model}
 \end{minipage}\hfill
 \begin{minipage}{0.55\linewidth}
-  Das Modell ist in zwei Systeme aufgeteilt mit kleinen Übergängen zwischen diesen Systemen. Die Differentialgleichungssysteme beschreiben ein klassischer SEIR Modell mit einer latenten Phase mehr. $L_{A}$ ist die erste latente Phase wo die Wharscheinlichkeit auf Erkrankung gering er ist, wobei $L_{B}$ die aktivere Phase. Die Autoren haben herausgefunden das eine Modellierung so besser abzubilden ist. Das Differentialgleichungssystem was aus $S_{A}$ folgt stellt das Transfer Diagramm der herkömmlichen TB dar. $S_{B}$ hingegen stellt die MDR-TB dar mit höheren Ressistenzen. Es ist fest zu stellen das $\mu$ die Sterberate ist und $\phi$ den Übergang von einer Genesung, egal welcher Art von TB, automatisch eine erhöhte Wahrscheinlichkeit auf MDR-TB besteht. Ferner gibt es einen Rückfallfaktor $\eta \omega$ nach Genesung von $T$ zu $I_{m}$ direkt in die MDR-TB.
+Das Modell ist in zwei Systeme aufgeteilt mit kleinen Übergängen zwischen diesen Systemen. Die Differentialgleichungssysteme beschreiben ein klassischer SEIR Modell mit einer latenten Phase mehr. $L_{A}$ ist die erste latente Phase wo die Wharscheinlichkeit auf Erkrankung gering er ist, wobei $L_{B}$ die aktivere Phase. Die Autoren haben herausgefunden das eine Modellierung so besser abzubilden ist. Das Differentialgleichungssystem was aus $S_{A}$ folgt stellt das Transfer Diagramm der herkömmlichen TB dar. $S_{B}$ hingegen stellt die MDR-TB dar mit höheren Ressistenzen. Es ist fest zu stellen das $\mu$ die Sterberate ist und $\phi$ den Übergang von einer Genesung, egal welcher Art von TB, automatisch eine erhöhte Wahrscheinlichkeit auf MDR-TB besteht. Ferner gibt es einen Rückfallfaktor $\eta \omega$ nach Genesung von $T$ zu $I_{m}$ direkt in die MDR-TB.
 \end{minipage}\\\\
 
-Das Differentialgleichungssystem lautet wie folgt
+Das obige Transfer Diagramm wird als Differentialgleichungssystem realisiert und sieht wie folgt aus
 
 \begin{equation}
 \begin{split}
@@ -299,42 +299,103 @@ Das Differentialgleichungssystem lautet wie folgt
 \label{eq:dgls-mdr-tb}
 \end{equation}
 
-Mit den spezifischem Parameter $\lambda$ und der Populationszahl $N$.
+Die spezifischen $\lambda$ Parameter kontrollieren die Übergänge zwischen den $S$ und $L$ Klassen, also quasi die latente Infektion. Wie zuvor auch ist die Populationszahl $N = S_{A} + S_{B} + L_{A} + L_{B} + L_{Am} + L_{Bm} + I + I_{m} + T + T_{m}$ errechnet durch alle Variablen zum Zeitpunkt $t$.
 
 \begin{gather*}
   \lambda = \beta \rho (I + oT)) \/ N \\
   \lambda _{d} = \beta_{m} \rho (I_{m} + oT_{m})) / N \\
   \lambda _{dm} = \chi\beta_{m} \rho (I_{m} + oT_{m})) / N \\
-  N = S_{A} + S_{B} + L_{A} + L_{B} + L_{Am} + L_{Bm} + I + I_{m} + T + T_{m}
 \end{gather*}
+
+Die eingestellten Parameter für dieses Modell sind im folgenden aufgelistet und nahe an \cite{Trauer2014} angelehnt.
+
+\begin{table}[ht]
+\centering
+\small
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|c|c|}
+\hline
+Variable & Wert & Beschreibung \\
+\hline
+\multicolumn{2}{|c}{Infektionsparameter} & \multicolumn{1}{c|}{} \\
+\hline
+$\epsilon$ & 0.129 & Early progression - Diel et al. (2011) \\
+$\kappa$ & 0.821 & Transition to late latency \\
+$\nu$ & 0.075 & Reactivation - Blower et al. (1995) \\
+$\gamma$ & 0.63 & Spontaneous Recovery - Tiemersma et al. (2011) \\
+$\mu _{i}$ & 0.37 & TB death rate \\
+$\mu _{t}$ & $0.5 \cdot \mu _{i}$ & Treated TB death rate - Harries et al. (2001) \\
+$\eta$ & 0.035 & Amplification - Cox et al. (2007) \\
+$o$ & 0.21 & Treatment modification of infectiousness - Fitzwater et al. (2010) \\
+$\chi$ & 0.49 & Partial immunity - Colditz et al. (1994) \\
+$\phi$ & 2 & Drug susceptible treatment rate per year - WHO (2010) \\
+$\phi _{m} $ & 0.5 & MDR-TB treatment rate per year \\
+\hline
+\multicolumn{2}{|c}{Populationsparameter} & \multicolumn{1}{c|}{} \\
+\hline
+$\pi $ & 0.025 & Birth rate during sensivity Analysis - UNDESA \\
+$\mu $ & 0.016 & TB-free mortality - WHO (2013b) \\
+$\rho $ & 0.35 & Infectious propertion - WHO (2013c) \\
+\hline
+\multicolumn{2}{|c}{Kontrollparameter} & \multicolumn{1}{c|}{} \\
+\hline
+$\iota $ & 0.65 & BCG vaccination rate - World Bank (2013) \\
+$\delta $ & 0.65 & Detection rate - WHO (2013c) \\
+$\delta _{m}$ & 0 & MDR-TB detection \\
+$\omega $ & 0.25 & Default rate - WHO (2013c) \\
+$\beta $ & 0.25 & Effective contact rate \\
+$mdr$ & 0.06 & proportion of cases MDR-TB 4-6\% \\
+\hline
+\end{tabular}}
+\label{table:mdr-tb-parameters}
+\end{table}
+
+Die Resultate des Modells waren relativ klar. Sobald es zwei Populationen gibt mit TB und MDR-TB, überwiegt die Infektionsrate von MDR-TB die der TB.
+Das liegt daran, dass die Flüsse zur MDR-TB wesentlich deutlicher ausgebaut waren. Es ist zu beobachten das enorm wenig Anteile der Population in einen Heilungsprozess kommen. Es scheint fast so als wenn jedes Individuum in der Population zwangsweise TB kriegen muss. Außerdem durch fehlende Geburtenrate sind am Ende der Zeit fast alle gestorben, durch die Sterbe und Mortalitätsrate durch TB. Hier fehlt ein System das sich theoretisch auf einem Equlibrium einpendelt bzw. wo die Krankheitsausbreitung deutlich geringer ist.
+
+\begin{minipage}{0.6\linewidth}
+  \includegraphics[width=\linewidth]{images/mdr_tb_1}
+  \label{fig:mdr-tb-1}
+\end{minipage}\hfill
+\begin{minipage}{0.4\linewidth}
+  Alle Geheilten $T$ Individuen sind direkt in die Klasse $S_{B}$ gekommen. Es ist zu beobachten das die empfänglichen enorm schnell abnehmen und zeitgleich latent infizierte übermäßig stark zunehmen. Die Infizierten wiederrum nehmen erst stark zu und dann ab. Es heilen sehr wenig aus der Population und es scheint als ob die Heilung gegen 0 läuft.
+\end{minipage}\\\\
+
+\begin{minipage}{0.4\linewidth}
+  In Abbild \ref{fig:mdr-tb-2} hingegen ist zu beobachten das die empfänglichen leicht zunehmen und zeitgleich latent infizierte extrem zunehmen. Diese kommen aus der Gruppe ohne MDR-TB. Vor allem die Gruppe der langfristig infizierten nimmt zu. Der Trend aller Kurven nach unten ist durch die Sterberate $\mu$ zu begründen. Die infizierten wiederrum sind deutlich geringer, nehmen aber über Zeit zu.
+\end{minipage}\hfill
+\begin{minipage}{0.6\linewidth}
+  \includegraphics[width=\linewidth]{images/mdr_tb_2}
+  \label{fig:mdr-tb-2}
+\end{minipage}
+
+Durch diese Art der Modellierung kann durch Variationen der Parameter geschaut werden was effiziente Strategien wären um TB in dieser Simulation einzudämmen. Dies ist mir in diesem Fall leider nicht gelungen. Die Approximation von optimalen Parametern ist nicht analytisch lösbar und erfordert einige Anstrengungen um Möglichkeiten über stochastische Prozesse zu zeigen. \\
+
+Durch die wenig brauchbaren Ergebnisse in diesem Bereich wird im folgenden ein Ansatz beschrieben der besser funktioniert hat. Außerdem wird ein Schritt zurück gemacht, bevor ein Modell die Realität modellieren kann, muss es erstmal modellieren können. Sinnvolle Konklusionen lassen sich auch aus hypothetischen Simulationen herleiten.
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
-\blindtext
+@TODO
 
 \subsection{Modell}
 
-\blindtext
+@TODO
 
 \subsection{Mesa}
 
-\blindtext
+@TODO
 
 \subsection{Einfluss von Impfung}
 
-\blindtext
+@TODO
 
 \subsection{Einfluss von Immunerkrankungen}
 
-\blindtext
+@TODO
 
 \subsection{Einfluss von Lokalität}
 
-\blindtext
-
-\section{Statistische Modelle}
-
-\blindtext
+@TODO
 
 \section{Fazit}
 
