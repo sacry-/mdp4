@@ -240,40 +240,9 @@ Wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeit
 
 Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. Die durchschnittliche Rate ist der orangenen Linie zu entnehmen. Es ist ein stettiges Wachstum auf ein level zugehend von 320 Millionen im Jahr 2015.
 
-\subsection{Clustered SELEIR Modell}
-
-Das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} arbeitet mit zwei Populationen $N_{1}$ und $N_{2}$. Das Transfer Diagramm \ref{fig:clustered-seleir} zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen, allerdings deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent exposierten Individuen. Wie zuvor gillt der Kreislauf $U \rightarrow E \rightarrow A \rightarrow R$.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_model}
-  \caption{Clustered Tuberkulose in \cite{ModellingTBEpidemics2009}}
-  \label{fig:clustered-seleir}
-\end{figure}
-
-Zusätzlich kommt hinzu das die latente Phase deutlich fein granularer dargestellt wird. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. \\
-
-Die Cluster Variante des obigen Systems kommt dadurch zustande das zwei Populationen durch zwei Differentialgleichungssysteme modelliert werden. Das obere System wird also dupliziert und eine explizite Abhängigkeit aufgebaut. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen.
-
-\subsubsection{Experiment}
-
-Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mit generellen Populationsparametern für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt.
-
-@TODO - Parameter eingeben. \blindtext
-
-Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün.
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
-  \label{fig:clustered-seleir-compare}
-\end{figure}
-
-Es wird offensichtlich klar das der generelle Trend zwar getroffen wird, die Vorhersage aber überhaupt nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch. Jeder Parameter ist theoretisch im Wandel über Zeit, wofür keine wirkliche Anpassung statt gefunden hat.
-
 \subsection{SEEIR MDR-TB Modell}
 
-Nachdem das erste Modell nur mäßig den Trend gefunden hat, wurde im zweiten Modell versucht das Experiment in Matlab von \cite{Trauer2014} reproduziert um ein System mit MDR-TB zu modellieren und die Übergänge der Compartments zu sehen. Das Modell von \cite{Trauer2014} ist in Abbildung \ref{fig:mdr-tb-model} zu sehen.
+In einem ersten Experiment wurde versucht das Modell von \cite{Trauer2014} in Matlab zu implementieren. Das reproduzieren  ist aufgrund der menge an Differentialgleichungen und Parameter gar nicht so trivial gewesen. Das System inkorperiert MDR-TB und ist in zwei größere Gruppen eingeteilt. Das Modell von \cite{Trauer2014} ist in Abbildung \ref{fig:mdr-tb-model} zu sehen.
 
 \begin{minipage}{0.4\linewidth}
   \includegraphics[width=\linewidth]{images/mdr_tb_model}
@@ -369,9 +338,34 @@ Das liegt daran, dass die Flüsse zur MDR-TB wesentlich deutlicher ausgebaut war
   \label{fig:mdr-tb-2}
 \end{minipage}
 
-Durch diese Art der Modellierung kann durch Variationen der Parameter geschaut werden was effiziente Strategien wären um TB in dieser Simulation einzudämmen. Dies ist mir in diesem Fall leider nicht gelungen. Die Approximation von optimalen Parametern ist nicht analytisch lösbar und erfordert einige Anstrengungen um Möglichkeiten über stochastische Prozesse zu zeigen. \\
+Durch diese Art der Modellierung kann durch Variationen der Parameter geschaut werden was effiziente Strategien wären um TB in dieser Simulation einzudämmen. Dies ist mir in diesem Fall leider nicht gelungen. Die Approximation von optimalen Parametern ist nicht analytisch lösbar und erfordert einige Anstrengungen um Möglichkeiten über stochastische Prozesse zu zeigen.
 
-Durch die wenig brauchbaren Ergebnisse in diesem Bereich wird im folgenden ein Ansatz beschrieben der besser funktioniert hat. Außerdem wird ein Schritt zurück gemacht, bevor ein Modell die Realität modellieren kann, muss es erstmal modellieren können. Sinnvolle Konklusionen lassen sich auch aus hypothetischen Simulationen herleiten.
+\subsection{Clustered SELEIR Modell}
+
+Das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} arbeitet mit zwei Populationen $N_{1}$ und $N_{2}$. Das Transfer Diagramm \ref{fig:clustered-seleir} zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen, allerdings deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent exposierten Individuen. Wie zuvor gillt der Kreislauf $U \rightarrow E \rightarrow A \rightarrow R$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_model}
+  \caption{Clustered Tuberkulose in \cite{ModellingTBEpidemics2009}}
+  \label{fig:clustered-seleir}
+\end{figure}
+
+Zusätzlich kommt hinzu das die latente Phase deutlich fein granularer dargestellt wird. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. \\
+
+Die Cluster Variante des obigen Systems kommt dadurch zustande das zwei Populationen durch zwei Differentialgleichungssysteme modelliert werden. Das obere System wird also dupliziert und eine explizite Abhängigkeit aufgebaut. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen.
+
+\subsubsection{Experiment}
+
+Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mit generellen Populationsparametern für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt. Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
+  \label{fig:clustered-seleir-compare}
+\end{figure}
+
+Es wird offensichtlich klar das der generelle Trend zwar getroffen wird, die Vorhersage aber überhaupt nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch. Jeder Parameter ist theoretisch im Wandel über Zeit, wofür keine wirkliche Anpassung statt gefunden hat.
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
