@@ -3,6 +3,7 @@
 \usepackage{tocloft}
 \usepackage{titling}
 \usepackage{blindtext}
+\usepackage{subcaption}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[ngerman]{babel}
@@ -34,8 +35,9 @@
 \newcommand {\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
 
 \usepackage{listings}
-\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
-\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\usepackage{color}
+
+\definecolor{mygreen}{RGB}{28,172,0}
 \definecolor{mylilas}{RGB}{170,55,241}
 \lstdefinestyle{matlab}{language=Matlab,%
   breaklines=true,%
@@ -50,6 +52,32 @@
   stepnumber=1,
   emph=[1]{for,end,break},emphstyle=[1]\color{blue},
   % frame=tb,
+  rulesepcolor=\color{black},
+  rulecolor=\color{black},
+  framesep=3pt,
+  xleftmargin=3pt,
+  xrightmargin=8pt,
+  tabsize=2
+}
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+\lstdefinestyle{python}{language=Python,%
+  breaklines=true,%
+  otherkeywords={self},
+  morekeywords={},
+  keywordstyle=\color{deepblue},%
+  morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+  identifierstyle=\color{black},%
+  stringstyle=\color{deepgreen},
+  commentstyle=\color{black},%
+  showstringspaces=false,%without this there will be a symbol in the places where there is a space
+  basicstyle=\footnotesize,
+  stepnumber=1,
+  emph={MyClass,__init__,for,in,break,continue,try,except},
+  emphstyle=\color{deepred},
+  frame=tb,
   rulesepcolor=\color{black},
   rulecolor=\color{black},
   framesep=3pt,
@@ -128,7 +156,7 @@ An diesem Model wird relativ schnell klar warum TB so gefährlich ist. Betroffen
 
 \subsection{Behandlung}
 
-Die Behandlung von TB kann vielschichtig erfolgen. Häufig eignet sich eine Impfung direkt bei der Geburt, aber auch später bei bisheriger nicht Erkrankung. Besondere Maßnahmen müssen bei TB und HIV berücksichtigt werden. Die Inzidenzrate von TB ist fast endemisch bei Trägern von HIV. Da HIV über Blut oder Körpersekrete weitergegeben wird, sind vor allem Länder betroffen wo es einen hohen Teil an HIV infizierten gibt, schlechte Aufklärung und Mittel zur Verhütung. In Regionen wo TB bereits als Epidemie ausgebrochen ist, muss die Bevölkerung aufgeklärt werden, sodass gegenschritte eingeleitet werden können. Zentren für Medikation, Behandlungen von Erkrankten und Isolation von der gesunden Bevölkerung. Isolation ist hier besonders wichtig, sowohl für nicht erkrankte als auch erkrankte. Betroffene Regionen müssen gewarnt werden sodass erkrankte selbstständig Hilfe suchen und nicht Betroffene nur für die wichtigsten Fälle in die Öffentlichkeit gehen. Individuen können des weiteren Alkohol und Zigarettenkonsum einstellen.
+Die Behandlung von TB kann vielschichtig erfolgen. Häufig eignet sich eine Impfung direkt bei der Geburt, aber auch später bei bisheriger nicht Erkrankung. Besondere Maßnahmen müssen bei TB und HIV berücksichtigt werden. Die Inzidenzrate von TB ist fast endemisch bei Trägern von HIV. Da HIV über Blut oder Körpersekrete weitergegeben wird, sind vor allem Länder betroffen wo es einen hohen Teil an HIV infizierten gibt, schlechte Aufklärung und Mittel zur Verhütung. In Regionen wo TB bereits als Epidemie ausgebrochen ist, muss die Bevölkerung aufgeklärt werden, sodass gegenschritte eingeleitet werden können. Zentren für Medikation, Behandlungen von Erkrankten und Isolation von der gesunden Bevölkerung. Isolation ist hier besonders wichtig, sowohl für nicht erkrankte als auch erkrankte. Betroffene Regionen müssen gewarnt werden sodass erkrankte selbstständig Hilfe suchen und nicht Betroffene nur für die wichtigsten Fälle in die Öffentlichkeit gehen. Individuen können des weiteren Alkohol und Zigarettenkonsum einstellen. @TODO(QUOTE)
 
 \subsection{Faktoren}
 
@@ -146,7 +174,7 @@ Es gibt einige Faktoren die besonders gut die Ausbreitung von Tuberkulose beschr
   \item TB resistent gegen Medikation (MDR-TB)
 \end{itemize}
 
-Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prediktoren für TB sind.
+Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prediktoren für TB sind. @TODO(QUOTE)
 
 \subsection{Ausbreitung von Infektionskrankheiten}
 
@@ -161,7 +189,6 @@ Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Mode
 \end{enumerate}
 
 Im Folgenden werden die Compartment Modelle und die agentenbasierte Modellierung am Beispiel von Tuberkulose beschrieben und erläutert.
-
 
 \section{Compartment Modelle zur Ausbreitung von Tuberkulose}
 
@@ -369,27 +396,273 @@ Es wird offensichtlich klar das der generelle Trend zwar getroffen wird, die Vor
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
-@TODO
+Mit der agentenbasierte Modellierung (ABM) werden Individuen oder Kolletikve simuliert und deren Aktionen in einer bestimmten Sichtweise analysiert. Das Ziel ist es neue Erkenntnisse aus den Interaktionsmustern zu entwickeln. Im Vergleich zu den Compartment Modellen ist es bei ABM möglich auch die Lokalität eines Agenten einfliessen zu lassen. Ferner lassen sich Agenten aus so gennante Schichten legen, wobei jede Schicht für unterschiedliche Modellierungsaspekte steht. Es kann z.B. eine Schicht für die physikalischen Interaktionsmuster und Wege existieren und eine andere um die soziale Zusammensetzung in der Bevölkerung zu modellieren. Jede Abstraktionsebene kann das Modell getrennt von den anderen Aspekten erweitern. @TODO(QUOTE) \\
 
-\subsection{Modell}
+Im Folgenden wird ein Modell vorgestellt das die Ausbreitung von Tuberkulose auf einem einfachen Grid welches die Agenten in einem Random-Walk über dieses laufen lässt. Nur bei direktem Kontakt auf demselben oder umliegenden Grid kann eine Infektion erfolgen. Verschiedenste Bevökerungsparameter und Übergangswahrscheinlichkeiten wie in Compartment Modellen kommen zum Einsatz. Die Simulation wurde in Python Mesa, einem ABM Framework, geschrieben.
 
-@TODO
+\subsection{Modellierung von Tuberkulose in Mesa}
 
-\subsection{Mesa}
+Mesa ist ein ABM Framework in Python \cite{Mesa}. Es existieren unterschiedliche FUnktionalitäten um Agenten auf einem oder mehreren Feldern zu platizeren und mit diesen über einen Zeitraum zu planen. Im folgenden ein paar Erläuterungen zu dem Mesa Framework und der Modellierung von Tuberkulose. Die AgentenDistribution hält alle Populationsparameter. Jeder neue Agent wird aus dieser Klasse mit Stichprobenparametern befüllt. Unter anderem kommt hier das Konzept von den Compartment Modellen - $SLIR$ - zum einsatz um Agenten in einzelne Klassen einteilen zu können.
 
-@TODO
+\begin{lstlisting}[style=python]
+class AgentDistribution():
 
-\subsection{Einfluss von Impfung}
+  def __init__(self, S=100., L=10., I=1., R=0.):
+    pass
+\end{lstlisting}
 
-@TODO
+Agenten müssen auf einem Grid platziert werden können. Zu aller erst wird eine neue Stichprobe generiert und aufgrund dieser Daten ein Agent erzeugt. Jeder Agent wird in dem Scheduler hinzugefügt und auf dem Grid platziert. In jedem Update oder Tick wird die Simulation um eine Zeiteinheit $t$ weitergführt. Der scheduler geht Round Robin alle Agenten  durch und sammelt Daten. Ein Agent bewegt sich aufgrund seines zu implementierenden step interfaces. Dieser step wird an alle Agenten propagiert die dann ihre individuellen Handlungen durchführen.
 
-\subsection{Einfluss von Immunerkrankungen}
+\begin{lstlisting}[style=python]
+from Mesa import Model
+from grid import Grid
 
-@TODO
+class DiseaseModel(Model, Grid):
 
-\subsection{Einfluss von Lokalität}
+  def __init__(self, agent_dist, width, height):
+    Grid.__init__(self, width, height)
 
-@TODO
+    self.number_of_agents = agent_dist.N
+    self.time_unit = agent_dist.time_unit
+    self.agent_dist = agent_dist
+
+    self.schedule = RandomActivation(self)
+
+    for i in range(self.number_of_agents):
+      self.create_agent(unique_id=i)
+
+  def create_agent(self, unique_id=None):
+    attributes = self.agent_dist.generate_sample()
+    agent = Human(unique_id, self, attributes)
+    self.schedule.add(agent)
+    self.place_agent(agent)
+
+  def step(self):
+    self.dc.collect(self)
+    self.schedule.step()
+\end{lstlisting}
+
+Der Mesa Agent besitzt alle nötigen Eigenschaften um mit anderen Agenten zu kommunizieren und wichtige Lokalitätskriterien abzufragen. Ein speziellerer AAgent kann davon abgeleitet werden um spezieller Bewegungsabfolgen wie z.B. Random Walks zu setzen. Der TBAgent besitzt dann alle Eigenschaften um speziellere Aktionen bezüglich der Tuberkulose aufzunehmen. Ein Mensch hat prinzipiell nichts mit TB zutun weshalb dieser dann eine Unterkategorie des TBAgent darstellt. Der Mensch kann sich reproduzieren, sterben, altern und sich bewegen. Besonders interessant ist der $step$, den jeder Agent bei jedem Update durchführt. Die Aktionen sind bewegen, altern, repoduzieren, den Tuberkulose Status neu setzen die Mortalität des Individums berechnen.
+
+\begin{lstlisting}[style=python]
+import tuberculosis as tb
+
+from mesa import Agent
+
+class AAgent(Agent):
+
+  def __init__(self, unique_id, model):
+    Agent.__init__(self, unique_id, model)
+
+class TBAgent(AAgent):
+
+  def __init__(self, unique_id, model):
+    AAgent.__init__(self, unique_id, model)
+
+  def subsceptible(self):
+    return tb.subsceptible(self.state)
+
+  def infected(self):
+    return tb.infected(self.state)
+
+class Human(TBAgent):
+
+  def __init__(self, unique_id, model, attrs):
+    TBAgent.__init__(self, unique_id, model)
+
+    self.age = attrs['age']
+    self.birth = attrs['birth']
+    # ...
+
+  def step(self):
+    self.move()
+    self.aging()
+    self.reproduce()
+    state = tb.next_state(self)
+    self.update_state(state)
+    self.chance_of_death()
+\end{lstlisting}
+
+Das Tuberkulose Modell beinhaltet alle Parameter zur Tuberkulose und die Berechnung der Infektions und Übergangswahrscheinlichkeiten. Jeder $Human$ Agent muss daher bestimmte Attribute wie Alter, HIV positiv/negativ, Impfung, weitere Immunerkrankungen, TB Behandlung/Therapie und die Lebenserwartung. Es müssen weitere Interfaces erfüllt sein um die Lokalität des Agenten und der herumliegenden Agenten abzufragen.
+
+\begin{lstlisting}[style=python]
+def next_state(h):
+  state = h.state
+
+  if h.vaccinated:
+    return R
+
+  aging_chance = aging(h.age, h.le)
+
+  if state == S:
+    if infect(h.inf_cm(), h.inf_nb()):
+      state = SState(h.hiv, h.immune_diseases, aging_chance)
+
+  elif state == L:
+    state = LState(h.treatment, h.hiv, h.immune_diseases, aging_chance)
+
+  elif state == I:
+    state = IState(h.treatment, h.hiv, h.immune_diseases, aging_chance)
+
+  elif state == R:
+    if infect(h.inf_cm(), h.inf_nb()):
+      state = RState(h.treatment, aging_chance)
+
+  else:
+    raise Exception("'state={}' must be in {}!".format(state, ", ".join(STATES)))
+
+  return state
+\end{lstlisting}
+
+Impfung führt immer zu $R$, nur im $S$ oder $R$ Status kann ein Agent infiziert werden. Diese Wahrscheinlichkeit wird durch $infect$ berechnet wodurch überhaupt determiniert wird ob es eine Ansteckungsgefahr gibt. Die Ansteckungsgefahr wird durch die umliegenden, aktiven und erkrankten Agenten berechnet. Nicht jeder direkte Kontakt führt zu einer direkten Ansteckung. Danach wird berechnet, aufgrund der Agentenparameter, wie wahrscheinlich ein Agent in das latente oder ative TB Stadium läuft. \\
+
+Zu guter letzt kann die Simulation über ein Backend Server abgerufen werden. Hierbei bindet Mesa sich an eine konfigurierte IP, standardmäßig 127.0.0.1 auf einem festgelegten Port z.B. 9000. Über z.B. einen Browser kann dann über \textit{http://127.0.0.1:9000} auf die Simulations GUI zugegriffen werden. In Abbildung \ref{fig:mesa-grid} ist das Simulationsgrid zu erkennen, wobei $S$, rund und Blau, $R$, rund und Grün, $L$, rechteckig und Gelb und $I$, rechteckig und Rot, ist. In Abbildung \ref{fig:n-population} die Gesamtpopulation, wobei auf der Y-Achse die Bevölkerungsanzahl zu einem zeitpunkt $t$ auf der X-Achse zu sehen ist.
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/mesa-grid}
+    \caption{Das Mesa Grid}
+    \label{fig:mesa-grid}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/n-population}
+    \caption{Die Gesamtpopluation $N = S + L + I + R$}
+    \label{fig:n-population}
+  \end{subfigure}
+\end{figure}
+
+\newpage
+
+Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig:l-i-population}, für $L$ und $I$, sowie in Abbildung \ref{fig:s-r-population}, für $S$ und $R$ beobachtet werden. Die Simulation ist in Jahren und wurde wie zu sehen auf der X-Achse über ca 100 Jahre geführt.
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/l-i-population}
+    \caption{Die Popluationen $L$ und $I$}
+    \label{fig:l-i-population}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/s-r-population}
+    \caption{Die Popluationen $S$ und $R$}
+    \label{fig:s-r-population}
+  \end{subfigure}
+\end{figure}
+
+\subsection{Eigenschaften des Modells}
+
+Das vorliegende ABM Modell in Mesa ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigneschaften von Distributionen ausgenutzt und Effekte erklärt die in der SImulation auftauchen können. Aßerdem werden Parameter vorgestellt und anschließend ein paar Experimente beschrieben. Für das ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Die Binominal Distribution entnimmt die Probe über
+
+\begin{gather*}
+  P(k; n, p) = P(X = k) = {{n}\choose{k}}p^{k}(1 - p)^{n - k} \\
+  {{n}\choose{k}} = \frac{n!}{k!(n-k)!}
+\end{gather*}
+
+Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten Raum kommen. Es wird dann eine Distribution mit $0$ und $1$ aufgestellt, wobei $0$ für keine Ausprägung und $1$ für eine Ausprägung steht. Diese Ausprägungen werden dann über einen Parameter p mit Anteilen belegt. Die resultierende Binominaldistribution zieht dann Stichproben mit einer Wahrscheinlichkeit, dass der Wert $0$ ist und die Restwahrscheinlichkeit, dass der Wert $1$ ist. \\
+
+Interessanter wird es mit der Gamma Distribution. Das Alter einer Bevölkerung lässt sich interessanterweise so initialisieren wie in Abbildung \ref{fig:gamma-age-dist} zu sehen.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.8\textwidth,keepaspectratio]{images/gamma-age-dist}
+  \label{fig:gamma-age-dist}
+\end{figure}
+
+Die vorliegende Bevölkerung ist im Durchschnitt über 10 und unter 40 und die Lebenserwartung einzelner Individuen sehr gering zum Alter hinaus. Für die Simulation wurden insgesamt folgende Parameter angenommen
+
+\begin{itemize}
+  \item{Alter - Stichproben gezogen aus der Gamma Distribution.}
+  \item{Geburtenrate - in prozentualen Anteilen per Update. (entscheidet darüber ob ein Individuum sich Fortpflanzt)}
+  \item{Impfung - Ein prozentualer Anteil der variable eingestellt wird und von einer Binominaldistribution gezogen wird.}
+  \item{State - Die Klasse $S$, $L$, $I$ oder $R$.}
+  \item{Behandlung - ob ein Individuum Behandlung bekommt oder nicht, wird von einer Binominaldistribution gezogen.}
+  \item{HIV - Hat das Individuum HIV oder nicht.}
+  \item{Immunkrankheiten - Hat das Individuum andere Immunerkrankungen.}
+\end{itemize}
+
+Außerdem wurden folgende Effekte ins Spiel gebracht
+
+\begin{itemize}
+  \item{Neugeborene - Die Geburtenrate entscheidet wieviele Individuen neu erzeugt werden pro Update. Neugeborene sind standardmäßig immer 0 Jahre alt bei der Geburt und bekommen HIV nur dann wenn die Eltern diese Krankheit auch haben. Ob die Eltern geimpft sind gibt einen Ausschlag darüber aus ob Kinder ebenfalls geimpft werden.}
+  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod, ferner gibt es eine Sterberate an Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
+  \item{Die Umgebung eines Individuums spielt eine Rolle, da mehr Kontakt zu anderen Infizierten das Risiko deutlich erhöht. Es gibt auf dem Grid einen Radius der Infektion, der bestimmt über wieviele Felder die Infizierte andere anstecken können.}
+  \item{Die Zeit, wenn ein Individuum in der Klasse $E$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $I$ zu wandern steigt mit fortlaufender Zeit.}
+  \item{Die Zeit, wenn ein Individuum in der Klasse $I$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $R$ zu wandern oder zu Sterben steigt mit fortlaufender Zeit.}
+  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod, ferner gibt es eine Sterberate an Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
+\end{itemize}
+
+Die Übergangswahrscheinlichkeiten werden Ahnand eines Markov Prozesses definiert. Jeder Agent hat nur den aktuellen State in seiner Aktuellen Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
+
+\begin{gather*}
+\Pr(X_{n+1}=x\mid X_{1}=x_{1},X_{2}=x_{2},\ldots ,X_{n}=x_{n})=\Pr(X_{n+1}=x\mid X_{n}=x_{n}) \\
+\Pr(X_{1}=x_{1},\ldots,X_{n}=x_{n})>0
+\end{gather*}
+
+Das heißt, der nächste Zustand $x_{n + 1}$, daher z.B. die Übergangswahrscheinlichkeit das $x_{n} = L$ in die Klasse $x_{n + 1} = I$ läuft ist nur bedingt durch den derzeitigen Zustand $x_{n}$. Das heißt konkret das $x_{n-1}, x_{n-2}, \ldots, x_{1}$ keine Rolle spielen. Nach der Bayesianischen Forderung wollen wir im Prinzip aus dem aktuellen Wissen ``prior'' und neuen Beochbachtungen eine neue Erkenntnis ``posterior'' Distribution finden. Jeder Agent wird dadurch simuliert wieviele der anderen Agenten sich in den einzelnen Klassen befinden, durch seine individuellen Ausprägungen und durch die die Übergangswahrscheinlichkeiten der oben beschriebenen Markov Kette über die Klassen.
+
+\[
+M=
+  \begin{bmatrix}
+    .95 & .05 & .0 & .0 \\
+    .0 & .9 & .1 & .0 \\
+    .0 & .1 & .7 & .2 \\
+    .0 & .45 & .05 & .5 \\
+  \end{bmatrix}
+  \begin{tabular}{c}
+    \text{S - Empfänger} \\
+    \text{L - latent Infizierte} \\
+    \text{I - Infizierte} \\
+    \text{R - Geheilte}
+  \end{tabular}
+\]
+
+Die Markov Kette für Übergangswahrscheinlichkeiten ist in Kombination mit den folgenden Parametern das komplette Modell.
+
+\begin{table}[ht]
+\centering
+\small
+\resizebox{\textwidth}{!}{
+\begin{tabular}{|c|c|c|}
+\hline
+Variable & Wert & Beschreibung \\
+\hline
+\multicolumn{2}{|c}{Distributionen und Initialisierung} & \multicolumn{1}{c|}{} \\
+\hline
+$S$ & 100 & Epfänger \\
+$L$ & 10 & Latent Infizierte \\
+$I$ & 1 & Infizierte \\
+$R$ & 0 & Geheilte \\
+Alter & $Gamma(k=2.0,\theta=15, N=N)$ & Alter, Formparameter $k$ und Skalierungsparameter $\theta$ über die Population $N$ \\
+Lebenserwartung & $80$ & Normalverteilung um $80$ herum mit Varinaz von $10$ \\
+Geimpfte & $0.1$ & Geimpfte Teile der Bevölkerung \\
+Geburtenrate & $0.013$ & Wahrscheinlichkeit auf Neugeburt pro Tick \\
+HIV & $0.1$ & Wahrscheinlichkeit auf HIV bei Initialisierung und Neugeburt \\
+Behandlung & $0.3$ & Wahrscheinlichkeit auf HIV Behandlung bei Erkrankung \\
+Immunkrankheiten & $0.2$ & Wahrscheinlichkeit auf Immunerkrankung bei Initialisierung oder Neugeburt \\
+\hline
+\multicolumn{2}{|c}{Lokalitätsparameter} & \multicolumn{1}{c|}{} \\
+\hline
+Infektionsradius & $5$ & Reichweite der Ansteckungsgefahr sind $5$ Felder \\
+Bewegungsweite & $1$ & Schritt pro Agent pro Tick. \\
+Moore + Center & $True$ & Diagonale zählen als Nachbarn + mehrere Agenten auf einem Platz \\
+Infektionsrisiko Center & $0.3$ & Wahrscheinlichkeit das eine Infektion auftritt wenn Infizierter auf demselben Feld \\
+Infektionsrisiko Nachbar & $0.1$ & Wahrscheinlichkeit das eine Infektion auftritt wenn Infizierter auf einem benachbarten Feld \\
+\hline
+\multicolumn{2}{|c}{Risikoparameter} & \multicolumn{1}{c|}{} \\
+\hline
+HIV Risiko & $0.4$ & Wahrscheinlichkeit das eine Klasse in die nächste wandert ist ehhört bei HIV \\
+Immunkrankheiten Risiko & $0.1$ & Wahrscheinlichkeit das eine Klasse in die nächste wandert ist ehhört bei Immunkrankheiten \\
+Behandlung Chance & $0.4$ & Wahrscheinlichkeit das Infizierter geheilt wird ist erhöht \\
+Alter Risiko & $\frac{Alter}{Lebenserwartung} \cdot 0.001$ & Wahrscheinlichkeit das eine Klasse in die nächste wandert ist ehört bei höherem Alter \\
+\hline
+\end{tabular}}
+\label{table:agent-parameters}
+\end{table}
 
 \section{Fazit}
 

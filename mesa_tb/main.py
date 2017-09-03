@@ -86,18 +86,17 @@ def agent_portrayal(agent):
 
 
 if __name__ == "__main__":
-  config = dict(S=2000., L=0., I=6., R=0.)
-  # config = dict(S=100., L=6., I=2., R=0.)
+  config = dict(S=300., L=6., I=2., R=0.)
   agent_dist = AgentDistribution(**config)
   width, height = get_dimensions(agent_dist.N)
-  pixel = 750
+  pixel = 800
   grid = CanvasGrid(agent_portrayal, width, height, pixel, pixel)
 
-  li = ChartModule([{"Label": "exposed", "Color": color("yellow")}, {"Label": "infectious", "Color": color("red")}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
-  n = ChartModule([{"Label": "n", "Color": "Black"}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
-  sr = ChartModule([{"Label": "subsceptibles", "Color": color("blue")}, {"Label": "recovered", "Color": color("green")}], data_collector_name='dc', canvas_height=300, canvas_width=pixel)
+  li = ChartModule([{"Label": "exposed", "Color": color("yellow")}, {"Label": "infectious", "Color": color("red")}], data_collector_name='dc', canvas_height=300, canvas_width=500)
+  n = ChartModule([{"Label": "n", "Color": "Black"}], data_collector_name='dc', canvas_height=300, canvas_width=500)
+  sr = ChartModule([{"Label": "subsceptibles", "Color": color("blue")}, {"Label": "recovered", "Color": color("green")}], data_collector_name='dc', canvas_height=300, canvas_width=500)
 
-  server = ModularServer(DiseaseModel, [li, sr, n, grid], "Disease Model", agent_dist, width, height)
+  server = ModularServer(DiseaseModel, [grid, li, sr, n], "Disease Model", model_params={"agent_dist" : agent_dist, "width" : width, "height" : height})
   server.port = 9000
   server.launch()
 
