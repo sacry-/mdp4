@@ -262,6 +262,7 @@ Wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeit
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.7\textwidth,keepaspectratio]{images/us-population}
+  \caption{US Population zwischen 1953-2015}
   \label{fig:us-population}
 \end{figure}
 
@@ -389,6 +390,7 @@ Das Experiment mit dem Clustered SELEIR Modell ist herauszufinden wie gut man mi
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
+  \caption{Clustered SELEIR Modell}
   \label{fig:clustered-seleir-compare}
 \end{figure}
 
@@ -559,8 +561,8 @@ Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig
 Das vorliegende ABM Modell in Mesa ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigneschaften von Distributionen ausgenutzt und Effekte erklärt die in der SImulation auftauchen können. Aßerdem werden Parameter vorgestellt und anschließend ein paar Experimente beschrieben. Für das ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Die Binominal Distribution entnimmt die Probe über
 
 \begin{gather*}
-  P(k; n, p) = P(X = k) = {{n}\choose{k}}p^{k}(1 - p)^{n - k} \\
-  {{n}\choose{k}} = \frac{n!}{k!(n-k)!}
+  P(k; n, p) = P(X = k) = \binom{n}{k}p^{k}(1 - p)^{n - k} \\
+  \binom{n}{k} = \frac{n!}{k!(n-k)!}
 \end{gather*}
 
 Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten Raum kommen. Es wird dann eine Distribution mit $0$ und $1$ aufgestellt, wobei $0$ für keine Ausprägung und $1$ für eine Ausprägung steht. Diese Ausprägungen werden dann über einen Parameter p mit Anteilen belegt. Die resultierende Binominaldistribution zieht dann Stichproben mit einer Wahrscheinlichkeit, dass der Wert $0$ ist und die Restwahrscheinlichkeit, dass der Wert $1$ ist. \\
@@ -570,6 +572,7 @@ Interessanter wird es mit der Gamma Distribution. Das Alter einer Bevölkerung l
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.8\textwidth,keepaspectratio]{images/gamma-age-dist}
+  \caption{Gamma Distribution für Altersverteilungen}
   \label{fig:gamma-age-dist}
 \end{figure}
 
@@ -579,7 +582,7 @@ Die vorliegende Bevölkerung ist im Durchschnitt über 10 und unter 40 und die L
   \item{Alter - Stichproben gezogen aus der Gamma Distribution.}
   \item{Geburtenrate - in prozentualen Anteilen per Update. (entscheidet darüber ob ein Individuum sich Fortpflanzt)}
   \item{Impfung - Ein prozentualer Anteil der variable eingestellt wird und von einer Binominaldistribution gezogen wird.}
-  \item{State - Die Klasse $S$, $L$, $I$ oder $R$.}
+  \item{Klassen - Die Klasse $S$, $L$, $I$ oder $R$.}
   \item{Behandlung - ob ein Individuum Behandlung bekommt oder nicht, wird von einer Binominaldistribution gezogen.}
   \item{HIV - Hat das Individuum HIV oder nicht.}
   \item{Immunkrankheiten - Hat das Individuum andere Immunerkrankungen.}
@@ -596,7 +599,7 @@ Außerdem wurden folgende Effekte ins Spiel gebracht
   \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod, ferner gibt es eine Sterberate an Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
 \end{itemize}
 
-Die Übergangswahrscheinlichkeiten werden Ahnand eines Markov Prozesses definiert. Jeder Agent hat nur den aktuellen State in seiner Aktuellen Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
+Die Übergangswahrscheinlichkeiten werden Ahnand eines Markov Prozesses definiert. Jeder Agent hat nur seine aktuelle Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
 
 \begin{gather*}
 \Pr(X_{n+1}=x\mid X_{1}=x_{1},X_{2}=x_{2},\ldots ,X_{n}=x_{n})=\Pr(X_{n+1}=x\mid X_{n}=x_{n}) \\
@@ -664,9 +667,41 @@ Alter Risiko & $\frac{Alter}{Lebenserwartung} \cdot 0.001$ & Wahrscheinlichkeit 
 \label{table:agent-parameters}
 \end{table}
 
+\subsection{Resultate}
+
+Mit obigen Konfigurationsparametern ist es nun spannend zu beobachten, ob es eine Reihe von Faktoren, gibt die Tuberkulose eindämmen können. Es konnte beobachtet werden, wenn die Impfung bei Neugeborenen der Population deutlich erhöht wird, mit z.B. 60\% aller Neugeborenen, verschwindet TB über einen langen Zeitraum vollständig. Da Infizierte keinerlei Chance auf Heilung besitzen, ist die sinnvollste Strategie bei der nächsten Generation anzufangen. Interessant ist auch das durch das einführen von MDR-TB, über einen langen Zeitraum alle Menschen gestorben sind, da diese durch die Behandlung von Medikamenten nicht verschwindet. Die Variation von den Lokalitätsparametern hat auch einen großen Einfluss. Es stellte sich heraus das nur größere Radien $> 4$ Felder für eine Epdidemie sorgen konnten. Daher ein großer Teil der Bevölkerung ist befallen. Durch Variation des Infektionsradius wurden kleine Cluster gebildet über einen längeren Zeitraum. Teile der Bevölkerung waren noch nicht infiziert, während andere Teile schon viele Infizizierte vorweisen konnte. Langfristig kann ein Stabiles Maß gefunden werden, wenn allein die geimpften Eltern, ihre Kinder ebenfalls impfen wie in den unteren Abbildungen zu sehen ist.
+
+\begin{figure}[ht]
+  \centering
+  \begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/abm-l-i-exp-1}
+    \caption{$L$ (Gelb) und $I$ (Rot)}
+    \label{fig:abm-l-i-exp-1}
+  \end{subfigure}%
+  \begin{subfigure}{.45\textwidth}
+    \centering
+    \includegraphics[width=.99\linewidth]{images/abm-s-r-exp-1}
+    \caption{$S$ (Blau) und $R$ (Grün)}
+    \label{fig:abm-s-r-exp-1}
+  \end{subfigure}
+\end{figure}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.5\textwidth]{images/abm-n-exp-1}
+  \caption{Gesamtpopluation $N = S + L + I + R$}
+  \label{fig:abm-n-exp-1}
+\end{figure}
+
+Die Zeitachse ist in kleineren Schritten über 100 Jahre abgebildet. Die Geimpften füllen die $R$ Klasse. Eine höhere Bevölkerung führt zu höheren Anteilen an latenter TB mit periodischen Kurven. Aktiv Infizierte sind relativ gering und gehen periodisch in Schritten rauf und runter.
+
 \section{Fazit}
 
-In dieser Arbeit wurde gezeigt wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. Tuberkulose ist eine ernst zu nehmende Erkrankung der heutigen Zeit.
+In dieser Arbeit wurde gezeigt wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. \\
+
+Die beiden Compartment Modelle haben nur geringfügig brauchbare Ergebnisse erzeugt. Auch wenn interessante Effekte zu beobachten waren, können die Ergebnisse nur als plausible Indikatoren für die Ausbreitung von Tuberkulose herangezogen werden. Die agentenbasierte Simulation hat gezeigt das unterschiedliche Strategien, zumindest auf synthetisierten Daten, einen Signifikaten Einfluss zur Dämmung von Tuberkulose haben können. Nichts desto trotz ist es überaus schwierig relevante Ergebnisse aus diesen Modellen zu bekommen. Dies liegt unter anderem an der enormen Komplexität und der Menge an Variablen die so ein System beeinflussen. \\
+
+Eine der vielversprechendsten Teile der Modellierung mit statistischen Prädiktionsmodellen über eine Menge beschreibender Variablen konnten nicht näher betrachtet werden. Diese Modelle stellen sinnvolle Erweiterungen zu rein theoretischen Modellen dar. Von realen Daten zu lernen beinhaltet den Vorteil, die unterliegenden Trends, deutlich präziser anzunähern. Voraussetzung ist allerdings, dass diese Daten existieren.
 
 \newpage
 

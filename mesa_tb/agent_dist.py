@@ -115,7 +115,8 @@ class AgentDistribution():
   def generate_newborn_sample(self, parent):
     sample = self.generate_sample()
     sample["age"] = 1
-    sample["vaccinated"] = self.binom_choice(p=[.1, .9])
+    if parent.vaccinated:
+      sample["vaccinated"] = self.binom_choice(p=[.1, .9])
     if parent.hiv:
       sample["hiv"] = self.binom_choice()
     sample["immune_diseases"] = self.sample_immune_diseases()

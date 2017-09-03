@@ -10,19 +10,6 @@ from disease_model import DiseaseModel
 from agent_dist import AgentDistribution
 
 
-def get_dimensions(n):
-  divisors = []
-
-  for current_div in range(n):
-    if n % float(current_div + 1) == 0:
-      divisors.append(current_div + 1)
-  w_index = min(range(len(divisors)), key=lambda i: abs(divisors[i]-sqrt(n)))
-  h_index = w_index + 1
-
-  width = divisors[w_index]
-  height = divisors[h_index]
-
-  return width, height
 
 def color(name):
   if name == "blue":
@@ -49,7 +36,7 @@ def agent_portrayal(agent):
     b.update({
       "Shape": "circle",
       "r": 0.5,
-      "Layer": 3,
+      "Layer": 1,
       "Color": color("blue"),
     })
 
@@ -66,7 +53,7 @@ def agent_portrayal(agent):
       "Shape": "rect",
       "w" : .5,
       "h" : .5,
-      "Layer": 1,
+      "Layer": 3,
       "Color": color("yellow"),
     })
 
@@ -75,7 +62,7 @@ def agent_portrayal(agent):
       "Shape": "rect",
       "w" : .5,
       "h" : .5,
-      "Layer": 0,
+      "Layer": 4,
       "Color": color("red"),
     })
 
@@ -86,10 +73,10 @@ def agent_portrayal(agent):
 
 
 if __name__ == "__main__":
-  config = dict(S=300., L=6., I=2., R=0.)
+  config = dict(S=500., L=20., I=3., R=0.)
   agent_dist = AgentDistribution(**config)
-  width, height = get_dimensions(agent_dist.N)
-  pixel = 800
+  width, height = 30, 30
+  pixel = 750
   grid = CanvasGrid(agent_portrayal, width, height, pixel, pixel)
 
   li = ChartModule([{"Label": "exposed", "Color": color("yellow")}, {"Label": "infectious", "Color": color("red")}], data_collector_name='dc', canvas_height=300, canvas_width=500)
