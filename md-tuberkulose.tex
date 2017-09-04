@@ -384,17 +384,19 @@ Hinzu kommt, dass die latente Phase fein granularer dargestellt ist. Anstelle vo
 
 In dem Experiment mit dem Clustered SELEIR Modell ist herauszufinden, wie gut die generellen Populationsparameter für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt. Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün. \\
 
-Es wird offensichtlich klar das der generelle Trend zwar getroffen wird, die Vorhersage aber überhaupt nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen, inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch.
+Es wird relativ klar, das der generelle Trend getroffen wird, die Vorhersagelinie aber nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen, inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch.
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
-Mit der agentenbasierte Modellierung (ABM) werden Individuen oder Kolletikve simuliert und deren Aktionen in einer bestimmten Sichtweise analysiert. Das Ziel ist es neue Erkenntnisse aus den Interaktionsmustern zu entwickeln. Im Vergleich zu den Compartment Modellen ist es bei ABM möglich auch die Lokalität eines Agenten einfliessen zu lassen. Ferner lassen sich Agenten aus so gennante Schichten legen, wobei jede Schicht für unterschiedliche Modellierungsaspekte steht. Es kann z.B. eine Schicht für die physikalischen Interaktionsmuster und Wege existieren und eine andere um die soziale Zusammensetzung in der Bevölkerung zu modellieren. Jede Abstraktionsebene kann das Modell getrennt von den anderen Aspekten erweitern. \\
+Mit der agentenbasierte Modellierung (ABM) werden Individuen oder Kolletikve simuliert und deren Aktionen in einer bestimmten Sichtweise analysiert. Das Ziel ist es neue Erkenntnisse aus den Interaktionsmustern zu entwickeln. Im Vergleich zu den Compartment Modellen ist es bei ABM möglich auch die Lokalität eines Agenten einfliessen zu lassen. Ferner lassen sich Agenten auf Schichten platzieren, wobei jede Schicht für unterschiedliche Modellierungsaspekte steht. Es kann z.B. eine Schicht für die physikalischen Interaktionsmuster und Wege existieren und eine andere um die soziale Zusammensetzung zu modellieren. Jede Abstraktionsebene kann getrennt von den anderen Schichten hinzugefügt werden, für die entsprechende Rechenleistung. \\
 
-Im Folgenden wird ein Modell vorgestellt, dass die Ausbreitung von Tuberkulose auf einem Grid, auf dem Agenten im Random Walk laufen. Nur bei direktem Kontakt auf demselben oder umliegenden Grid kann eine Infektion erfolgen. Verschiedenste Bevökerungsparameter und Übergangswahrscheinlichkeiten wie in Compartment Modellen kommen zum Einsatz. Die Simulation wurde in Python Mesa, einem ABM Framework, geschrieben.
+Im Folgenden wird ein Modell vorgestellt, dass die Ausbreitung von Tuberkulose als ABM realisiert. Hierbei laufen Agenten auf einem Grid per Random Walk. Nur bei direktem Kontakt auf demselben oder umliegenden Grid kann eine Infektion erfolgen. Verschiedenste Bevökerungsparameter und Übergangswahrscheinlichkeiten wie in Compartment Modellen kommen zum Einsatz. Die Simulation wurde in Python Mesa, einem ABM Framework, geschrieben.
 
 \subsection{Modellierung von Tuberkulose in Mesa}
 
-Mesa ist ein ABM Framework in Python \cite{Mesa}. Es existieren unterschiedliche Funktionalitäten um Agenten auf einem oder mehreren Feldern zu platizeren und mit diesen über einen Zeitraum zu planen. Im folgenden ein paar Erläuterungen zu dem Mesa Framework und der Modellierung von Tuberkulose. Die AgentDistribution hält alle Populationsparameter. Jeder neue Agent wird aus dieser Klasse mit Stichprobenparametern befüllt. Unter anderem kommt hier das Konzept von den Compartment Modellen - $SLIR$ - zum einsatz um Agenten in einzelne Klassen einteilen zu können. Bei den Ansätzen wurde sich vor allem an dem Modell von \cite{Perez2009} orientiert.
+Mesa ist ein ABM Framework in Python \cite{Mesa}. Es existieren unterschiedliche Funktionalitäten um Agenten auf einem oder mehreren Feldern zu platizeren und mit diesen über einen Zeitraum zu planen. Im folgenden ein paar Erläuterungen zu dem Mesa Framework und der Modellierung von Tuberkulose. \\
+
+Die \textit{AgentDistribution} hält alle Populationsparameter. Jeder neue Agent wird aus dieser Klasse mit Stichprobenparametern befüllt. Unter anderem kommt hier das Konzept von den Compartment Modellen - $SLIR$ - zum einsatz um Agenten in einzelne Klassen einteilen zu können. Bei den Ansätzen wurde sich vor allem an dem Modell von \cite{Perez2009} orientiert.
 
 \begin{lstlisting}[style=python]
 class AgentDistribution():
@@ -403,7 +405,7 @@ class AgentDistribution():
     pass
 \end{lstlisting}
 
-Agenten müssen auf einem Grid platziert werden können. Zu aller erst wird eine neue Stichprobe generiert und ein neuer Agent mit diesen Daten erzeugt. Jeder Agent wird in dem Scheduler hinzugefügt und auf dem Grid platziert. In jedem Update oder Tick wird die Simulation um eine Zeiteinheit $t$ weitergführt. Der scheduler geht Round Robin alle Agenten  durch und sammelt Daten. Ein Agent bewegt sich aufgrund seines zu implementierenden step interfaces. Dieser step wird an alle Agenten propagiert die dann ihre individuellen Handlungen durchführen.
+Agenten müssen auf einem Grid platziert werden können. Zu aller erst wird eine neue Stichprobe generiert und ein neuer Agent mit diesen Daten erzeugt. Jeder Agent wird dem Mesa Scheduler hinzugefügt und auf dem Grid platziert. In jedem Update oder Tick wird die Simulation um eine Zeiteinheit $t$ weitergführt. Der scheduler geht Round Robin alle Agenten  durch und kann optimal Populationsdaten einsammeln. Ein Agent bewegt sich aufgrund seiner zu implementierenden \textit{step} Schnittstelle. Dieser \textit{step} wird an alle Agenten propagiert, die dann ihre individuellen Handlungen durchführen.
 
 \begin{lstlisting}[style=python]
 from Mesa import Model
@@ -431,7 +433,7 @@ class DiseaseModel(Model, Grid):
     self.schedule.step()
 \end{lstlisting}
 
-Der Mesa Agent besitzt alle nötigen Eigenschaften um mit anderen Agenten zu kommunizieren und wichtige Lokalitätskriterien abzufragen. Ein speziellerer AAgent kann davon abgeleitet werden um spezieller Bewegungsabfolgen wie z.B. Random Walks zu definieren. Der TBAgent besitzt dann alle Eigenschaften um speziellere Aktionen bezüglich der Tuberkulose aufzunehmen. Ein Mensch hat prinzipiell nichts mit TB zutun weshalb dieser dann eine Unterkategorie des TBAgent darstellt. Der Mensch kann sich reproduzieren, sterben, altern und sich bewegen. Besonders interessant ist der $step$, den jeder Agent bei jedem Update durchführt. Die Aktionen sind bewegen, altern, repoduzieren, den Tuberkulose Status neu setzen und die Mortalität des Individums berechnen.
+Der Mesa Agent besitzt alle nötigen Eigenschaften um mit anderen Agenten zu kommunizieren und wichtige Lokalitätskriterien abzufragen. Ein spezieller \textit{AAgent} besitzt die Schnittstelle, um beliebige Interaktionen mit dem Mesa Grid und Scheduler zu machen wie z.B. der Random Walk. Der \textit{TBAgent} besitzt dann alle Eigenschaften um speziellere Aktionen bezüglich der Tuberkulose aufzunehmen. Ein Mensch hat prinzipiell nichts mit TB zutun, weshalb dieser dann eine Unterkategorie des \textit{TBAgent} darstellt. Der Mensch kann sich Reproduzieren, Sterben, Altern, TB entwickeln/anstecken, impfen, behandeln lassen und sich bewegen.
 
 \begin{lstlisting}[style=python]
 import tuberculosis as tb
@@ -472,7 +474,7 @@ class Human(TBAgent):
     self.chance_of_death()
 \end{lstlisting}
 
-Das Tuberkulose Modell beinhaltet alle Parameter zur Tuberkulose und die Berechnung der Infektions und Übergangswahrscheinlichkeiten. Jeder $Human$ Agent muss daher bestimmte Attribute wie Alter, HIV positiv/negativ, Impfung, weitere Immunerkrankungen, TB Behandlung/Therapie und die Lebenserwartung initialisiert bekommen. Es müssen weitere Interfaces erfüllt sein um die Lokalität des Agenten und der herumliegenden Agenten abzufragen.
+Das Tuberkulose Modell beinhaltet alle Parameter zur Tuberkulose und die Berechnung der Infektions-und Übergangswahrscheinlichkeiten. Jeder \textit{Human} Agent muss daher bestimmte Attribute wie Alter, HIV positiv/negativ, Impfung, weitere Immunerkrankungen, TB Behandlung/Therapie und die Lebenserwartung initialisiert bekommen. Es müssen weitere Schnittstellen erfüllt sein um die Lokalität des Agenten und der herumliegenden Agenten abzufragen.
 
 \begin{lstlisting}[style=python]
 def next_state(h):
@@ -503,9 +505,9 @@ def next_state(h):
   return state
 \end{lstlisting}
 
-Impfung führt immer zu $R$, nur im $S$ oder $R$ Status kann ein Agent infiziert werden. Diese Wahrscheinlichkeit wird durch $infect$ berechnet wodurch überhaupt determiniert wird ob es eine Ansteckungsgefahr gibt. Die Ansteckungsgefahr wird durch die umliegenden, aktiv infizierten Agenten berechnet. Nicht jeder direkte Kontakt führt zu einer direkten Ansteckung. Danach wird berechnet, aufgrund der Agentenparameter, wie wahrscheinlich ein Agent in das latente oder ative TB Stadium läuft. \\
+Impfung führt immer zu $R$, nur im $S$ oder $R$ Status kann ein Agent infiziert werden. Diese Wahrscheinlichkeit wird durch $infect$ berechnet, wodurch überhaupt determiniert wird ob es eine Ansteckungsgefahr gibt. Die Ansteckungsgefahr wird durch die umliegenden, aktiv infizierten Agenten berechnet. Nicht jeder direkte Kontakt führt zu einem neuen Infekt. Danach wird berechnet, aufgrund der Agentenparameter, wie wahrscheinlich ein Agent in das latente oder ative TB Stadium läuft. \\
 
-Zu guter letzt kann die Simulation über ein Backend Server abgerufen werden. Hierbei bindet Mesa sich an eine konfigurierte IP, standardmäßig 127.0.0.1 auf einem festgelegten Port z.B. 9000. Über z.B. einen Browser kann dann über \textit{http://127.0.0.1:9000} auf die Simulations GUI zugegriffen werden. In Abbildung \ref{fig:mesa-grid} ist das Simulationsgrid zu erkennen, wobei $S$, rund und Blau, $R$, rund und Grün, $L$, rechteckig und Gelb und $I$, rechteckig und Rot, ist. In Abbildung \ref{fig:n-population} die Gesamtpopulation, wobei auf der Y-Achse die Bevölkerungsanzahl zu einem zeitpunkt $t$ auf der X-Achse zu sehen ist.
+Zu guter letzt kann die Simulation über ein Backend Server abgerufen werden. Hierbei bindet Mesa sich an eine konfigurierte IP, standardmäßig 127.0.0.1 auf einem festgelegten Port z.B. 9000. Über z.B. einen Browser kann dann über \textit{http://127.0.0.1:9000} auf die Simulations GUI zugegriffen werden. In Abbildung \ref{fig:mesa-grid} ist das Simulationsgrid zu erkennen, wobei $S$, rund und Blau, $R$, rund und Grün, $L$, rechteckig und Gelb und $I$, rechteckig und Rot, ist. In Abbildung \ref{fig:n-population} ist die Gesamtpopulation zu sehen. Dabei ist auf der Y-Achse die Bevölkerungsanzahl und auf der X-Achse der Zeitpunkt $t$ zu sehen.
 
 \begin{figure}[ht]
   \centering
@@ -523,7 +525,7 @@ Zu guter letzt kann die Simulation über ein Backend Server abgerufen werden. Hi
   \end{subfigure}
 \end{figure}
 
-Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig:l-i-population}, für $L$ und $I$, sowie in Abbildung \ref{fig:s-r-population}, für $S$ und $R$ beobachtet werden. Die Simulation ist in Jahren und wurde wie zu sehen auf der X-Achse über ca 100 Jahre geführt.
+Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig:l-i-population}, für $L$ und $I$, sowie in Abbildung \ref{fig:s-r-population}, für $S$ und $R$ beobachtet werden. Die Simulation ist in Jahren und wurde auf der X-Achse über ca 100 Jahre geführt.
 
 \begin{figure}[ht]
   \centering
@@ -543,7 +545,7 @@ Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig
 
 \subsection{Eigenschaften des Modells}
 
-Das vorliegende ABM Modell in Mesa ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigenschaften von Distributionen ausgenutzt mit Effekten kombiniert die durch direkten Kontakt hervorgerufen werden. Des weiteren werden Parameter vorgestellt und ein paar Experimente beschrieben. Für das ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Zum ziehen von binären Events wurde die Binominal Distribution mit einem wahrscheinlichkeitsparameter genutzt. Die formale Definition der Binominal Distribution ist
+Das vorliegende ABM Modell in Mesa ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigenschaften von Distributionen ausgenutzt und mit Effekten kombiniert, die durch direkten Kontakt hervorgerufen werden. Des weiteren werden Parameter vorgestellt und ein paar Experimente beschrieben. Für das ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Zum ziehen von binären Events wurde die Binominal Distribution mit einem wahrscheinlichkeitsparameter genutzt. Die formale Definition der Binominal Distribution ist
 
 \begin{gather*}
   P(k; n, p) = P(X = k) = \binom{n}{k}p^{k}(1 - p)^{n - k} \\
@@ -562,34 +564,33 @@ Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten R
 Die vorliegende Bevölkerung ist im Durchschnitt über 10 und unter 40 und die Lebenserwartung einzelner Individuen sehr gering bis ins hohe Alter. Für die Simulation wurden insgesamt folgende Parameter angenommen
 
 \begin{itemize}
-  \item{Alter - Stichproben gezogen aus der Gamma Distribution.}
-  \item{Geburtenrate - in prozentualen Anteilen per Update. (entscheidet darüber ob ein Individuum sich Fortpflanzt)}
-  \item{Impfung - Ein prozentualer Anteil der variable eingestellt wird und von einer Binominaldistribution gezogen wird.}
-  \item{Klassen - Die Klasse $S$, $L$, $I$ oder $R$.}
-  \item{Behandlung - ob ein Individuum Behandlung bekommt oder nicht, wird von einer Binominaldistribution gezogen.}
-  \item{HIV - Hat das Individuum HIV oder nicht.}
-  \item{Immunkrankheiten - Hat das Individuum andere Immunerkrankungen.}
+  \item{Alter - Stichproben aus einer Gamma Distribution}
+  \item{Geburtenrate - in prozentualen Anteilen per Update (entscheidet darüber ob ein Agent, Kinder bekommt)}
+  \item{Impfung - Ob ein Agent geimpft wurde}
+  \item{Klassen - Die Klasse $S$, $L$, $I$ oder $R$}
+  \item{Behandlung - Ob ein Agent behandelt wird}
+  \item{HIV - HIV positiv/negativ eines Agenten}
+  \item{Immunkrankheiten - Immunerkrankungen eines Agenten}
 \end{itemize}
 
 Außerdem wurden folgende Effekte programatisch berücksichtigt
 
 \begin{itemize}
-  \item{Neugeborene - Die Geburtenrate entscheidet wieviele Individuen neu erzeugt werden pro Update. Neugeborene sind standardmäßig immer 0 Jahre alt bei der Geburt und bekommen HIV nur dann wenn die Eltern diese Krankheit auch haben. Ob die Eltern geimpft sind gibt einen Ausschlag darüber aus ob Kinder ebenfalls geimpft werden.}
-  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod, ferner gibt es eine Sterberate an Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
-  \item{Die Umgebung eines Individuums spielt eine Rolle, da mehr Kontakt zu anderen Infizierten das Risiko deutlich erhöht. Es gibt auf dem Grid einen Radius der Infektion, der bestimmt über wieviele Felder die Infizierte andere anstecken können.}
+  \item{Neugeborene - Die Geburtenrate entscheidet wieviele Individuen neu erzeugt werden pro Update. Neugeborene sind standardmäßig immer 0 Jahre alt bei der Geburt und bekommen HIV nur dann wenn die Eltern diese Krankheit auch haben. Ob die Eltern geimpft sind gibt einen Ausschlag darüber aus, ob Kinder ebenfalls geimpft werden.}
+  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod. Ferner, gibt es Sterben durch Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
+  \item{Die Umgebung eines Individuums spielt eine Rolle, da mehr Kontakt zu anderen Infizierten das Risiko deutlich erhöht. Es gibt auf dem Grid einen Radius der Infektion, der bestimmt, über wieviele Felder die Infizierten andere anstecken können.}
   \item{Die Zeit, wenn ein Individuum in der Klasse $E$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $I$ zu wandern steigt mit fortlaufender Zeit.}
   \item{Die Zeit, wenn ein Individuum in der Klasse $I$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $R$ zu wandern oder zu Sterben steigt mit fortlaufender Zeit.}
-  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod, ferner gibt es eine Sterberate an Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
 \end{itemize}
 
-Die Übergangswahrscheinlichkeiten zwischen den Compartments werden anhand einer Markov Ketter definiert. Jeder Agent hat nur seine aktuelle Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
+Die Übergangswahrscheinlichkeiten zwischen den Compartments werden anhand einer Markov Kette definiert. Jeder Agent hat nur seine aktuelle Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
 
 \begin{gather*}
 \Pr(X_{n+1}=x\mid X_{1}=x_{1},X_{2}=x_{2},\ldots ,X_{n}=x_{n})=\Pr(X_{n+1}=x\mid X_{n}=x_{n}) \\
 \Pr(X_{1}=x_{1},\ldots,X_{n}=x_{n})>0
 \end{gather*}
 
-Das heißt, der nächste Zustand $x_{n + 1}$, daher z.B. die Übergangswahrscheinlichkeit das $x_{n} = L$ in die Klasse $x_{n + 1} = I$ läuft ist nur bedingt durch den derzeitigen Zustand $x_{n}$. Das heißt konkret das $x_{n-1}, x_{n-2}, \ldots, x_{1}$ keine Rolle spielen. Nach der Bayesianischen Forderung wollen wir im Prinzip aus dem aktuellen Wissen ``prior'' und neuen Beochbachtungen eine neue Erkenntnis ``posterior'' Distribution finden. Jeder Agent wird dadurch simuliert wieviele der anderen Agenten sich in den einzelnen Klassen befinden. Durch seine individuellen Ausprägungen und durch die die Übergangswahrscheinlichkeiten der oben beschriebenen Markov Kette über die Klassen kann eine Wahrscheinlichkeit zum Übergang in ein anderes Compartment berechnet werden.
+Das heißt, der nächste Zustand $x_{n + 1}$, daher z.B. die Übergangswahrscheinlichkeit das $x_{n} = L$ in die Klasse $x_{n + 1} = I$ läuft ist nur bedingt durch den derzeitigen Zustand $x_{n}$. Das heißt konkret das $x_{n-1}, x_{n-2}, \ldots, x_{1}$ keine Rolle spielen. Nach der Bayesianischen Forderung wollen wir im Prinzip aus dem aktuellen Wissen ``prior'' und neuen Beochbachtungen eine neue Erkenntnis ``posterior'' finden. Jeder Agent wird dadurch simuliert wieviele der anderen Agenten sich in den einzelnen Klassen befinden. Durch die individuellen Ausprägungen eines Agenten und durch die die Übergangswahrscheinlichkeiten der oben beschriebenen Markov Kette, wird die Wahrscheinlichkeit vom Übergang in ein anderes Compartment berechnet.
 
 \[
 M=
@@ -607,7 +608,7 @@ M=
   \end{tabular}
 \]
 
-Die Markov Kette für Übergangswahrscheinlichkeiten ist in Kombination mit den folgenden Parametern das komplette Modell.
+Die Markov Kette für Übergangswahrscheinlichkeiten in Kombination mit den folgenden Parametern stellt das komplette Modell dar.
 
 \begin{table}[ht]
 \centering
@@ -652,7 +653,7 @@ Alter Risiko & $\frac{Alter}{Lebenserwartung} \cdot 0.001$ & Wahrscheinlichkeit 
 
 \subsection{Resultate}
 
-Mit obigen Konfigurationsparametern ist es nun spannend zu beobachten, ob es eine Reihe von Faktoren, gibt die Tuberkulose eindämmen können. Es konnte beobachtet werden, wenn die Impfung bei Neugeborenen der Population deutlich erhöht wird, mit z.B. 60\% aller Neugeborenen, verschwindet TB über einen langen Zeitraum vollständig. Da Infizierte keinerlei Chance auf Heilung besitzen, ist die sinnvollste Strategie bei der nächsten Generation anzufangen. Interessant ist auch das durch das einführen von MDR-TB, über einen langen Zeitraum alle Menschen gestorben sind, da diese durch die Behandlung von Medikamenten nicht verschwindet. Die Variation von den Lokalitätsparametern hat auch einen großen Einfluss. Es stellte sich heraus das nur größere Radien $> 4$ Felder für eine Epdidemie sorgen konnten. Daher ein großer Teil der Bevölkerung ist befallen. Durch Variation des Infektionsradius wurden kleine Cluster gebildet über einen längeren Zeitraum. Teile der Bevölkerung waren noch nicht infiziert, während andere Teile schon viele Infizizierte vorweisen konnte. Langfristig kann ein Stabiles Maß gefunden werden, wenn allein die geimpften Eltern, ihre Kinder ebenfalls impfen wie in den unteren Abbildungen zu sehen ist.
+Mit obigen Konfigurationsparametern ist es nun spannend zu beobachten, ob es eine Reihe von Faktoren, gibt die Tuberkulose eindämmen können. Es konnte beobachtet werden, wenn die Impfung bei Neugeborenen der Population deutlich erhöht wird, mit z.B. 60\% aller Neugeborenen, verschwindet TB über einen langen Zeitraum vollständig. Da Infizierte keinerlei Chance auf Heilung besitzen, ist die sinnvollste Strategie bei der nächsten Generation anzufangen. Interessant ist auch das durch das einführen von MDR-TB, über einen langen Zeitraum alle Menschen gestorben sind, da diese durch die Behandlung von Medikamenten nicht verschwindet. Die Variation von den Lokalitätsparametern hat auch einen großen Einfluss. Es stellte sich heraus das nur größere Radien $> 4$ Felder für eine TB Epdidemie sorgen konnten. Kleinere Cluster wurden ebenfalls gebildet. Teile der Bevölkerung waren noch nicht infiziert, während andere Teile schon viele Infizierte vorweisen konnte. Langfristig kann ein Stabiles Maß gefunden werden, wenn allein die geimpften Eltern, ihre Kinder ebenfalls impfen wie in den unteren Abbildungen zu sehen ist.
 
 \begin{figure}[ht]
   \centering
@@ -682,11 +683,11 @@ Die Zeitachse ist in kleineren Schritten über 100 Jahre abgebildet. Die Geimpft
 
 \section{Fazit}
 
-In dieser Arbeit wurde gezeigt wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. \\
+In dieser Arbeit wurde gezeigt, wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. \\
 
 Die beiden Compartment Modelle haben nur geringfügig brauchbare Ergebnisse erzeugt. Auch wenn interessante Effekte zu beobachten waren, können die Ergebnisse nur als plausible Indikatoren für die Ausbreitung von Tuberkulose herangezogen werden. Die agentenbasierte Simulation hat gezeigt das unterschiedliche Strategien, zumindest auf synthetisierten Daten, einen Signifikaten Einfluss zur Dämmung von Tuberkulose haben können. Nichts desto trotz ist es überaus schwierig relevante Ergebnisse aus diesen Modellen zu bekommen. Dies liegt unter anderem an der enormen Komplexität und der Menge an Variablen die so ein System beeinflussen. \\
 
-Eine der vielversprechendsten Teile der Modellierung mit statistischen Prädiktionsmodellen über eine Menge beschreibender Variablen konnten nicht näher betrachtet werden. Diese Modelle stellen sinnvolle Erweiterungen zu rein theoretischen Modellen dar. Von realen Daten zu lernen beinhaltet den Vorteil, die unterliegenden Trends, deutlich präziser anzunähern. Voraussetzung ist allerdings, dass diese Daten existieren.
+Eine der vielversprechendsten Teile der Modellierung mit statistischen Prädiktionsmodellen über eine Menge beschreibender Variablen konnten nicht näher betrachtet werden. Diese Modelle stellen sinnvolle Erweiterungen zu rein theoretischen Modellen dar. Von realen Daten zu lernen beinhaltet den Vorteil, die unterliegenden Trends, deutlich präziser anzunähern. Voraussetzung ist allerdings, dass diese Daten existieren und auch tatsächlich das System von Interesse erklären können.
 
 \newpage
 
