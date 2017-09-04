@@ -111,7 +111,7 @@
 
 \renewcaptionname{ngerman}{\abstractname}{Kurzfassung}
 \begin{abstract}
-In dieser Arbeit wird eine Übersicht von mathematischen Analyseverfahren zur Übertragung von Tuberkulose präsentiert. Hierzu zählen die Compartment Modelle wie SEIR und agentenbasierte Modelle (ABM). Tuberkulose ist eine komplexe Erkrankung mit unterschiedlichen Krankheitsstadien. Das Ziel von derartigen Modellierungen ist das identifizieren von optimalen Parametern, sodass ein teil der Realität dargestellt werden kann. Dies führt idealerweise zu neuen Erkenntnissen wie z.B. durch Impfung, Tuberkulose langfristig verhindert werden kann. Auf dem Weg wird der Einfluss von Impfung, Immunerkrankungen, Alter und Lokalität untersucht. Modelle dieser Arbeit wurden mit hilfe von Matlab und Python Mesa realisiert.
+In dieser Arbeit wird eine Übersicht von mathematischen Analyseverfahren zur Übertragung von Tuberkulose präsentiert. Hierzu zählen die Compartment Modelle wie SEIR und agentenbasierte Modelle (ABM). Tuberkulose ist eine komplexe Erkrankung mit unterschiedlichen Krankheitsstadien. Das Ziel von derartigen Modellierungen ist das Identifizieren von optimalen Parametern, sodass ein teil der Realität dargestellt werden kann. Dies führt idealerweise zu neuen Erkenntnissen wie z. B. durch Impfung, Tuberkulose langfristig verhindert werden kann. Auf dem Weg wird der Einfluss von Impfung, Immunerkrankungen, Alter und Lokalität untersucht. Modelle dieser Arbeit wurden mithilfe von Matlab und Python Mesa realisiert.
 \end{abstract}
 
 \newpage
@@ -121,65 +121,64 @@ In dieser Arbeit wird eine Übersicht von mathematischen Analyseverfahren zur Ü
 
 \newpage
 
-
 \section{Domäne - Tuberkulose}
 
-Tuberkulose ist eine bakterielle Infektionserkrankung die besonders häufig die Lunge befällt. Die WHO gibt Tuberkulose als eine der top 10 Todesursachen der Welt an, mit einer Sterberate von 1.8 Millionen Menschen und 10.4 Millionen Neuinfektionen in 2015. Es ist ein aktives Sustainable Development Goal (SDG) das bis 2030 eingedämpft werden soll. Tuberkulose ist eine Krankheit die in Ländern mit schlechter medizinischer Versorgung und tropischem Klima (Sonne und starker Regen) gesondert auftritt. \cite{WHOTB2016}
+Tuberkulose ist eine bakterielle Infektionserkrankung, die besonders häufig die Lunge befällt. Die WHO gibt Tuberkulose als eine der top 10 Todesursachen der Welt an, mit einer Sterberate von 1.8 Millionen Menschen und 10.4 Millionen Neuinfektionen in 2015. Es ist ein aktives Sustainable Development Goal (SDG) das bis 2030 eingedämpft werden soll. Tuberkulose ist eine Krankheit die in Ländern mit schlechter medizinischer Versorgung und tropischem Klima (Sonne und starker Regen) gesondert auftritt. \cite{WHOTB2016}
 
 \subsection{Krankheitsbild}
 
-Tuberkulose (TB) wird vor allem über die Luft übertragen. Das befallen der Lungen resultiert nicht zwangsweise in einer aktiven Infektion der Krankheit. In Abbildung \ref{fig:tuberculosis-cycle} ist der Kreislauf der Tuberkulose Übertragung.
+Tuberkulose (TB) wird vor allem über die Luft übertragen. Das Befallen der Lungen resultiert nicht zwangsweise in einer aktiven Infektion der Krankheit. In Abbildung \ref{fig:tuberculosis-cycle} ist der Kreislauf der Tuberkulose Übertragung.
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.5\textwidth,keepaspectratio]{images/tuberculosis-cycle}
-  \caption{Tuberkulose Kreislauf in \cite{Kumar2011}}
-  \label{fig:tuberculosis-cycle}
+\centering
+\includegraphics[width=0.5\textwidth,keepaspectratio]{images/tuberculosis-cycle}
+\caption{Tuberkulose Kreislauf in \cite{Kumar2011}}
+\label{fig:tuberculosis-cycle}
 \end{figure}
 
 In kurz, ein Mensch wird über direkten Kontakt von einem anderen über die Luft mit Tuberkulose latent infiziert, hat wesentlich geringere Wahrscheinlichkeit infiziert zu werden und eine hohe Wahrscheinlichkeit bei nicht Medikation zu sterben.
 
 \begin{enumerate}
-  \item{Die \textbf{Übertragung} findet über die Luft zwischen zwei Menschen statt. Häufig ist deshalb der Ort der Übertragung in Lebensgemeinschaften auf engem Raum, öffentlichen Verkehrsmitteln oder Arbeitsplätzen. Klimaanlagen beschleunigen die Verbreitung von Bakterien in der Luft. Bei direktem Kontakt ist die Wahrscheinlichkeit auf Ansteckung bei 95\% und es wird eine Hauptinfektion ausgelöst.}
-  \item{Die \textbf{Hauptinfektion} ist meist ein befallen der Lunge. Verschiedene Immunfaktoren beeinflussen die Geschwindigkeit des Fortschreitens.}
-  \item{Betroffene sind ab diesem Schritt \textbf{latent infiziert}. Während das Subjekt in der latenten TB Phase ist, tauchen nicht zwangsweise Symptome auf. Die meisten latent infizierten Träger von TB haben in ihrem ganzen Leben keinerlei Auswirkungen der Krankheit. In dem latenten Stadium können Subjekte niemanden anstecken. Einige Faktoren beeinflussen jedoch die Wahrscheinlichkeit auf eine aktive Infektion, sogenannte Risikofaktoren. Diese sind vor allem Immunbedingt wie z.B. HIV, Diabetes, genetische Faktoren, Immunsupressiver und viele mehr. Subjekte mit derartigen Ausprägungen haben eine Wahrscheinlichkeit von 5-10\% die Krankheit als aktive Infektion zu entwickeln. In den Fällen wo eine Präventivtherapie nicht hilft erfolgt meist eine aktive Krankheitsentwicklung.}
-  \item{Die \textbf{aktive Infektion/Reaktivierung} erfolgt irgendwann nachdem ein Subjekt latent infiziert wurde. Ab diesem Punkt gibt es nur zwei Möglichkeiten, Menschen die eine Heilung bekommen werden zu 95\% wieder gesund. 50\% die keine Heilung bekommen sterben und 50\% bessern sich von selbst. Ein Rückfall führt meistens zum Tode. Infizierte sind ab jetzt Überträger der Krankheit. Menschen die von TB geheilt werden gehen zurück ins latente Stadium. Eine vollständige Heilung ist nicht mehr möglich.}
+\item{Die \textbf{Übertragung} findet über die Luft zwischen zwei Menschen statt. Häufig ist deshalb der Ort der Übertragung in Lebensgemeinschaften auf engem Raum, öffentlichen Verkehrsmitteln oder Arbeitsplätzen. Klimaanlagen beschleunigen die Verbreitung von Bakterien in der Luft. Bei direktem Kontakt ist die Wahrscheinlichkeit auf Ansteckung bei 95\% und es wird eine Hauptinfektion ausgelöst.}
+\item{Die \textbf{Hauptinfektion} ist meist ein befallen der Lunge. Verschiedene Immunfaktoren beeinflussen die Geschwindigkeit des Fortschreitens.}
+\item{Betroffene sind ab diesem Schritt \textbf{latent infiziert}. Während das Subjekt in der latenten TB Phase ist, tauchen nicht zwangsweise Symptome auf. Die meisten latent infizierten Träger von TB haben in ihrem ganzen Leben keinerlei Auswirkungen der Krankheit. In dem latenten Stadium können Subjekte niemanden anstecken. Einige Faktoren beeinflussen jedoch die Wahrscheinlichkeit auf eine aktive Infektion, sogenannte Risikofaktoren. Diese sind vor allem Immunbedingt wie z. B. HIV, Diabetes, genetische Faktoren, Immunsupressiver und viele mehr. Subjekte mit derartigen Ausprägungen haben eine Wahrscheinlichkeit von 5 bis 10\% die Krankheit als aktive Infektion zu entwickeln. In den Fällen wo eine Präventivtherapie nicht hilft erfolgt meist eine aktive Krankheitsentwicklung.}
+\item{Die \textbf{aktive Infektion/Reaktivierung} erfolgt irgendwann, nachdem ein Subjekt latent infiziert wurde. Ab diesem Punkt gibt es nur zwei Möglichkeiten, Menschen die eine Heilung bekommen werden zu 95\% wieder gesund. 50\% die keine Heilung bekommen sterben und 50\% bessern sich von selbst. Ein Rückfall führt meistens zum Tode. Infizierte sind ab jetzt Überträger der Krankheit. Menschen die von TB geheilt werden gehen zurück ins latente Stadium. Eine vollständige Heilung ist nicht mehr möglich.}
 \end{enumerate}
 
-An diesem Model wird relativ schnell klar warum TB so gefährlich ist. Betroffene können nie wieder von der Krankheit regenerieren und Immunfaktoren, die besonders im Alter schlechter werden, begünstigen den Ausbruch der Krankheit. Zudem kommt das TB in zwei Formen auftritt. TB als herkömliche, behandelbare Erkrankung und Multi-Drug-Resistant TB (MDR-TB), bei der TB ressistent gegenüber den derzeitig stärksten Medikationen ist. Tatsächlich ist nach der WHO die MDR-TB Erkrankungen am steigen.
+An diesem Model wird relativ schnell klar, warum TB so gefährlich ist. Betroffene können nie wieder von der Krankheit regenerieren und Immunfaktoren, die besonders im Alter schlechter werden, begünstigen den Ausbruch der Krankheit. Zudem kommt das TB in zwei Formen auftritt. TB als herkömliche, behandelbare Erkrankung und Multi-Drug-Resistant TB (MDR-TB), bei der TB ressistent gegenüber den derzeitig stärksten Medikationen ist. Tatsächlich ist nach der WHO die MDR-TB Erkrankungen am Steigen.
 
 \subsection{Behandlung}
 
-Die Behandlung von TB kann vielschichtig erfolgen. Häufig eignet sich eine Impfung direkt bei der Geburt, aber auch später bei bisheriger nicht Erkrankung. Besondere Maßnahmen müssen bei TB und HIV berücksichtigt werden. Die Inzidenzrate von TB ist fast endemisch bei Trägern von HIV. Da HIV über Blut oder Körpersekrete weitergegeben wird, sind vor allem Länder betroffen wo es einen hohen Teil an HIV infizierten gibt, schlechte Aufklärung und Mittel zur Verhütung. In Regionen wo TB bereits als Epidemie ausgebrochen ist, muss die Bevölkerung aufgeklärt werden, sodass gegenschritte eingeleitet werden können. Zentren für Medikation, Behandlungen von Erkrankten und Isolation von der gesunden Bevölkerung. Isolation ist hier besonders wichtig, sowohl für nicht erkrankte als auch erkrankte. Betroffene Regionen müssen gewarnt werden sodass erkrankte selbstständig Hilfe suchen und nicht Betroffene nur für die wichtigsten Fälle in die Öffentlichkeit gehen. Individuen können außerdem durch Gesundheitsfaktoren wie Nahrung und geringen Konsum von Zigaretten oder Alkohol höhere Wahrscheinlichkeiten auf nicht Infektion haben. \cite{WHOTBGuidelines2017}
+Die Behandlung von TB kann vielschichtig erfolgen. Häufig eignet sich eine Impfung direkt bei der Geburt, aber auch später bei bisheriger nicht Erkrankung. Besondere Maßnahmen müssen bei TB und HIV berücksichtigt werden. Die Inzidenzrate von TB ist fast endemisch bei Trägern von HIV. Da HIV über Blut oder Körpersekrete weitergegeben wird, sind vor allem Länder betroffen, wo es einen hohen Teil an HIV infizierten gibt, schlechte Aufklärung und Mittel zur Verhütung. In Regionen wo TB bereits als Epidemie ausgebrochen ist, muss die Bevölkerung aufgeklärt werden, sodass gegenschritte eingeleitet werden können. Zentren für Medikation, Behandlungen von Erkrankten und Isolation von der gesunden Bevölkerung. Isolation ist hier besonders wichtig, sowohl für nicht erkrankte als auch erkrankte. Betroffene Regionen müssen gewarnt werden, sodass erkrankte selbstständig Hilfe suchen und nicht Betroffene nur für die wichtigsten Fälle in die Öffentlichkeit gehen. Individuen können außerdem durch Gesundheitsfaktoren wie Nahrung und geringen Konsum von Zigaretten oder Alkohol höhere Wahrscheinlichkeiten auf nicht Infektion haben. \cite{WHOTBGuidelines2017}
 
 \subsection{Faktoren}
 
-Es gibt einige Faktoren die besonders gut die Ausbreitung von Tuberkulose beschreiben können. Dazu gehören
+Es gibt einige Faktoren, die besonders gut die Ausbreitung von Tuberkulose beschreiben können. Dazu gehören
 
 \begin{itemize}
-  \item Die Abdenkung von Impfung in der Bevölkerung
-  \item Immunerkrankungen wie HIV oder Diabetes
-  \item Alter
-  \item Alkohol und Zigarettenkonsum
-  \item Lebensraum in quadratmeter pro Individuum
-  \item Transport (Flugzeug oder Schiff) und Öffentliche Verkehrsmittel (Bus oer Bahn)
-  \item Regen und Hitze (tropisches Klima)
-  \item Gruppierungen von Menschen (z.B. durchschnittliche Größe und Menge an Unternehmen, durchschnittlie Familiengröße, öffentliche Plätze)
-  \item TB resistent gegen Medikation (MDR-TB)
+\item Die Abdenkung von Impfung in der Bevölkerung
+\item Immunerkrankungen wie HIV oder Diabetes
+\item Alter
+\item Alkohol und Zigarettenkonsum
+\item Lebensraum in quadratmeter pro Individuum
+\item Transport (Flugzeug oder Schiff) und öffentliche Verkehrsmittel (Bus oer Bahn)
+\item Regen und Hitze (tropisches Klima)
+\item Gruppierungen von Menschen (z. B. durchschnittliche Größe und Menge an Unternehmen, durchschnittlie Familiengröße, öffentliche Plätze)
+\item TB resistent gegen Medikation (MDR-TB)
 \end{itemize}
 
-Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prädiktoren für TB sind. \cite{WHOTB2016}
+Häufig lassen sich diese Faktoren aus Berichten der WHO und weiteren extrahieren. So ist es möglich eine Bevökerung anhand dieser Faktoren als Durchschnitt der Bevölkerung zu modellieren. Das Erkennen und aufdecken dieser Variablen ist enorm wichtig. Die aufgelisteten Faktoren sind die wichtigsten und offensichtlichsten Faktoren. Es gibt dutzende weitere die auf den ersten Blick nicht erkenntlich sind und eventuell hervorragende Prädiktoren für TB sind. \cite{WHOTB2016}
 
 \subsection{Ausbreitung von Infektionskrankheiten}
 
-Die Modellierung der Ausbreitung von Tuberkulose gehört zu einer höheren Kategorie von Modellen der Ausbreitung von Infektionskrankheiten. Infektionskrankheiten sind nach der Epidemiologie, Erkankungen die durch einen Erreger hervorgerufen werden, die meist parasitär in einem Wirt Leben und transient (kurze Dauer, hohe Infektion) oder persistent (lange Dauer, niedrige Infektion) auftreten. Sie gehen in der Regel mit starken septischen Symptonem einher wenn eine aktive Phase eintritt. \\
+Die Modellierung der Ausbreitung von Tuberkulose gehört zu einer höheren Kategorie von Modellen der Ausbreitung von Infektionskrankheiten. Infektionskrankheiten sind nach der Epidemiologie, Erkankungen die durch einen Erreger hervorgerufen werden, die meist parasitär in einem Wirt Leben und transient (kurze Dauer, hohe Infektion) oder persistent (lange Dauer, niedrige Infektion) auftreten. Sie gehen in der Regel mit starken septischen Symptonem einher, wenn eine aktive Phase eintritt. \\
 
 Bei der Modellierung der Ausbreitung von Infektionskrankheiten wird in drei Modellen unterschieden. Diese Modelle sind nicht zwingend diskret, da es viele Überlappungen geben kann.
 
 \begin{enumerate}
-  \item{\textbf{Compartment Modelle} sind solche in denen Individuen einer Bevölkerung in Klassen eingeordnet werden. Die Standardklassen beinhalten Subsceptibles (Empfänger), Exposed (latent infizierte), Infected (Infizifert) und Recovered (Erholte).}
-  \item{\textbf{Statistische Modelle} schauen sich historische Daten von Bevölkerungen an wo TB aufgetreten ist. Mithilfe dieser Daten können z.B. Prädiktionsmodelle entwickelt werden, um vorhersagen, wo die nächste TB Epidemie ausbricht.}
-  \item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil, dass große Simulation enorme Rechenleistung erfordern.}
+\item{\textbf{Compartment Modelle} sind solche in denen Individuen einer Bevölkerung in Klassen eingeordnet werden. Die Standardklassen beinhalten Subsceptibles (Empfänger), Exposed (latent infizierte), Infected (Infizifert) und Recovered (Erholte).}
+\item{\textbf{Statistische Modelle} schauen sich historische Daten von Bevölkerungen an wo TB aufgetreten ist. Mithilfe dieser Daten können z.B. Prädiktionsmodelle entwickelt werden, um vorhersagen, wo die nächste TB Epidemie ausbricht.}
+\item{\textbf{Agentenbasierte Modellierung} modelliert jedes einzelne Individuum aufgrund von Bevölkerungsparametern und lässt diese auf Grids miteinander interagieren. Der Vorteil zu reinen Compartment Modellen ist das die Lokalität der einzelnen Agenten eine Rolle spielt. Der Nachteil, dass große Simulation enorme Rechenleistung erfordern.}
 \end{enumerate}
 
 Im Folgenden werden die Compartment Modelle und die agentenbasierte Modellierung am Beispiel von Tuberkulose beschrieben und erläutert.
@@ -190,9 +189,9 @@ Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das 
 
 \begin{equation}
 \begin{split}
-  \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
-  \frac{dI}{dt} &= \beta \frac{I}{N}S  - (\gamma + \mu)I \\
-  \frac{dR}{dt} &= \gamma I - \mu R
+\frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
+\frac{dI}{dt} &= \beta \frac{I}{N}S - (\gamma + \mu)I \\
+\frac{dR}{dt} &= \gamma I - \mu R
 \end{split}
 \label{eq:dgls-sir}
 \end{equation}
@@ -200,19 +199,19 @@ Compartment Modelle werden über Differentialgleichungssysteme beschrieben. Das 
 Die Parameter des SIR Modells sind $\mu$ die Sterberate, $\beta$ die Infektionsrate und $\gamma$ die Erholungsrate. Die Sterberate ist die generelle Sterberate in der Bevölkerung. Für ein realeres, kontinuierliches Modell mit Zyklen, bräuchte dieses Modell auch einen entsprechenden Geburtenratenparameter. Das vorliegende einfache $SIR$ Modell ist ein
 
 \begin{itemize}
-  \item{gewönhliches Differentialgleichungssystem}
-  \item{erster Ordnung}
-  \item{welches nicht-linear ist, durch $\frac{I}{N}S$, da $S$ nicht mit einer Konstanten multipliziert wird. Dadurch sind keine einfachen analytischen Lösungen möglich. Allerdings konnte \cite{Harko2014} eine exakte Lösung für das $SIR$ Modell präsentieren.}
+\item{gewönhliches Differentialgleichungssystem}
+\item{erster Ordnung}
+\item{welches nicht-linear ist, durch $\frac{I}{N}S$, da $S$ nicht mit einer Konstanten multipliziert wird. Dadurch sind keine einfachen analytischen Lösungen möglich. Allerdings konnte \cite{Harko2014} eine exakte Lösung für das $SIR$ Modell präsentieren.}
 \end{itemize}
 
- Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das Differentialgleichungssystem \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt. Auch hier nimmt $E$ um $(\alpha + \mu)$ in $I$ ab und steigt um $\gamma I$, die Abnahme der infizierten, an. \cite{MathOfInfectiousDiseases2000}
+Das SIR Modell kann leicht durch latent infizierte (Exposed) zum SEIR Modell erweitert werden. Das Differentialgleichungssystem \ref{eq:dgls-seir} bekommt eine zusätzliche Klasse $E$ mit dem korrespondierenden Zunahmeparameter $\alpha$, wobei $N = S + E + I + R$ gilt. Auch hier nimmt $E$ um $(\alpha + \mu)$ in $I$ ab und steigt um $\gamma I$, die Abnahme der infizierten, an. \cite{MathOfInfectiousDiseases2000}
 
 \begin{equation}
 \begin{split}
-  \frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
-  \frac{dE}{dt} &= \beta \frac{I}{N}S - (\alpha + \mu)E \\
-  \frac{dI}{dt} &= \alpha E  - (\gamma + \mu)I \\
-  \frac{dR}{dt} &= \gamma I - \mu R
+\frac{dS}{dt} &= \mu N - \mu S - \beta \frac{I}{N}S \\
+\frac{dE}{dt} &= \beta \frac{I}{N}S - (\alpha + \mu)E \\
+\frac{dI}{dt} &= \alpha E - (\gamma + \mu)I \\
+\frac{dR}{dt} &= \gamma I - \mu R
 \end{split}
 \label{eq:dgls-seir}
 \end{equation}
@@ -221,11 +220,11 @@ Die Übergangsparameter mit den zugehörigen Compartments stellen Übergangswahr
 
 \begin{equation}
 \begin{split}
-  \frac{dM}{dt} &= N - \sigma M - \mu M \\
-  \frac{dS}{dt} &= \sigma M - \mu S - \rho(t)\beta \frac{I}{N}S \\
-  \frac{dE}{dt} &= \beta \frac{I}{N}S - \rho(t)(\alpha + \mu)E + \lambda R \\
-  \frac{dI}{dt} &= \rho(t)\alpha E  - (\gamma + \mu)I \\
-  \frac{dR}{dt} &= \gamma I - (\mu + \lambda) R
+\frac{dM}{dt} &= N - \sigma M - \mu M \\
+\frac{dS}{dt} &= \sigma M - \mu S - \rho(t)\beta \frac{I}{N}S \\
+\frac{dE}{dt} &= \beta \frac{I}{N}S - \rho(t)(\alpha + \mu)E + \lambda R \\
+\frac{dI}{dt} &= \rho(t)\alpha E - (\gamma + \mu)I \\
+\frac{dR}{dt} &= \gamma I - (\mu + \lambda) R
 \end{split}
 \label{eq:dgls-mseirs}
 \end{equation}
@@ -233,12 +232,12 @@ Die Übergangsparameter mit den zugehörigen Compartments stellen Übergangswahr
 In diesem Differentialgleichungssystem wurden drei zusätzliche Modifikationen unternommen.
 
 \begin{enumerate}
-  \item{Es wurde eine Klasse von geimpften $M$ bei der Geburt eingefügt die mit einer Wahrscheinlichkeit von $\sigma$ nach $S$ gehen können.}
-  \item{Es gibt einen direkten Weg von $R$ zu $E$ mit einer Wahrscheinlichkeit $\lambda$.}
-  \item{Es wurde ein variierender Zeitparameter $\rho (t)$ eingefügt um saisonale Schwankungen zu berücksichtigen. Dieser könnte z.B. $1/365$ für 1 Tag pro Berechnung darstellen. Dies müsste im Fall der Tuberkulose, deutlich genauer modelliert werden, da diese vor allem in heißen regnerischen Monaten auftritt.}
+\item{Es wurde eine Klasse von geimpften $M$ bei der Geburt eingefügt die mit einer Wahrscheinlichkeit von $\sigma$ nach $S$ gehen können.}
+\item{Es gibt einen direkten Weg von $R$ zu $E$ mit einer Wahrscheinlichkeit $\lambda$.}
+\item{Es wurde ein variierender Zeitparameter $\rho (t)$ eingefügt, um saisonale Schwankungen zu berücksichtigen. Dieser könnte z. B. $1/365$ für 1 Tag pro Berechnung darstellen. Dies müsste im Fall der Tuberkulose, deutlich genauer modelliert werden, da diese vor allem in heißen regnerischen Monaten auftritt.}
 \end{enumerate}
 
-Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Einfluss von Immunerkrankungen, eine Wachstumsrate, der Einfluss von MDR-TB, Lokalität über z.B. Clusterings, der Einfluss von Therapien und einige mehr. \cite{MathOfInfectiousDiseases2000}
+Für ein vollständiges modernes Modell fehlen noch altersbasierte Parameter, Einfluss von Immunerkrankungen, eine Wachstumsrate, der Einfluss von MDR-TB, Lokalität über z. B. Clusterings, der Einfluss von Therapien und einige mehr. \cite{MathOfInfectiousDiseases2000}
 
 \subsection{Matlab}
 
@@ -246,46 +245,46 @@ Zur Modellierung von den folgenden Compartment Modellen wurde Matlab verwendet. 
 
 \begin{lstlisting}[style=matlab]
 intervall = 0:1:60;
-y0        = [S E L Es I R];
-opts      = odeset('RelTol', 1e-5);
-[t, y]    = ode45(@(t,y) model(t, y), intervall, y0, opts);
+y0 = [S E L Es I R];
+opts = odeset('RelTol', 1e-5);
+[t, y] = ode45(@(t,y) model(t, y), intervall, y0, opts);
 \end{lstlisting}
 
-Wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeitpunkt $t = 0$ der Differentialgleichungen sind. Im folgenden wurden Experimente mit Daten über Tuberkulose von dem US Ministerium für Gesundheit entnommen. Zum einen die Population $N$ von 1953-2015 und zum anderen die Inzidenzraten $I$ von 1953-2015.
+Wobei $t$ der aktuelle Zeitschritt und $y0$ die zu integrierenden Werte zum Zeitpunkt $t = 0$ der Differentialgleichungen sind. Im Folgenden wurden Experimente mit Daten über Tuberkulose von dem US Ministerium für Gesundheit entnommen. Zum einen die Population $N$ von 1953 bis 2015 und zum anderen die Inzidenzraten $I$ von 1953 bis 2015.
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.7\textwidth,keepaspectratio]{images/us-population}
-  \caption{US Population zwischen 1953-2015}
-  \label{fig:us-population}
+\centering
+\includegraphics[width=0.7\textwidth,keepaspectratio]{images/us-population}
+\caption{US Population zwischen 1953 und 2015}
+\label{fig:us-population}
 \end{figure}
 
 Die US Populationsentwicklung ist in Abbild \ref{fig:us-population} zu sehen. Die durchschnittliche Rate ist der orangenen Linie zu entnehmen. Es ist ein stettiges Wachstum auf ein level zugehend von 320 Millionen im Jahr 2015.
 
 \subsection{SEEIR MDR-TB Modell}
 
-Im ersten Experiment wurde versucht das Modell von \cite{Trauer2014} in Matlab zu implementieren. Das reproduzieren  ist aufgrund der menge an Differentialgleichungen und Parametern nicht trivial. Das System inkorperiert MDR-TB und ist in zwei größere Gruppen eingeteilt. Das Modell von \cite{Trauer2014} ist in Abbildung \ref{fig:mdr-tb-model} zu sehen.
+Im ersten Experiment wurde versucht das Modell von \cite{Trauer2014} in Matlab zu implementieren. Das Reproduzieren, ist aufgrund der menge, an Differentialgleichungen und Parametern nicht trivial. Das System inkorperiert MDR-TB und ist in zwei größere Gruppen eingeteilt. Das Modell von \cite{Trauer2014} ist in Abbildung \ref{fig:mdr-tb-model} zu sehen.
 
 \begin{minipage}{0.4\linewidth}
-  \includegraphics[width=\linewidth]{images/mdr_tb_model}
-  \label{fig:mdr-tb-model}
+\includegraphics[width=\linewidth]{images/mdr_tb_model}
+\label{fig:mdr-tb-model}
 \end{minipage}\hfill
 \begin{minipage}{0.55\linewidth}
-Das Modell ist in zwei Systeme aufgeteilt mit kleinen Übergängen zwischen diesen Systemen. Die Differentialgleichungssysteme beschreiben ein klassisches SEIR Modell mit einer latenten Phase mehr. $L_{A}$ ist die erste latente Phase wo die Wharscheinlichkeit auf Erkrankung geringer ist als bei der aktiveren Phase $L_{B}$. Die Autoren haben herausgefunden das eine Modellierung so besser abzubilden ist. Das Differentialgleichungssystem was aus $S_{A}$ folgt stellt das Transfer Diagramm der herkömmlichen TB dar. $S_{B}$ hingegen stellt die MDR-TB dar mit höheren Ressistenzen. Es ist fest zu stellen das $\mu$ die Sterberate ist. $\phi$ hingegen beschreibt den Übergang von einer Genesung, direkt in die anfällige Gruppe der MDR-TB. Ferner gibt es einen Rückfallfaktor $\eta \omega$ nach Genesung von $T$ zu $I_{m}$ direkt in die MDR-TB.
+Das Modell ist in zwei Systeme aufgeteilt mit kleinen Übergängen zwischen diesen Systemen. Die Differentialgleichungssysteme beschreiben ein klassisches SEIR Modell mit einer latenten Phase mehr. $L_{A}$ ist die erste latente Phase, wo die Wahrscheinlichkeit auf Erkrankung geringer ist als bei der aktiveren Phase $L_{B}$. Die Autoren haben herausgefunden das eine Modellierung so besser abzubilden ist. Das Differentialgleichungssystem was aus $S_{A}$ folgt, stellt das Transfer Diagramm der herkömmlichen TB dar. $S_{B}$ hingegen stellt die MDR-TB dar mit höheren Ressistenzen. Es ist festzustellen das $\mu$ die Sterberate ist. $\phi$ hingegen beschreibt den Übergang von einer Genesung, direkt in die anfällige Gruppe der MDR-TB. Ferner gibt es einen Rückfallfaktor $\eta \omega$ nach Genesung von $T$ zu $I_{m}$ direkt in die MDR-TB.
 \end{minipage}\\\\
 
 Das obige Transfer Diagramm wird als Differentialgleichungssystem realisiert und sieht wie folgt aus
 
 \begin{equation}
 \begin{split}
-  \frac{dL_{A}}{dt} &= \lambda S_{A} + \lambda_{d}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{A} \\
-  \frac{dL_{Am}}{dt} &= \lambda_{m} S_{A} + \lambda_{dm}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{Am} \\
-  \frac{dL_{B}}{dt} &= \kappa L_{A} + \lambda I - (\lambda_{d} + \lambda_{dm} + \nu + \mu) L_{B} \\
-  \frac{dL_{Bm}}{dt} &= \kappa L_{Am} + \lambda I_{m} - (\lambda_{d} + \lambda _{dm} + \nu + \mu) L_{Bm} \\
-  \frac{dI}{dt} &= \epsilon L_{A} + \nu L_{B} + (1 - \eta)\omega T - (\gamma + \delta + \mu_{i})I \\
-  \frac{dI_{m}}{dt} &= \epsilon L_{Am} + \nu L_{Bm} + \eta \omega T + \omega T_{m} - (\gamma + \delta_{m} + \mu_{i})I_{m} \\
-  \frac{dT}{dt} &= \delta I - (\varphi + \omega + \mu_{t}) T \\
-  \frac{dT_{m}}{dt} &= \delta _{m} I_{m} - (\varphi _{m} + \omega + \mu_{t}) T_{m}
+\frac{dL_{A}}{dt} &= \lambda S_{A} + \lambda_{d}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{A} \\
+\frac{dL_{Am}}{dt} &= \lambda_{m} S_{A} + \lambda_{dm}(S_{B} + L_{B} + L_{Nm}) - (\epsilon + \kappa + \mu)L_{Am} \\
+\frac{dL_{B}}{dt} &= \kappa L_{A} + \lambda I - (\lambda_{d} + \lambda_{dm} + \nu + \mu) L_{B} \\
+\frac{dL_{Bm}}{dt} &= \kappa L_{Am} + \lambda I_{m} - (\lambda_{d} + \lambda _{dm} + \nu + \mu) L_{Bm} \\
+\frac{dI}{dt} &= \epsilon L_{A} + \nu L_{B} + (1 - \eta)\omega T - (\gamma + \delta + \mu_{i})I \\
+\frac{dI_{m}}{dt} &= \epsilon L_{Am} + \nu L_{Bm} + \eta \omega T + \omega T_{m} - (\gamma + \delta_{m} + \mu_{i})I_{m} \\
+\frac{dT}{dt} &= \delta I - (\varphi + \omega + \mu_{t}) T \\
+\frac{dT_{m}}{dt} &= \delta _{m} I_{m} - (\varphi _{m} + \omega + \mu_{t}) T_{m}
 \end{split}
 \label{eq:dgls-mdr-tb}
 \end{equation}
@@ -293,12 +292,12 @@ Das obige Transfer Diagramm wird als Differentialgleichungssystem realisiert und
 Wie zuvor auch ist die Populationszahl $N = S_{A} + S_{B} + L_{A} + L_{B} + L_{Am} + L_{Bm} + I + I_{m} + T + T_{m}$ errechnet durch alle Variablen zum Zeitpunkt $t$. Die spezifischen $\lambda$ Parameter kontrollieren die Übergänge zwischen den $S$ und $L$ Klassen, also quasi die latente Infektion.
 
 \begin{gather*}
-  \lambda = \beta \rho (I + oT)) \/ N \\
-  \lambda _{d} = \beta_{m} \rho (I_{m} + oT_{m})) / N \\
-  \lambda _{dm} = \chi\beta_{m} \rho (I_{m} + oT_{m})) / N \\
+\lambda = \beta \rho (I + oT)) \/ N \\
+\lambda _{d} = \beta_{m} \rho (I_{m} + oT_{m})) / N \\
+\lambda _{dm} = \chi\beta_{m} \rho (I_{m} + oT_{m})) / N \\
 \end{gather*}
 
-Die eingestellten Parameter für dieses Modell sind im folgenden aufgelistet und nahe an \cite{Trauer2014} angelehnt.
+Die eingestellten Parameter für dieses Modell sind im Folgenden aufgelistet und nahe an \cite{Trauer2014} angelehnt.
 
 \begin{table}[ht]
 \centering
@@ -342,7 +341,7 @@ $mdr$ & 0.06 & proportion of cases MDR-TB 4-6\% \\
 \end{table}
 
 Die Resultate des Modells sind unscheinbar. Sobald es zwei Populationen gibt mit TB und MDR-TB, überwiegt die Infektionsrate von MDR-TB.
-Das liegt daran, dass es mehr Eingänge zu dem System des MDR-TB gibt und aus der MDR-TB nur geringe Abläufe sind. Es ist zu beobachten das ein geringer Anteil der Population in einen Heilungsprozess kommt. Durch fehlende Geburtenrate sind zum Ende des berechneten Zeitraums fast alle Individuen durch die Mortalitätsrate $\mu$ gestorben. Hier fehlt ein System das sich theoretisch auf einem Equlibrium einpendelt bzw. wo die Krankheitsausbreitungen deutlich geringer sind.
+Das liegt daran, dass es mehr Eingänge zu dem System des MDR-TB gibt und aus der MDR-TB nur geringe Abläufe sind. Es ist zu beobachten, dass ein geringer Anteil der Population in einen Heilungsprozess kommt. Durch fehlende Geburtenrate sind zum Ende des berechneten Zeitraums fast alle Individuen durch die Mortalitätsrate $\mu$ gestorben. Hier fehlt ein System, das sich theoretisch auf einem Equlibrium einpendelt bzw. wo die Krankheitsausbreitungen deutlich geringer sind.
 
 \begin{minipage}{0.6\linewidth}
   \includegraphics[width=\linewidth]{images/mdr_tb_1}
@@ -367,36 +366,36 @@ Durch diese Art der Modellierung kann durch Variationen der Parameter geschaut w
 Das Clustered SELEIR Modell aus \cite{ModellingTBEpidemics2009} arbeitet mit zwei Populationen $N_{1}$ und $N_{2}$. Das Transfer Diagramm \ref{fig:clustered-seleir} zeigt einige Ähnlichkeiten zu den bisherigen Compartment Modellen, allerdings deutlich komplexer. Um alles schwieriger zu machen sind $U$ die Empfänger ($S$), $A$ sind die infizierten ($I$) und $L$ ist eine neue Klasse von latent infizierten Individuen. Wie zuvor gilt der Kreislauf $U \rightarrow E \rightarrow A \rightarrow R$.
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_model}
-  \caption{Clustered Tuberkulose in \cite{ModellingTBEpidemics2009}}
-  \label{fig:clustered-seleir}
+\centering
+\includegraphics[width=0.9\textwidth,keepaspectratio]{images/clustered_seleir_model}
+\caption{Clustered Tuberkulose in \cite{ModellingTBEpidemics2009}}
+\label{fig:clustered-seleir}
 \end{figure}
 
-Hinzu kommt, dass die latente Phase fein granularer dargestellt ist. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ``pulmonale TB'' $A$ oder der Befall anderer Organe ``extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente Infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. Wie zuvor werden die Cluster als zwei Populationen in zwei Differentialgleichungssystemen dargestellt. Das Transferdiagramm wird dupliziert und eine explizite Abhängigkeit aufgebaut zwischen diesen erzeugt. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen. \\
+Hinzu kommt, dass die latente Phase fein granulärer dargestellt ist. Anstelle von dem direkten Übergang von latent infizierten $E$ zu infizierten gibt es drei Klassen. $E$ kann standardmäßig zur Klasse der Infizierten wandern. Hier gibt es zwei Klassen, der Befall der Lunge ''pulmonale TB'' $A$ oder der Befall anderer Organe ''extrapulmonale TB'' $A^{\*}$. $E$ kann außerdem in die Klasse $L$, lange latente infizierte die eine wesentlich geringere Chance auf den Ausbruch haben. Diejenigen die $L$ mit einer Wahrscheinlichkeit $o\gamma Q_{0}\frac{L}{N}A_{p}$ verlassen sind in einer hochgradig exposierten Variante von $E$, die höhere Wahrscheinlichkeit auf aktiven Ausbruch hat. Wie zuvor werden die Cluster als zwei Populationen in zwei Differentialgleichungssystemen dargestellt. Das Transferdiagramm wird dupliziert und eine explizite Abhängigkeit aufgebaut zwischen diesen erzeugt. Eine generelle Population $N_{1}$ bei der es zufällig mit einem sehr geringen Wert Neuinfektionen für TB gibt. Eine Population mit clustern von erkrankten $N_{2}$ die bei jeder Neuinfektion in $N_{1}$ dahin bewegt wird. Es gibt dann eine Kontaktwahrscheinlichkeit zwischen $N_{1}$ und $N_{2}$. Das volle Differentialgleichungssystem kann in \cite{ModellingTBEpidemics2009} nachvollzogen werden und würde den Rahmen hier sprengen. \\
 
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=0.8\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
-  \caption{Clustered SELEIR Modell}
-  \label{fig:clustered-seleir-compare}
+\centering
+\includegraphics[width=0.8\textwidth,keepaspectratio]{images/clustered_seleir_against_us_data}
+\caption{Clustered SELEIR Modell}
+\label{fig:clustered-seleir-compare}
 \end{figure}
 
-In dem Experiment mit dem Clustered SELEIR Modell ist herauszufinden, wie gut die generellen Populationsparameter für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt. Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün. \\
+In dem Experiment mit dem Clustered SELEIR Modell ist herauszufinden, wie gut die generellen Populationsparameter für Tuberkulose die Kurve von realen Daten approximieren kann. Das System wurde mit den Bevölkerungsparametern von Tuberkulose aus \cite{Trauer2014} befüllt. Diese Parameter wurden kombiniert mit den Daten der amerikanischen Bevölkerung. In Abbildung \ref{fig:clustered-seleir-compare} sehen wir die Vorhersage des Models über den Zeithorizont in Blau im Vergleich zu der realen Entwicklung in Grün. \\
 
-Es wird relativ klar, das der generelle Trend getroffen wird, die Vorhersagelinie aber nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den syntetisch erzeugten Daten des Modells. Probleme die hier vor allem auftretten sind die Menge der Parameter. Diese unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen, inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch.
+Es wird relativ klar, das der generelle Trend getroffen wird, die Vorhersagelinie aber nicht der realen folgt. Varianzen in den realen Daten führen nicht zu Varianzen in den synthetisch erzeugten Daten des Modells. Probleme, die hier vor allem auftretten sind die Menge der Parameter. Diese Unschärfe sorgt dafür das es nur durch komplexe analytische Verfahren möglich ist zu bestimmen, inwiefern Parameter angepasst werden müssen. Manche reale Parameter sind zudem nicht bekannt und Parameter sind auch nur als Durchschnitt in diesem Zeitraum statisch.
 
 \section{Agentenbasierte Modellierung zur Ausbreitung von Tuberkulose}
 
-Mit der agentenbasierte Modellierung (ABM) werden Individuen oder Kolletikve simuliert und deren Aktionen in einer bestimmten Sichtweise analysiert. Das Ziel ist es neue Erkenntnisse aus den Interaktionsmustern zu entwickeln. Im Vergleich zu den Compartment Modellen ist es bei ABM möglich auch die Lokalität eines Agenten einfliessen zu lassen. Ferner lassen sich Agenten auf Schichten platzieren, wobei jede Schicht für unterschiedliche Modellierungsaspekte steht. Es kann z.B. eine Schicht für die physikalischen Interaktionsmuster und Wege existieren und eine andere um die soziale Zusammensetzung zu modellieren. Jede Abstraktionsebene kann getrennt von den anderen Schichten hinzugefügt werden, für die entsprechende Rechenleistung. \\
+Mit der agentenbasierte Modellierung (ABM) werden Individuen oder Kollektive simuliert und deren Aktionen in einer bestimmten Sichtweise analysiert. Das Ziel ist es neue Erkenntnisse aus den Interaktionsmustern zu entwickeln. Im Vergleich zu den Compartment Modellen ist es bei ABM möglich auch die Lokalität eines Agenten einfließen zu lassen. Ferner lassen sich Agenten auf Schichten platzieren, wobei jede Schicht für unterschiedliche Modellierungsaspekte steht. Es kann z. B. eine Schicht für die physikalischen Interaktionsmuster und Wege existieren und eine andere um die soziale Zusammensetzung zu modellieren. Jede Abstraktionsebene kann getrennt von den anderen Schichten hinzugefügt werden, für die entsprechende Rechenleistung. \\
 
-Im Folgenden wird ein Modell vorgestellt, dass die Ausbreitung von Tuberkulose als ABM realisiert. Hierbei laufen Agenten auf einem Grid per Random Walk. Nur bei direktem Kontakt auf demselben oder umliegenden Grid kann eine Infektion erfolgen. Verschiedenste Bevökerungsparameter und Übergangswahrscheinlichkeiten wie in Compartment Modellen kommen zum Einsatz. Die Simulation wurde in Python Mesa, einem ABM Framework, geschrieben.
+Im Folgenden wird ein Modell vorgestellt, dass die Ausbreitung von Tuberkulose als ABM realisiert. Hierbei laufen Agenten auf einem Grid per Random Walk. Nur bei direktem Kontakt auf demselben oder umliegenden Grid kann eine Infektion erfolgen. Verschiedenste Bevölkerungsparameter und Übergangswahrscheinlichkeiten wie in Compartment Modellen kommen zum Einsatz. Die Simulation wurde in Python Mesa, einem ABM Framework, geschrieben.
 
 \subsection{Modellierung von Tuberkulose in Mesa}
 
-Mesa ist ein ABM Framework in Python \cite{Mesa}. Es existieren unterschiedliche Funktionalitäten um Agenten auf einem oder mehreren Feldern zu platizeren und mit diesen über einen Zeitraum zu planen. Im folgenden ein paar Erläuterungen zu dem Mesa Framework und der Modellierung von Tuberkulose. \\
+Mesa ist ein ABM Framework in Python \cite{Mesa}. Es existieren unterschiedliche Funktionalitäten um Agenten auf einem oder mehreren Feldern zu platzieren und mit diesen über einen Zeitraum zu planen. Im Folgenden ein paar Erläuterungen zu dem Mesa Framework und der Modellierung von Tuberkulose. \\
 
-Die \textit{AgentDistribution} hält alle Populationsparameter. Jeder neue Agent wird aus dieser Klasse mit Stichprobenparametern befüllt. Unter anderem kommt hier das Konzept von den Compartment Modellen - $SLIR$ - zum einsatz um Agenten in einzelne Klassen einteilen zu können. Bei den Ansätzen wurde sich vor allem an dem Modell von \cite{Perez2009} orientiert.
+Die \textit{AgentDistribution} hält alle Populationsparameter. Jeder neue Agent wird aus dieser Klasse mit Stichprobenparametern befüllt. Unter anderem kommt hier das Konzept von den Compartment Modellen - $SLIR$ - zum Einsatz um Agenten in einzelne Klassen einteilen zu können. Bei den Ansätzen wurde sich vor allem an dem Modell von \cite{Perez2009} orientiert.
 
 \begin{lstlisting}[style=python]
 class AgentDistribution():
@@ -405,7 +404,7 @@ class AgentDistribution():
     pass
 \end{lstlisting}
 
-Agenten müssen auf einem Grid platziert werden können. Zu aller erst wird eine neue Stichprobe generiert und ein neuer Agent mit diesen Daten erzeugt. Jeder Agent wird dem Mesa Scheduler hinzugefügt und auf dem Grid platziert. In jedem Update oder Tick wird die Simulation um eine Zeiteinheit $t$ weitergführt. Der scheduler geht Round Robin alle Agenten  durch und kann optimal Populationsdaten einsammeln. Ein Agent bewegt sich aufgrund seiner zu implementierenden \textit{step} Schnittstelle. Dieser \textit{step} wird an alle Agenten propagiert, die dann ihre individuellen Handlungen durchführen.
+Agenten müssen auf einem Grid platziert werden können. Zu aller erst wird eine neue Stichprobe generiert und ein neuer Agent mit diesen Daten erzeugt. Jeder Agent wird dem Mesa Scheduler hinzugefügt und auf dem Grid platziert. In jedem Update oder Tick wird die Simulation um eine Zeiteinheit $t$ weitergeführt. Der scheduler geht Round Robin alle Agenten durch und kann optimal Populationsdaten einsammeln. Ein Agent bewegt sich aufgrund seiner zu implementierenden \textit{step} Schnittstelle. Dieser \textit{step} wird an alle Agenten propagiert, die dann ihre individuellen Handlungen durchführen.
 
 \begin{lstlisting}[style=python]
 from Mesa import Model
@@ -433,7 +432,7 @@ class DiseaseModel(Model, Grid):
     self.schedule.step()
 \end{lstlisting}
 
-Der Mesa Agent besitzt alle nötigen Eigenschaften um mit anderen Agenten zu kommunizieren und wichtige Lokalitätskriterien abzufragen. Ein spezieller \textit{AAgent} besitzt die Schnittstelle, um beliebige Interaktionen mit dem Mesa Grid und Scheduler zu machen wie z.B. der Random Walk. Der \textit{TBAgent} besitzt dann alle Eigenschaften um speziellere Aktionen bezüglich der Tuberkulose aufzunehmen. Ein Mensch hat prinzipiell nichts mit TB zutun, weshalb dieser dann eine Unterkategorie des \textit{TBAgent} darstellt. Der Mensch kann sich Reproduzieren, Sterben, Altern, TB entwickeln/anstecken, impfen, behandeln lassen und sich bewegen.
+Der Mesa Agent besitzt alle nötigen Eigenschaften, um mit anderen Agenten zu kommunizieren und wichtige Lokalitätskriterien abzufragen. Ein spezieller \textit{AAgent} besitzt die Schnittstelle, um beliebige Interaktionen mit dem Mesa Grid und Scheduler zu machen wie z. B. der Random Walk. Der \textit{TBAgent} besitzt dann alle Eigenschaften, um speziellere Aktionen bezüglich der Tuberkulose aufzunehmen. Ein Mensch hat prinzipiell nichts mit TB zutun, weshalb dieser dann eine Unterkategorie des \textit{TBAgent} darstellt. Der Mensch kann sich Reproduzieren, Sterben, Altern, TB entwickeln/anstecken, impfen, behandeln lassen und sich bewegen.
 
 \begin{lstlisting}[style=python]
 import tuberculosis as tb
@@ -474,7 +473,7 @@ class Human(TBAgent):
     self.chance_of_death()
 \end{lstlisting}
 
-Das Tuberkulose Modell beinhaltet alle Parameter zur Tuberkulose und die Berechnung der Infektions-und Übergangswahrscheinlichkeiten. Jeder \textit{Human} Agent muss daher bestimmte Attribute wie Alter, HIV positiv/negativ, Impfung, weitere Immunerkrankungen, TB Behandlung/Therapie und die Lebenserwartung initialisiert bekommen. Es müssen weitere Schnittstellen erfüllt sein um die Lokalität des Agenten und der herumliegenden Agenten abzufragen.
+Das Tuberkulose Modell beinhaltet alle Parameter zur Tuberkulose und die Berechnung der Infektions- und Übergangswahrscheinlichkeiten. Jeder \textit{Human} Agent muss daher bestimmte Attribute wie Alter, HIV-positiv/negativ, Impfung, weitere Immunerkrankungen, TB Behandlung/Therapie und die Lebenserwartung initialisiert bekommen. Es müssen weitere Schnittstellen erfüllt sein um die Lokalität des Agenten und der herumliegenden Agenten abzufragen.
 
 \begin{lstlisting}[style=python]
 def next_state(h):
@@ -505,54 +504,54 @@ def next_state(h):
   return state
 \end{lstlisting}
 
-Impfung führt immer zu $R$, nur im $S$ oder $R$ Status kann ein Agent infiziert werden. Diese Wahrscheinlichkeit wird durch $infect$ berechnet, wodurch überhaupt determiniert wird ob es eine Ansteckungsgefahr gibt. Die Ansteckungsgefahr wird durch die umliegenden, aktiv infizierten Agenten berechnet. Nicht jeder direkte Kontakt führt zu einem neuen Infekt. Danach wird berechnet, aufgrund der Agentenparameter, wie wahrscheinlich ein Agent in das latente oder ative TB Stadium läuft. \\
+Impfung führt immer zu $R$, nur im $S$ oder $R$ Status kann ein Agent infiziert werden. Diese Wahrscheinlichkeit wird durch $infect$ berechnet, wodurch überhaupt determiniert wird ob es eine Ansteckungsgefahr gibt. Die Ansteckungsgefahr wird durch die umliegenden, aktiv infizierten Agenten berechnet. Nicht jeder direkte Kontakt führt zu einem neuen Infekt. Danach wird berechnet, aufgrund der Agentenparameter, wie wahrscheinlich ein Agent in das latente oder aktive TB Stadium läuft. \\
 
-Zu guter letzt kann die Simulation über ein Backend Server abgerufen werden. Hierbei bindet Mesa sich an eine konfigurierte IP, standardmäßig 127.0.0.1 auf einem festgelegten Port z.B. 9000. Über z.B. einen Browser kann dann über \textit{http://127.0.0.1:9000} auf die Simulations GUI zugegriffen werden. In Abbildung \ref{fig:mesa-grid} ist das Simulationsgrid zu erkennen, wobei $S$, rund und Blau, $R$, rund und Grün, $L$, rechteckig und Gelb und $I$, rechteckig und Rot, ist. In Abbildung \ref{fig:n-population} ist die Gesamtpopulation zu sehen. Dabei ist auf der Y-Achse die Bevölkerungsanzahl und auf der X-Achse der Zeitpunkt $t$ zu sehen.
+Zu guter Letzt kann die Simulation über ein Backend Server abgerufen werden. Hierbei bindet Mesa sich an eine konfigurierte IP, standardmäßig 127.0.0.1 auf einem festgelegten Port z. B. 9000. Über z. B. einen Browser kann dann über \textit{http://127.0.0.1:9000} auf die Simulations-GUI zugegriffen werden. In Abbildung \ref{fig:mesa-grid} ist das Simulationsgrid zu erkennen, wobei $S$, rund und Blau, $R$, rund und Grün, $L$, rechteckig und Gelb und $I$, rechteckig und Rot, ist. In Abbildung \ref{fig:n-population} ist die Gesamtpopulation zu sehen. Dabei ist auf der y-Achse die Bevölkerungsanzahl und auf der x-Achse der Zeitpunkt $t$ zu sehen.
 
 \begin{figure}[ht]
   \centering
   \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/mesa-grid}
-    \caption{Das Mesa Grid}
-    \label{fig:mesa-grid}
-  \end{subfigure}%
+  \centering
+  \includegraphics[width=.99\linewidth]{images/mesa-grid}
+  \caption{Das Mesa Grid}
+  \label{fig:mesa-grid}
+\end{subfigure}%
   \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/n-population}
-    \caption{Die Gesamtpopluation $N = S + L + I + R$}
-    \label{fig:n-population}
+  \centering
+  \includegraphics[width=.99\linewidth]{images/n-population}
+  \caption{Die Gesamtpopluation $N = S + L + I + R$}
+  \label{fig:n-population}
   \end{subfigure}
 \end{figure}
 
-Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig:l-i-population}, für $L$ und $I$, sowie in Abbildung \ref{fig:s-r-population}, für $S$ und $R$ beobachtet werden. Die Simulation ist in Jahren und wurde auf der X-Achse über ca 100 Jahre geführt.
+Die Populationskomposition, daher $N = S + L + I + R$ kann in Abbildung \ref{fig:l-i-population}, für $L$ und $I$, sowie in Abbildung \ref{fig:s-r-population}, für $S$ und $R$ beobachtet werden. Die Simulation ist in Jahren und wurde auf der x-Achse über ca 100 Jahre geführt.
 
 \begin{figure}[ht]
   \centering
   \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/l-i-population}
-    \caption{Die Popluationen $L$ und $I$}
-    \label{fig:l-i-population}
+  \centering
+  \includegraphics[width=.99\linewidth]{images/l-i-population}
+  \caption{Die Popluationen $L$ und $I$}
+  \label{fig:l-i-population}
   \end{subfigure}%
-  \begin{subfigure}{.5\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/s-r-population}
-    \caption{Die Popluationen $S$ und $R$}
-    \label{fig:s-r-population}
+\begin{subfigure}{.5\textwidth}
+  \centering
+  \includegraphics[width=.99\linewidth]{images/s-r-population}
+  \caption{Die Popluationen $S$ und $R$}
+  \label{fig:s-r-population}
   \end{subfigure}
 \end{figure}
 
 \subsection{Eigenschaften des Modells}
 
-Das vorliegende ABM Modell in Mesa ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigenschaften von Distributionen ausgenutzt und mit Effekten kombiniert, die durch direkten Kontakt hervorgerufen werden. Des weiteren werden Parameter vorgestellt und ein paar Experimente beschrieben. Für das ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Zum ziehen von binären Events wurde die Binominal Distribution mit einem wahrscheinlichkeitsparameter genutzt. Die formale Definition der Binominal Distribution ist
+Das vorliegende ABM Modell in Mesa, ist nahe angelehnt an Compartment Modelle. Dabei werden ein paar stochastische Eigenschaften von Distributionen ausgenutzt und mit Effekten kombiniert, die durch direkten Kontakt hervorgerufen werden. Des Weiteren werden Parameter vorgestellt und ein paar Experimente beschrieben. Für das Ziehen von Stichprobendaten wurden Funktionen aus Python $numpy$ verwendet. Zum Ziehen von binären Events wurde die Binominal Distribution mit einem wahrscheinlichkeitsparameter genutzt. Die formale Definition der Binominal Distribution ist
 
 \begin{gather*}
-  P(k; n, p) = P(X = k) = \binom{n}{k}p^{k}(1 - p)^{n - k} \\
-  \binom{n}{k} = \frac{n!}{k!(n-k)!}
+P(k; n, p) = P(X = k) = \binom{n}{k}p^{k}(1 - p)^{n - k} \\
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
 \end{gather*}
 
-Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten Raum kommen. Es wird dann eine Distribution mit $0$ und $1$ aufgestellt, wobei $0$ für keine Ausprägung und $1$ für eine Ausprägung steht. Diese Ausprägungen werden dann über einen Parameter $p$ mit Anteilen belegt. Die resultierende Binominaldistribution zieht dann Stichproben mit einer Wahrscheinlichkeit, dass der Wert $0$ ist mit $p$ und die Restwahrscheinlichkeit, dass der Wert $1$ ist. Interessanter wird es mit der Gamma Distribution. Das Alter einer Bevölkerung lässt sich beispielweise wie in Abbildung \ref{fig:gamma-age-dist} initialisieren.
+Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten Raum kommen. Es wird dann eine Distribution mit $0$ und $1$ aufgestellt, wobei $0$ für keine Ausprägung und $1$ für eine Ausprägung steht. Diese Ausprägungen werden dann über einen Parameter $p$ mit Anteilen belegt. Die resultierende Binominaldistribution zieht dann Stichproben mit einer Wahrscheinlichkeit, dass der Wert $0$ ist mit $p$ und die Restwahrscheinlichkeit, dass der Wert $1$ ist. Interessanter wird es mit der Gamma Distribution. Das Alter einer Bevölkerung lässt sich beispielsweise wie in Abbildung \ref{fig:gamma-age-dist} initialisieren.
 
 \begin{figure}[ht]
   \centering
@@ -564,33 +563,33 @@ Die Binominaldistribution eignet sich für Stichproben die aus einem diskreten R
 Die vorliegende Bevölkerung ist im Durchschnitt über 10 und unter 40 und die Lebenserwartung einzelner Individuen sehr gering bis ins hohe Alter. Für die Simulation wurden insgesamt folgende Parameter angenommen
 
 \begin{itemize}
-  \item{Alter - Stichproben aus einer Gamma Distribution}
-  \item{Geburtenrate - in prozentualen Anteilen per Update (entscheidet darüber ob ein Agent, Kinder bekommt)}
-  \item{Impfung - Ob ein Agent geimpft wurde}
-  \item{Klassen - Die Klasse $S$, $L$, $I$ oder $R$}
-  \item{Behandlung - Ob ein Agent behandelt wird}
-  \item{HIV - HIV positiv/negativ eines Agenten}
-  \item{Immunkrankheiten - Immunerkrankungen eines Agenten}
+\item{Alter - Stichproben aus einer Gamma Distribution}
+\item{Geburtenrate - in prozentualen Anteilen per Update (entscheidet darüber, ob ein Agent, Kinder bekommt)}
+\item{Impfung - Ob ein Agent geimpft wurde}
+\item{Klassen - Die Klasse $S$, $L$, $I$ oder $R$}
+\item{Behandlung - Ob ein Agent behandelt wird}
+\item{HIV - HIV-positiv/negativ eines Agenten}
+\item{Immunkrankheiten - Immunerkrankungen eines Agenten}
 \end{itemize}
 
 Außerdem wurden folgende Effekte programatisch berücksichtigt
 
 \begin{itemize}
-  \item{Neugeborene - Die Geburtenrate entscheidet wieviele Individuen neu erzeugt werden pro Update. Neugeborene sind standardmäßig immer 0 Jahre alt bei der Geburt und bekommen HIV nur dann wenn die Eltern diese Krankheit auch haben. Ob die Eltern geimpft sind gibt einen Ausschlag darüber aus, ob Kinder ebenfalls geimpft werden.}
-  \item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod. Ferner, gibt es Sterben durch Tuberkulose, sowie eine zufällige Sterberate die immer eintreten kann.}
-  \item{Die Umgebung eines Individuums spielt eine Rolle, da mehr Kontakt zu anderen Infizierten das Risiko deutlich erhöht. Es gibt auf dem Grid einen Radius der Infektion, der bestimmt, über wieviele Felder die Infizierten andere anstecken können.}
-  \item{Die Zeit, wenn ein Individuum in der Klasse $E$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $I$ zu wandern steigt mit fortlaufender Zeit.}
-  \item{Die Zeit, wenn ein Individuum in der Klasse $I$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $R$ zu wandern oder zu Sterben steigt mit fortlaufender Zeit.}
+\item{Neugeborene - Die Geburtenrate entscheidet wieviele Individuen neu erzeugt werden pro Update. Neugeborene sind standardmäßig immer 0 Jahre alt bei der Geburt und bekommen HIV nur dann, wenn die Eltern diese Krankheit auch haben. Ob die Eltern geimpft sind, gibt einen Ausschlag darüber aus, ob Kinder ebenfalls geimpft werden.}
+\item{Tod - Individuen sterben am Alter, daher wenn sie die Lebenserwartung aus der Alterdistribution erreichen, steigt die Chance auf Tod. Ferner, gibt es Sterben durch Tuberkulose, sowie eine zufällige Sterberate, die immer eintreten kann.}
+\item{Die Umgebung eines Individuums spielt eine Rolle, da mehr Kontakt zu anderen infizierten das Risiko deutlich erhöht. Es gibt auf dem Grid einen Radius der Infektion, der bestimmt, über wieviele Felder die Infizierten andere anstecken können.}
+\item{Die Zeit, wenn ein Individuum in der Klasse $E$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $I$ zu wandern steigt mit fortlaufender Zeit.}
+\item{Die Zeit, wenn ein Individuum in der Klasse $I$ ist, wird aufgenommen. Die Wahrscheinlichkeit in Klasse $R$ zu wandern oder zu sterben steigt mit fortlaufender Zeit.}
 \end{itemize}
 
 Die Übergangswahrscheinlichkeiten zwischen den Compartments werden anhand einer Markov Kette definiert. Jeder Agent hat nur seine aktuelle Klasse $S$, $L$, $I$ oder $R$. Die Markov Eigenschaft verlangt das
 
 \begin{gather*}
 \Pr(X_{n+1}=x\mid X_{1}=x_{1},X_{2}=x_{2},\ldots ,X_{n}=x_{n})=\Pr(X_{n+1}=x\mid X_{n}=x_{n}) \\
-\Pr(X_{1}=x_{1},\ldots,X_{n}=x_{n})>0
+\Pr(X_{1}=x_{1},\ldots,X_{n}=x_{n}) > 0
 \end{gather*}
 
-Das heißt, der nächste Zustand $x_{n + 1}$, daher z.B. die Übergangswahrscheinlichkeit das $x_{n} = L$ in die Klasse $x_{n + 1} = I$ läuft ist nur bedingt durch den derzeitigen Zustand $x_{n}$. Das heißt konkret das $x_{n-1}, x_{n-2}, \ldots, x_{1}$ keine Rolle spielen. Nach der Bayesianischen Forderung wollen wir im Prinzip aus dem aktuellen Wissen ``prior'' und neuen Beochbachtungen eine neue Erkenntnis ``posterior'' finden. Jeder Agent wird dadurch simuliert wieviele der anderen Agenten sich in den einzelnen Klassen befinden. Durch die individuellen Ausprägungen eines Agenten und durch die die Übergangswahrscheinlichkeiten der oben beschriebenen Markov Kette, wird die Wahrscheinlichkeit vom Übergang in ein anderes Compartment berechnet.
+Das heißt, der nächste Zustand $x_{n + 1}$, daher z. B. die Übergangswahrscheinlichkeit das $x_{n} = L$ in die Klasse $x_{n + 1} = I$ läuft, ist nur bedingt durch den derzeitigen Zustand $x_{n}$. Das heißt konkret das $x_{n-1}, x_{n-2}, \ldots, x_{1}$ keine Rolle spielen. Nach der Bayesianischen Forderung wollen wir im Prinzip aus dem aktuellen Wissen ''prior'' und neuen Beobachtungen eine neue Erkenntnis ''posterior'' finden. Jeder Agent wird dadurch simuliert wie viele der anderen Agenten sich in den einzelnen Klassen befinden. Durch die individuellen Ausprägungen eines Agenten und durch die Übergangswahrscheinlichkeiten der oben beschriebenen Markov Kette, wird die Wahrscheinlichkeit vom Übergang in ein anderes Compartment berechnet.
 
 \[
 M=
@@ -602,9 +601,9 @@ M=
   \end{bmatrix}
   \begin{tabular}{c}
     \text{S - Empfänger} \\
-    \text{L - latent Infizierte} \\
-    \text{I - Infizierte} \\
-    \text{R - Geheilte}
+    \text{L - latent infizierte} \\
+    \text{I - infizierte} \\
+    \text{R - geheilte}
   \end{tabular}
 \]
 
@@ -621,12 +620,12 @@ Variable & Wert & Beschreibung \\
 \multicolumn{2}{|c}{Distributionen und Initialisierung} & \multicolumn{1}{c|}{} \\
 \hline
 $S$ & 100 & Epfänger \\
-$L$ & 10 & Latent Infizierte \\
-$I$ & 1 & Infizierte \\
-$R$ & 0 & Geheilte \\
+$L$ & 10 & Latent infizierte \\
+$I$ & 1 & infizierte \\
+$R$ & 0 & geheilte \\
 Alter & $Gamma(k=2.0,\theta=15, N=N)$ & Alter, Formparameter $k$ und Skalierungsparameter $\theta$ über die Population $N$ \\
-Lebenserwartung & $80$ & Normalverteilung um $80$ herum mit Varinaz von $10$ \\
-Geimpfte & $0.1$ & Geimpfte Teile der Bevölkerung \\
+Lebenserwartung & $80$ & Normalverteilung um $80$ herum mit Varianz von $10$ \\
+geimpft & $0.1$ & geimpfte Teile der Bevölkerung \\
 Geburtenrate & $0.013$ & Wahrscheinlichkeit auf Neugeburt pro Tick \\
 HIV & $0.1$ & Wahrscheinlichkeit auf HIV bei Initialisierung und Neugeburt \\
 Behandlung & $0.3$ & Wahrscheinlichkeit auf HIV Behandlung bei Erkrankung \\
@@ -653,28 +652,28 @@ Alter Risiko & $\frac{Alter}{Lebenserwartung} \cdot 0.001$ & Wahrscheinlichkeit 
 
 \subsection{Resultate}
 
-Mit obigen Konfigurationsparametern ist es nun spannend zu beobachten, ob es eine Reihe von Faktoren, gibt die Tuberkulose eindämmen können. Es konnte beobachtet werden, wenn die Impfung bei Neugeborenen der Population deutlich erhöht wird, mit z.B. 60\% aller Neugeborenen, verschwindet TB über einen langen Zeitraum vollständig. Da Infizierte keinerlei Chance auf Heilung besitzen, ist die sinnvollste Strategie bei der nächsten Generation anzufangen. Interessant ist auch das durch das einführen von MDR-TB, über einen langen Zeitraum alle Menschen gestorben sind, da diese durch die Behandlung von Medikamenten nicht verschwindet. Die Variation von den Lokalitätsparametern hat auch einen großen Einfluss. Es stellte sich heraus das nur größere Radien $> 4$ Felder für eine TB Epdidemie sorgen konnten. Kleinere Cluster wurden ebenfalls gebildet. Teile der Bevölkerung waren noch nicht infiziert, während andere Teile schon viele Infizierte vorweisen konnte. Langfristig kann ein Stabiles Maß gefunden werden, wenn allein die geimpften Eltern, ihre Kinder ebenfalls impfen wie in den unteren Abbildungen zu sehen ist.
+Mit obigen Konfigurationsparametern ist es nun spannend zu beobachten, ob es eine Reihe von Faktoren, gibt die Tuberkulose eindämmen können. Es konnte beobachtet werden, wenn die Impfung bei Neugeborenen der Population deutlich erhöht wird, mit z. B. 60\% aller Neugeborenen, verschwindet TB über einen langen Zeitraum vollständig. Da Infizierte keinerlei Chance auf Heilung besitzen, ist die sinnvollste Strategie bei der nächsten Generation anzufangen. Interessant ist auch das durch das Einführen von MDR-TB, über einen langen Zeitraum alle Menschen gestorben sind, da diese durch die Behandlung von Medikamenten nicht verschwindet. Die Variation von den Lokalitätsparametern hat auch einen großen Einfluss. Es stellte sich heraus das nur größere Radien $> 4$ Felder für eine TB Epidemie sorgen konnten. Kleinere Cluster wurden ebenfalls gebildet. Teile der Bevölkerung waren noch nicht infiziert, während andere Teile schon viele Infizierte vorweisen konnte. Langfristig kann ein stabiles Maß gefunden werden, wenn allein die geimpften Eltern, ihre Kinder ebenfalls impfen wie in den unteren Abbildungen zu sehen ist.
 
 \begin{figure}[ht]
-  \centering
-  \begin{subfigure}{.45\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/abm-l-i-exp-1}
-    \caption{$L$ (Gelb) und $I$ (Rot)}
-    \label{fig:abm-l-i-exp-1}
-  \end{subfigure}%
-  \begin{subfigure}{.45\textwidth}
-    \centering
-    \includegraphics[width=.99\linewidth]{images/abm-s-r-exp-1}
-    \caption{$S$ (Blau) und $R$ (Grün)}
-    \label{fig:abm-s-r-exp-1}
-  \end{subfigure}
+\centering
+\begin{subfigure}{.45\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{images/abm-l-i-exp-1}
+\caption{$L$ (Gelb) und $I$ (Rot)}
+\label{fig:abm-l-i-exp-1}
+\end{subfigure}%
+\begin{subfigure}{.45\textwidth}
+\centering
+\includegraphics[width=.99\linewidth]{images/abm-s-r-exp-1}
+\caption{$S$ (Blau) und $R$ (Grün)}
+\label{fig:abm-s-r-exp-1}
+\end{subfigure}
 \end{figure}
 \begin{figure}[ht]
-  \centering
-  \includegraphics[width=.5\textwidth]{images/abm-n-exp-1}
-  \caption{Gesamtpopluation $N = S + L + I + R$}
-  \label{fig:abm-n-exp-1}
+\centering
+\includegraphics[width=.5\textwidth]{images/abm-n-exp-1}
+\caption{Gesamtpopluation $N = S + L + I + R$}
+\label{fig:abm-n-exp-1}
 \end{figure}
 
 Die Zeitachse ist in kleineren Schritten über 100 Jahre abgebildet. Die Geimpften füllen die $R$ Klasse. Eine höhere Bevölkerung führt zu höheren Anteilen an latenter TB mit periodischen Kurven. Aktiv Infizierte sind relativ gering und gehen periodisch in Schritten rauf und runter.
@@ -685,7 +684,7 @@ Die Zeitachse ist in kleineren Schritten über 100 Jahre abgebildet. Die Geimpft
 
 In dieser Arbeit wurde gezeigt, wie agentenbasierte Modellierung und Compartment Modelle genutzt werden können, um die Ausbreitung von Infektionskrankheiten wie Tuberkulose zu simulieren. Idealerweise kommen neue Erkenntnisse ans Licht, wie die Übertragung von Tuberkulose verhindert werden kann. \\
 
-Die beiden Compartment Modelle haben nur geringfügig brauchbare Ergebnisse erzeugt. Auch wenn interessante Effekte zu beobachten waren, können die Ergebnisse nur als plausible Indikatoren für die Ausbreitung von Tuberkulose herangezogen werden. Die agentenbasierte Simulation hat gezeigt das unterschiedliche Strategien, zumindest auf synthetisierten Daten, einen Signifikaten Einfluss zur Dämmung von Tuberkulose haben können. Nichts desto trotz ist es überaus schwierig relevante Ergebnisse aus diesen Modellen zu bekommen. Dies liegt unter anderem an der enormen Komplexität und der Menge an Variablen die so ein System beeinflussen. \\
+Die beiden Compartment Modelle haben nur geringfügig brauchbare Ergebnisse erzeugt. Auch wenn interessante Effekte zu beobachten waren, können die Ergebnisse nur als plausible Indikatoren für die Ausbreitung von Tuberkulose herangezogen werden. Die agentenbasierte Simulation hat gezeigt, dass unterschiedliche Strategien, zumindest auf synthetisierten Daten, einen Signifikaten Einfluss zur Dämmung von Tuberkulose haben können. Nichtsdestotrotz ist es überaus schwierig relevante Ergebnisse aus diesen Modellen zu bekommen. Dies liegt unter anderem an der enormen Komplexität und der Menge an Variablen die so ein System beeinflussen. \\
 
 Eine der vielversprechendsten Teile der Modellierung mit statistischen Prädiktionsmodellen über eine Menge beschreibender Variablen konnten nicht näher betrachtet werden. Diese Modelle stellen sinnvolle Erweiterungen zu rein theoretischen Modellen dar. Von realen Daten zu lernen beinhaltet den Vorteil, die unterliegenden Trends, deutlich präziser anzunähern. Voraussetzung ist allerdings, dass diese Daten existieren und auch tatsächlich das System von Interesse erklären können.
 
@@ -695,4 +694,3 @@ Eine der vielversprechendsten Teile der Modellierung mit statistischen Prädikti
 \bibliography{md-tuberkulose}
 
 \end{document}
-
